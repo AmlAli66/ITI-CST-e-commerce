@@ -1,0 +1,8 @@
+/* Main global stylesheet */
+/* Imports all base + components */
+
+@import url("./base/reset.css");
+@import url("./base/variables.css");
+@import url("./base/typography.css");
+
+/* TODO: shared layout styles */

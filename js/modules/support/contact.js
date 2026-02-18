@@ -1,0 +1,1 @@
+console.log("contact module loaded");

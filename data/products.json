@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "name": "Sample Product",
+        "price": 100,
+        "category": "general",
+        "sellerId": 2,
+        "approved": true,
+        "stock": 10,
+        "image": "assets/images/sample.jpg"
+    }
+]
