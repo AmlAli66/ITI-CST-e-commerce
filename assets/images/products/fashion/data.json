@@ -1,0 +1,119 @@
+[
+    {
+      "id": "1",
+      "name": "Leather Jacket",
+      "description": "Stylish brown , Leather Loose Casual Jacket, Autumn,Fall .",
+      "price": 1000,
+      "discount": 10,
+      "finalPrice": 990,
+      "image": "Jacket1.png",
+      "detailImages": [
+        "jacket2.png",
+        "jacket3.png",
+        "jacket4.png"
+      ],
+      "category": "Fashion",
+      "brand": "UrbanStyle",
+      "sellerId": "1",
+      "sellerName": "Admin",
+      "stock": 25,
+      "rating": 4.7,
+      "reviewCount": 85,
+      "status": "approved",
+      "dateAdded": "2026-02-10"
+    },
+    {
+      "id": "2",
+      "name": "Running Sneakers",
+      "description": "Mesh Running Shoes, Thick Increase Height Sports Shoes, Lightweight Casual Shoes, Retro Shoes, Shock Absorption Anti-Slip Wear-Resistant Soft Bottom Walking Shoes, Fashion Versatile Running Training Shoes, Thick Sole Sports Shoes, Retro Patchwork",
+      "price": 720,
+      "discount": 10,
+      "finalPrice": 710,
+      "image": "sneakers1.png",
+      "detailImages": [
+        "sneakers2.png",
+        "sneakers3.png",
+        "sneakers4.png"
+      ],
+      "category": "Fashion",
+      "brand": "FitRun",
+      "sellerId": "1",
+      "sellerName": "Admin",
+      "stock": 40,
+      "rating": 4.6,
+      "reviewCount": 72,
+      "status": "approved",
+      "dateAdded": "2026-02-12"
+    },
+    {
+      "id": "3",
+      "name": "Denim Jeans",
+      "description": "Classic blue denim jeans, comfortable fit",
+      "price": 999.99,
+      "discount": 50,
+      "finalPrice": 849.99,
+      "image": "j1.png",
+      "detailImages": [
+        "j2.png",
+        "j3.png",
+        "j4.png"
+      ],
+      "category": "Fashion",
+      "brand": "DenimCo",
+      "sellerId": "1",
+      "sellerName": "Admin",
+      "stock": 60,
+      "rating": 4.4,
+      "reviewCount": 55,
+      "status": "approved",
+      "dateAdded": "2026-02-14"
+    },
+    {
+      "id": "4",
+      "name": "T-shirt",
+      "description": "K-GLORY Men's Casual Versatile Simple Japanese Crane Print Short Sleeve T-Shirt",
+      "price": 885.00,
+      "discount": 0,
+      "finalPrice": 885.00,
+      "image": "t-shirt1.png",
+      "detailImages": [
+        "t-shirt2.png",
+        "t-shirt3.png",
+        "t-shirt4.png"
+      ],
+      "category": "Fashion",
+      "brand": "shein",
+      "sellerId": "1",
+      "sellerName": "Admin",
+      "stock": 35,
+      "rating": 4.8,
+      "reviewCount": 90,
+      "status": "approved",
+      "dateAdded": "2026-02-16"
+    },
+    {
+        "id": "5",
+        "name": "Leather Handbag",
+        "description": "Vintage Large Capacity Solid Color Women's Shoulder Bag, Multifunctional Crossbody Bag, Handheld Women's Shoulder Bag, Large Capacity Crossbody Handbag, Casual Work Bag, New Fashion Large Capacity Women Bag",
+        "price": 1129.99,
+        "discount": 20,
+        "finalPrice": 1109.99,
+        "image": "b1.png",
+        "detailImages": [
+          "b2.png",
+          "b3.png",
+          "b4.png"
+        ],
+        "category": "Fashion",
+        "brand": "LuxBag",
+        "sellerId": "1",
+        "sellerName": "Admin",
+        "stock": 30,
+        "rating": 4.7,
+        "reviewCount": 65,
+        "status": "approved",
+        "dateAdded": "2026-02-17"
+      }
+      
+  ]
+  
