@@ -7,3 +7,27 @@
 
 /* TODO: shared layout styles */
 
+body {
+            margin: 0;
+            min-height: 100vh;
+        }
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: rgb(119, 238, 238);
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear forwards;
+            opacity: 1;  /* Make it more subtle - 0.6 means 60% visible */
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);  /* Move down the full screen height */
+            }
+        }
+        .content {
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
