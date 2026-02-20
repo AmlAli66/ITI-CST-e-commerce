@@ -33,6 +33,10 @@ body {
             text-align: center;
             padding: 50px;
         }
+        .homeHeroMain{
+            word-spacing: 5px;
+            padding: 10px;
+        }
 .homeFirstContent{
     
     position: relative;
@@ -51,6 +55,7 @@ body {
     transition: all 0.5s;
     margin-right: 10px;
     font-family: 'Poppins', sans-serif;
+    
 }
 .homeSignUp a{
     color:#667eea;
@@ -161,14 +166,37 @@ body {
 }
 
 .homeSalesBanner{
-    
     background: #1a1a2e;
     padding: 80px 200px; 
     border-radius: 15px;
     display: inline-block;
     box-shadow: 0 0 30px rgba(102, 126, 234, 0.8), 0 0 60px rgba(102, 126, 234, 0.5);
     border: 2px solid #667eea;
+    animation: electric-pulse 2s infinite;
+    overflow: visible;  
+    position: relative;
 }
+/*  Creating the animaion of the banner*/
+    @keyframes electric-pulse {
+        0%, 100%{
+            box-shadow: 
+            0 0 20px #00f2fe,
+            0 0 40px #00f2fe,
+            0 0 60px #667eea,
+            0 0 80px #667eea;
+        border-color: #00f2fe;
+        }
+        50% {
+        box-shadow: 
+            0 0 30px #4facfe,
+            0 0 60px #4facfe,
+            0 0 90px #667eea,
+            0 0 120px #764ba2;
+        border-color: #4facfe;
+    }
+        
+    }
+/* --the banner text - */
 .homeSalesBanner .homeSalesBannerText{
     font-size: 64px;
     font-weight: 900;
@@ -180,7 +208,79 @@ body {
         0 0 40px #764ba2;
     letter-spacing: 8px;
     font-family: 'Poppins', sans-serif;
+    animation : electric-text 1.5s infinite;
+    position: relative;
+    z-index: 1;
 }
+/* Creating the banner text animation */
+    @keyframes electric-text {
+        0%, 100% {
+        text-shadow: 
+            0 0 10px #00f2fe,
+            0 0 20px #00f2fe,
+            0 0 30px #4facfe,
+            0 0 40px #667eea;
+    }
+    50% {
+        text-shadow: 
+            0 0 20px #fff,
+            0 0 30px #00f2fe,
+            0 0 40px #4facfe,
+            0 0 60px #667eea,
+            0 0 80px #764ba2;
+    }
+    }
+/*  end of text animation  */ 
+/*  creating the floating particles : */
+.electric-spark {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #00f2fe;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00f2fe, 0 0 20px #00f2fe;
+    animation: spark-move 2s infinite;
+    z-index: 0;
+}
+.spark-1 {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}.spark-2 {
+    top: 20%;
+    right: 10%;
+    animation-delay: 0.5s;
+}
+
+.spark-3 {
+    bottom: 10%;
+    left: 15%;
+    animation-delay: 1s;
+}
+
+.spark-4 {
+    bottom: 20%;
+    right: 15%;
+    animation-delay: 1.5s;
+}
+@keyframes spark-move {
+    0%, 100% {
+        transform: translate(0, 0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    50% {
+        transform: translate(30px, -30px) scale(1);
+        opacity: 1;
+        box-shadow: 0 0 15px #00f2fe, 0 0 30px #00f2fe;
+    }
+    90% {
+        opacity: 0;
+    }
+}
+/* -------------- end of spark animation  */ 
 .homefirstContainer{
     display: flex;
 }
@@ -190,6 +290,8 @@ body {
     justify-content: center;
     text-align: center;
     flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 80px;
 }
 .homeCategoreCard{
     background: linear-gradient(135deg, #e2e5f1 0%, #c095eb 100%);
@@ -231,19 +333,21 @@ body {
     -1px 0 0 #38bdf8;
 }
 .homeProductImages{
-    width: 100px;
-    height: 100px;
+    width: 130px;
+    height: 130px;
     border-radius: 20px;
+    margin-bottom:10px ;
 }
 #homeFeaturedproductsgrid{
 display: flex;
-justify-content: center;
+justify-content: space-between;
 border: 2px solid black ;
 border-radius: 50px;
 gap: 20px;
-padding: 10px;
+padding: 20px;
 background: linear-gradient(135deg, #e2e5f1 0%, #c095eb 100%);
 flex-wrap: wrap;
+margin-bottom: 20px;
 }
 .homeProductCard{
     border: 2px solid white;
@@ -255,12 +359,11 @@ flex-wrap: wrap;
 }
 .homeShowDetails{
     background: linear-gradient(135deg, #eeeff4 0%, #c7bed0 100%);
-    border-radius: 50px;
+    border-radius: 10px;
     padding:5px;
     transition: 0.3s;
-    font-family: 'Poppins', sans-serif;
-    font-weight:lighter;
-    margin: 10px;
+    font-family: 'Outfit', sans-serif;
+        margin: 10px;
 }
 .homeShowDetails:hover{
     transform: scale(1.1);
@@ -268,4 +371,11 @@ flex-wrap: wrap;
 .homeProductPriceCard{
     padding: 5px;
     
+}
+.homeProductCard:hover{
+    transform: scale(1.1);
+}
+.homeFeaturedProducts{
+margin-top: 50px;
+margin-bottom: 50px;
 }
