@@ -17,17 +17,24 @@
 
         <!-- Navbar loaded dynamically -->
         <div id="navbar-container"></div>
-
-        <div class="text-center  ">
+        <!--------------------------------------------->
+        <div class="text-center homefirstContainer ">
             <section class="homeFirstContent container-fluid">
-            <h1>Welcome to <i class="fa-solid fa-snowflake text-info "></i><span class="test" >IceMart</span></h1>
+            <div class="homeHeroFlex">
+            
+            <!-- LEFT SIDE: Main Content -->
+            <div class="homeHeroMain">
+                <h1>Welcome to <i class="fa-solid fa-snowflake text-info"></i><span class="test">IceMart</span></h1>
                 <h2>Shop Cool <br> Live Cool</h2>
-                <h3>Discover More Premium Electronics ,Fashion and Beauty products at ice-cold prices.</h3>
+                <h3>Discover More Premium Electronics, <br>     Fashion and Beauty products at ice-cold prices.</h3>
+                
+                <!-- Buttons -->
                 <div class="home-hero-buttons">
-                    <button class=" homeSignIn "><a href="./pages/auth/login.html" class="text-decoration-none ">Sign in</a></button>
-                    <button class=" homeSignUp "><a href="./pages/auth/register.html" class="text-decoration-none ">Sign up</a></button>
-                    <button class="homeHeroExplore"><a href="./pages/shop/catalog.html" class=" text-decoration-none "> Products</a></button>
+                    <button class="homeSignIn"><a href="./pages/auth/login.html" class="text-decoration-none"><i class="fa-solid fa-right-to-bracket"></i>Sign in</a></button>
+                    <button class="homeSignUp"><a href="./pages/auth/register.html" class="text-decoration-none"><i class="fa-solid fa-user-plus"></i> Sign up</a></button>
+                    <button class="homeHeroExplore"><a href="./pages/shop/catalog.html" class="text-decoration-none"><i class="fa-brands fa-space-awesome"></i>Products</a></button>
                 </div>
+                <!--------Status---------->
                 <div class="homeAdd">
                     <div>
                         <h1>50k</h1>
@@ -42,18 +49,85 @@
                         Brands
                     </div>
                 </div>
-                <div class="homeTopfeatures">
-
+            </div>
+            
+            <!-- RIGHT SIDE: Sales Banner -->
+            <div class="homeHeroSide">
+                <div class="homeSalesBanner">
+                    <span class="homeSalesBannerText">50% OFF</span>
                 </div>
+            </div>
+            </div>
+
+                
+            <!-----------------Feature Cards------------------------->
+            <div class="homeFeatureCards">
+                <div class="homeFeatureCard">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <p>Secure Payment</p>
+                </div>
+                <div class="homeFeatureCard">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <p>Fast Delivery</p>
+                </div>
+                    <div class="homeFeatureCard">
+                    <i class="fa-solid fa-headset"></i>
+                    <p>24/7 Support</p>
+                </div>
+                <div class="homeFeatureCard">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <p>Easy Returns</p>
+                </div>
+            </div> 
+        
+            
             </section>
+            <!-------------------------------------->
             
         </div>
+
+
+        <!------------------Categories-------------------------->
         <section class="homeCategories">
-
+            <div class="homeCategoreCard">
+                <div class="homeFlipped"><i class="fa-solid fa-shirt fa-3x homeTshirt"></i></div>
+                <h2>Fashion</h2>
+                <p>570 Products</p>
+            </div>
+            <div class="homeCategoreCard">
+                <div class="homeFlipped"><i class="fa-solid fa-mobile-screen fa-3x"></i></div>
+                <h2>Mobiles</h2>
+                <p>570 Products</p>
+            </div>
+            <div class="homeCategoreCard">
+                <div class="homeFlipped"><i class="fa-solid fa-microchip fa-3x homeelectricIcongradient"></i></div>
+                <h2>Electronics</h2>
+                <p>570 Products</p>
+            </div>
+            <div class="homeCategoreCard">
+                <div class="homeFlipped"><i class="fa-solid fa-couch fa-3x"></i></div>
+                <h2>Appliances</h2>
+                <p>570 Products</p>
+            </div>
+             <div class="homeCategoreCard">
+                <div class="homeFlipped"><i class="fa-solid fa-spray-can-sparkles fa-3x homeBeautygradiant"></i></div>
+                <h2>Beauty </h2>
+                <p>570 Products</p>
+            </div>
         </section>
+        <!-------------------- end of categories------------------------------>
 
-        
-        
+
+        <!-------------------------Home Featured Products--------------------------------------------->
+        <section class="homeFeaturedProducts">
+            <div class="homeWholeProductcontainer">
+                <h2 class="homesection-title">⭐ Featured Products ⭐</h2>
+                <div id="homeFeaturedproductsgrid" class="homeproductsgrid">
+                <!-- Products will load here -->  
+
+                </div>
+            </div>
+        </section>
 
 
 
