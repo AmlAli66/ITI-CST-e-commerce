@@ -4,14 +4,16 @@
 @import url("./base/reset.css");
 @import url("./base/variables.css");
 @import url("./base/typography.css");
+@import url("./components/navbar.css");
 
 /* TODO: shared layout styles */
 
 body {
+        padding: 0;
             margin: 0;
             min-height: 100vh;
         }
-        .snowflake {
+.snowflake {
             position: fixed;
             top: -10px;
             color: rgb(119, 238, 238);
@@ -31,3 +33,87 @@ body {
             text-align: center;
             padding: 50px;
         }
+.homeFirstContent{
+    
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 120px 40px;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    margin-bottom: 80px;
+    font-family:"Baskerville Old Face";
+}
+.homeSignUp{
+    background-color:white;
+    padding: 10px;
+    border-radius: 30px;
+    transition: all 0.5s;
+    margin-right: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+.homeSignUp a{
+    color:#667eea;
+}
+.homeSignUp:hover{
+    transform: scale(1.1);
+    border: 2px solid white;
+    box-shadow:inset 1px 1px 5px #667eea,inset -1px -1px 5px #764ba2;
+
+}
+.homeSignIn {
+    background-color:rgb(255, 255, 255);
+    padding: 10px;
+    border-radius: 30px;
+    transition: all 0.5s;
+    margin-right: 10px;
+    font-weight:bold;
+    font-family: 'Poppins', sans-serif;
+}
+.homeSignIn a{
+    color:rgb(102, 197, 197);
+}
+.homeSignIn:hover{
+    transform: scale(1.1);
+        border: 2px solid white;
+        box-shadow:inset 1px 1px 5px #667eea,inset -1px -1px 5px #764ba2;
+}
+.homeHeroExplore{
+    background-color:white;
+    padding: 10px;
+    border-radius: 30px;
+    transition: all 0.5s;
+}
+.homeHeroExplore a{
+    color :#c10c27;  
+        font-family: 'Poppins', sans-serif;
+ 
+}
+.homeHeroExplore:hover{
+    transform: scale(1.1);
+    border: 2px solid white;
+    box-shadow:inset 1px 1px 5px #667eea,inset -1px -1px 5px #764ba2;
+
+}
+.homeAdd div{
+    display:inline-block;
+    background: rgb(237, 214, 245);
+    color:rgb(171, 120, 160);
+    border: 2px solid white ;
+    border-radius: 30px;
+    padding: 10px;
+    transition: 0.5s;
+}
+.homeAdd{
+    display: flex;
+    flex-direction: row;
+    font-family: 'Poppins', sans-serif;
+    gap:20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    
+}
+.homeAdd div:hover{
+    transform: scale(1.1);
+}
