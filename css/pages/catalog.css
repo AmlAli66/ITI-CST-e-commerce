@@ -1,1 +1,55 @@
-/* css */
+*{
+font-family: 'Orbitron', sans-serif;
+}
+.catalogfirstAnkers{
+    margin-left: 50px;    
+
+}
+.catalogContainer{
+    display: flex;
+}
+.catalogFilters{
+    width:20vw;
+    height: 90vh;
+    border: 2px solid black ;
+}
+.catalogSearchContainer{
+    text-align: center;
+    
+}
+.catalogSearchBar{
+    width: 50vw;
+    height: 5vh;
+}
+.catalogSearchBar:hover{
+    border: 2px solid rgb(151, 143, 143);
+    border-radius: 5px;
+}
+.catalogFiltersWrapper{
+    text-align: center;
+    margin-left: 10px;
+        font-family: 'Montserrat', sans-serif;
+
+}
+.catalogFilters{
+    padding: 10px;
+}
+.catalogCheckBoxContainer{
+    display: flex;
+    align-items: center;
+}
+.catalogProductCard{
+    height: 300px;
+    width: 200px;
+}
+.catalogProductDetails{
+
+}
+.catalogproductImage{
+    height: 100px;
+    width: 100px;
+}
+.catalogProducts{
+    display: flex;
+    flex-wrap: wrap;
+}
