@@ -85,7 +85,7 @@ function displayFeaturedProducts(){
                     <span>price : ${product.price} $</span>
                     </div>
 
-                <button class="homeShowDetails">
+                <button class="homeShowDetails" onclick="viewProductDetails('${product.id}')">
                 Show Details
                 </button>
             </div>
@@ -97,4 +97,8 @@ function displayFeaturedProducts(){
 
     }).join('')
 }
+
 displayFeaturedProducts();
+function viewProductDetails(productID){
+    window.location.href=`./pages/shop/product-details.html?id=${productID}`;
+}
