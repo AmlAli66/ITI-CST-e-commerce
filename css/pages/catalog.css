@@ -10,10 +10,10 @@ font-family: 'Orbitron', sans-serif;
     overflow: hidden;
 }
 .catalogFilters{
-    width:20vw;
-    height: 100vh;
+    width:25%;
+    height: 100%;
     border: 2px solid black ;
-    min-width: 200px;
+    
 }
 .catalogSearchContainer{
     text-align: center;
@@ -53,7 +53,7 @@ font-family: 'Orbitron', sans-serif;
     transition: 0.3s;
     border-radius: 10px;
     cursor: pointer;
-    
+
 }
 .catalogProductCard:hover{
     transform: scale(1.1);
@@ -64,13 +64,13 @@ font-family: 'Orbitron', sans-serif;
     width: 220px;
 }
 .catalogproductImage{
-    height: 170px;
-    width: 170px;
+    height: 200px;
+    width: 180px;
     object-fit: cover;
     display: block;
     max-height: 100%;
     max-width: 100%;
-    margin: 5px;
+    margin-top: 30px;
 }
 .catalogProducts{
     gap: 20px;

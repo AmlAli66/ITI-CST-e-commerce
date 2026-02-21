@@ -101,42 +101,39 @@ function goToPage(PageNumber){
 //---- Filtering By Price  listerners 
 //--Getting the max price dynamically 
 const allproducts = getAllProducts();
-console.log("Total products:", allproducts.length);
+//console.log("Total products:", allproducts.length);
 let highestPrice =0;
 for ( let i =0 ; i < allproducts.length;i++){
-    console.log(`Product ${i}: ${allproducts[i].name} = $${allproducts[i].price}`);
+    //console.log(`Product ${i}: ${allproducts[i].name} = $${allproducts[i].price}`);
     if(allproducts[i].price > highestPrice){
         highestPrice= allproducts[i].price;
-        console.log(`    New highest: ${highestPrice}`);
+        //console.log(`    New highest: ${highestPrice}`);
     }
 }
 
 console.log(" FINAL HIGHEST PRICE:", highestPrice);
 //--
 const minSlider = document.getElementById("priceMin"); 
-minSlider.addEventListener('input', updateMinSlider);
-minSlider.addEventListener('change', applyPriceFilter);
-
 const maxSlider = document.getElementById("priceMax");
-maxSlider.addEventListener('input', updateMaxSlider);
-maxSlider.addEventListener('change', applyPriceFilter);
-//-----------------------------
-minSlider.step=100;
-minSlider.max=highestPrice;
-//-----------------------
-maxSlider.max=highestPrice;
-maxSlider.value=highestPrice;
-maxSlider.step = 100;
-console.log(" Slider max:", maxSlider.max);
-console.log(" Slider value:", maxSlider.value);
-//-----------------------------------
 const maxDisplay = document.getElementById("catalogMaxPrice");
+const minDisplay = document.getElementById("catalogMinPrice");
+//-----------------------------
+minSlider.max = highestPrice;
+minSlider.value = 0;
+minSlider.step = 1;
+
+maxSlider.max = highestPrice;
+maxSlider.value = highestPrice;
+maxSlider.step = 1;
+
+minDisplay.innerText = 0;
 maxDisplay.innerText = highestPrice;
-console.log(" Display element found?", maxDisplay);
-console.log(" Display innerText:", maxDisplay.innerText);
+//-----------------------------------
+minSlider.addEventListener('input', updateMinSlider);
+minSlider.addEventListener('change', ApplyAllFilters);
 
-//-----------------------
-
+maxSlider.addEventListener('input', updateMaxSlider);
+maxSlider.addEventListener('change', ApplyAllFilters);
 //----- Filter Range Visual Update 
 function updateMinSlider(e){
     const MinHolder = document.getElementById("catalogMinPrice");
@@ -149,14 +146,137 @@ function updateMaxSlider(e){
 //---------------------
 
 // Applying The Filter On The Screen 
-function applyPriceFilter(){
-    const min = parseInt(document.getElementById("priceMin").value);
-    const max = parseInt(document.getElementById("priceMax").value);
 
-    const AllProduct = getAllProducts();
-    catalogProductsToDisplay = AllProduct.filter(product=> product.price>=min && product.price<=max);
-    creatingCatalogPagination();
+
+//----------------------------
+//-- Catalog Filters : 
+const catalogFilters = document.querySelectorAll(".catalogCheckBoxContainer  input[type='checkbox']");
+catalogFilters.forEach(checkbox=> {
+    checkbox.addEventListener('change', ApplyAllFilters);
+
+})
+//----------------------------------
+//-------------- Applying the Trigiered CheckBox 
+
+
+//---------------------------------------------------
+
+//-------------- Filter By Brand 
+const catalogBrandContainer = document.getElementById("catalogFilterBrand");
+function catalogBrandCreation(){
+    const productsarrHolder = getAllProducts();
+    const uniqueBrands = [];
+    for(let i =0 ; i < productsarrHolder.length ; i++){
+        if(uniqueBrands.includes(productsarrHolder[i].brand)){
+            
+            continue;
+        }else{
+            // uniqueBrands[i]=productsarrHolder[i].brand;
+            uniqueBrands.push(productsarrHolder[i].brand);
+        }
+    }
+    for(let i =0; i < uniqueBrands.length;i++){
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("BrandCheckWrapper");
+        const createdBrandCheck = document.createElement("input");
+        createdBrandCheck.type="checkbox";
+        createdBrandCheck.value=uniqueBrands[i];
+        createdBrandCheck.setAttribute("class","brandCheckbox");
+        createdBrandCheck.addEventListener('change', ApplyAllFilters);
+        wrapper.appendChild(createdBrandCheck);
+        wrapper.append(uniqueBrands[i]+" ")
+        catalogBrandContainer.appendChild(wrapper);
+    }
+}
+catalogBrandCreation();
+
+//------------------------------
+// SYMPHONY FILTER 
+    function ApplyAllFilters(){
+        // 1
+        const allProducts = getAllProducts();
+         // 2 getting checked Cats
+        const checkedCategories = [...document.querySelectorAll(".catalogCheckBoxContainer input:checked")].map(cb => cb.value);
+    
+        // Getting checked brands 
+        const checkedBrands = [...document.querySelectorAll(".BrandCheckWrapper input:checked")].map(cb => cb.value);
+        // Getting What is inside the search box 
+        const searchTerm = document.getElementById("catalogSearchBar").value.toLowerCase();
+        // Filter By Category 
+        let AvailableProducts = allProducts;
+
+        // Applying the category filter 
+        if(checkedCategories.length>0){
+            AvailableProducts= AvailableProducts.filter(products=>checkedCategories.includes(products.category))
+        };
+        if(checkedBrands.length>0){
+            AvailableProducts= AvailableProducts.filter(product=>checkedBrands.includes(product.brand))
+        }
+        if(searchTerm.length>0){
+            AvailableProducts=AvailableProducts.filter(product=> product.name.toLowerCase().includes(searchTerm))
+        };
+        //--
+            updatePriceSliderRange(AvailableProducts);
+        //
+
+        // Filtering By Price
+        const minPrice= parseInt(document.getElementById("priceMin").value);
+        const maxPrice = parseInt(document.getElementById("priceMax").value);
+        const FinalFilteredArray =AvailableProducts.filter(product=>product.price>=minPrice && product.price<=maxPrice);
+        catalogProductsToDisplay=FinalFilteredArray;
+
+        creatingCatalogPagination();
+    }
+        //-- Updating The SliderItself
+function updatePriceSliderRange(products){
+    if(products.length == 0){
+        minSlider.max = 0;
+        minSlider.value = 0;
+        maxSlider.max = 0;
+        maxSlider.value = 0;
+        minDisplay.innerText = 0;
+        maxDisplay.innerText = 0;
+        return;
+    }
+    
+    let highestPrice = 0;
+    for(let i = 0; i < products.length; i++){
+        if(products[i].price > highestPrice){
+            highestPrice = products[i].price;
+        }
+    }
+    
+    const roundedPrice = Math.ceil(highestPrice);
+    const currentMax = parseInt(maxSlider.max);  // ← Get current max
+    
+    minSlider.max = roundedPrice;
+    minSlider.step = 1;
+
+    maxSlider.max = roundedPrice;
+    maxSlider.step = 1;
+    
+    // ✅ If range increased OR value is outside range, reset
+    if(roundedPrice > currentMax || parseInt(maxSlider.value) > roundedPrice) {
+        maxSlider.value = roundedPrice;
+        maxDisplay.innerText = roundedPrice;
+    }
+    
+    if(parseInt(minSlider.value) > roundedPrice) {
+        minSlider.value = 0;
+        minDisplay.innerText = 0;
+    }
 }
 
-//-------console check---------------------
+//------SEARCH ALGORITHMS 
+const searchBar= document.getElementById("catalogSearchBar");
+searchBar.addEventListener('input',ApplyAllFilters);
 
+function catalogSearch(){
+
+}
+
+
+
+
+
+////------------
