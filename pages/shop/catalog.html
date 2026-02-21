@@ -44,6 +44,15 @@
     <div class="catalogContainer">
         <div class="catalogFilters">
             <div class="catalogFiltersWrapper">
+                <div class="catalogFilterPrice">
+    <h3>Price Range</h3>
+    <div class="price-inputs">
+        <span>Min : $<span id="catalogMinPrice">0</span></span> : <br>
+        <span> Max :$<span id="catalogMaxPrice">100000</span></span>
+    </div>
+    <input type="range" id="priceMin" min="0" max="100" value="0"><br>
+    <input type="range" id="priceMax" min="0" max="100" value="1000">
+</div>
                 <h3>Categories</h2>
                     <div class="catalogCheckBoxContainer">
                         <input type="checkbox">Fashion <br>
@@ -71,14 +80,14 @@
 
 
 
-        <div class="catalogProducts" id="catalogProducts"></div>
+        <div class="catalogProducts row justify-content-center" id="catalogProducts"></div>
     </div>
 
 
 
 
 
-    <div id="catalogPagination">
+    <div id="catalogPagination" class="catalogPagination">
     </div>
 
     <!-- Shared Footer -->

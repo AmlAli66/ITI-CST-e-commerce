@@ -77,7 +77,7 @@ function displayFeaturedProducts(){
     }
     container.innerHTML= featuredProducts.map(product=>{
         return `
-        <div class="homeProductCard">
+        <div class="homeProductCard" onclick="viewProductDetails('${product.id}')">
         <img src="${product.image}" alt="${product.name}" class="homeProductImages">
             <div class="homeProductDetails">
                 <h6>${product.name}</h6>

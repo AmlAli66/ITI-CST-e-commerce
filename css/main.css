@@ -92,7 +92,7 @@ body {
 .homeHeroExplore a{
     color :#c10c27;  
         font-family: 'Poppins', sans-serif;
- 
+
 }
 .homeHeroExplore:hover{
     transform: scale(1.1);
@@ -143,6 +143,7 @@ body {
 .homeFeatureCard:hover{
     background: rgba(255, 255, 255, 0.15);
     transform: translateY(-5px);
+
 }
 .homeHeroFlex {
     display: flex;
@@ -176,6 +177,7 @@ body {
     overflow: visible;  
     position: relative;
 }
+
 /*  Creating the animaion of the banner*/
     @keyframes electric-pulse {
         0%, 100%{
@@ -341,7 +343,7 @@ body {
 #homeFeaturedproductsgrid{
 display: flex;
 justify-content: space-between;
-border: 2px solid black ;
+border: 2px solid whitesmoke ;
 border-radius: 50px;
 gap: 20px;
 padding: 20px;
@@ -352,10 +354,12 @@ margin-bottom: 20px;
 .homeProductCard{
     border: 2px solid white;
     border-radius: 2px;
+    width: 200px;
     background: linear-gradient(135deg, #e2e5f1 0%, #cdb3e8 100%);
     padding: 20px;
     text-align: center;
     border-radius: 30px;
+    cursor: pointer;
 }
 .homeShowDetails{
     background: linear-gradient(135deg, #eeeff4 0%, #c7bed0 100%);

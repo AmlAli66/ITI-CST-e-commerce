@@ -7,11 +7,13 @@ font-family: 'Orbitron', sans-serif;
 }
 .catalogContainer{
     display: flex;
+    overflow: hidden;
 }
 .catalogFilters{
     width:20vw;
-    height: 90vh;
+    height: 100vh;
     border: 2px solid black ;
+    min-width: 200px;
 }
 .catalogSearchContainer{
     text-align: center;
@@ -31,25 +33,82 @@ font-family: 'Orbitron', sans-serif;
         font-family: 'Montserrat', sans-serif;
 
 }
-.catalogFilters{
-    padding: 10px;
-}
+
 .catalogCheckBoxContainer{
+    
     display: flex;
     align-items: center;
 }
 .catalogProductCard{
-    height: 300px;
-    width: 200px;
+    height: 400px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border:1px solid black;
+    margin: 5px;
+    box-sizing: border-box;
+    transition: 0.3s;
+    border-radius: 10px;
+    cursor: pointer;
+    
 }
-.catalogProductDetails{
+.catalogProductCard:hover{
+    transform: scale(1.1);
+    background: rgb(192, 187, 187);
+}
 
+.catalogProductDetails{
+    width: 220px;
 }
 .catalogproductImage{
-    height: 100px;
-    width: 100px;
+    height: 170px;
+    width: 170px;
+    object-fit: cover;
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+    margin: 5px;
 }
 .catalogProducts{
-    display: flex;
-    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+
+}
+.catalogPagination{
+    text-align: center;
+    
+}
+.catalogPaginationButtons{
+    text-align: center;
+    padding: 8px;
+    margin: 1px ;
+    width:30px;
+    border-radius: 10px;
+    background-color: white;
+    border: 2px solid black;
+    border-style: groove;
+}
+.catalogPaginationButtons.active{
+    background-color: blue;
+    color:white;
+    font-weight: bold;
+}
+.catalogPaginationButtons:hover {
+    background: #f0f0f0;
+}
+
+
+
+
+@media (orientation: portrait) {
+    
+    .catalogFilters{
+        display: none;
+    }
+    .catalogProducts{
+        width: 100%;
+    }
 }
