@@ -13,6 +13,9 @@
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="../../css/pages/contact.css">
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -20,10 +23,114 @@
     <!-- Shared Navbar -->
     <div id="navbar-container"></div>
 
-    <!-- Page Content -->
-    <div class="container mt-4">
-        <h2>Contact Us</h2>
+    <!--------------------------------------- Page Content -------------------------------------------->
+
+
+    
+
+
+    <div class="container mt-4 ">
+
+     <div class ="text-center">
+        <div>
+        <h2 >Contact With Us</h2>
     </div>
+
+    <div class="d-flex gap-3 justify-content-center mb-2" >
+
+       <a href="https://www.facebook.com/" target="_blank" id="FaceIcon">
+       
+       <i class="fa-brands fa-1x fa-facebook text-primary"> </i>
+
+      </a>
+
+       <a href="https://www.youtube.com/" target="_blank" id ="youtubeIcon"> 
+        
+        <i class="fa-brands fa-1x fa-youtube text-danger"></i> 
+
+       </a> 
+
+       <a href="https://instagram.com" target="_blank" id="instaIcon">
+        
+        <i class="fa-brands fa-1x fa-instagram insta-gradient"></i>
+    
+      </a>
+
+       <a href="https://www.linkedin.com/" target="_blank" id="linkedIcon">
+       
+       <i class="fa-brands fa-1x fa-linkedin-in text-primary"></i>
+
+    </a>
+
+       <a href="https://x.com/?lang=ar" target="_blank" id="twitterIcon">
+       
+       <i class="fa-brands fa-1x fa-twitter text-info"></i>
+
+    </a>
+
+    </div>
+    <h4 >OR</h4>
+        
+     </div>
+
+
+     <!-------------------- form  -------------->
+
+    
+<form id="contactForm" novalidate>
+
+    <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="name" required>
+        <div class="invalid-feedback">Required</div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" required>
+        <div class="invalid-feedback">Required</div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Subject</label>
+        <select class="form-select" id="subject" required>
+            <option value="" selected disabled>Select a subject</option>
+            <option>Order Issue</option>
+            <option>Refund Request</option>
+            <option>Product Inquiry</option>
+            <option>Delivery Problem</option>
+            <option>Technical Support</option>
+            <option>Other</option>
+        </select>
+        <div class="invalid-feedback">Required</div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Message</label>
+        <textarea class="form-control" id="message" rows="4" required></textarea>
+        <div class="invalid-feedback">Required</div>
+    </div>
+
+    <!-------------------- bottom------------- -->
+    <div class="mb-5">
+        <button type="submit" class="btn btn-primary">
+            Send Message
+        </button>
+    </div>
+
+    </form>
+
+
+        
+    </div>
+
+
+        <!-- -------------------------------------------------------------------------------------------------------------- -->
+
+
+
+
+
 
     <!-- Shared Footer -->
     <div id="footer-container"></div>

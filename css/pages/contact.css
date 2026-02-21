@@ -1,1 +1,53 @@
 /* css */
+
+body{
+
+    background: linear-gradient(
+        45deg,
+        white,
+        #f1e3d4,
+        #f0dbd3,
+        #adcad4,
+        #9aa0c7,
+        #aa98c2
+    );
+
+}
+
+.insta-gradient {
+    background: linear-gradient(
+        45deg,
+        #f09433,
+        #e6683c,
+        #dc2743,
+        #cc2366,
+        #bc1888
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#FaceIcon:hover{
+
+    transform: scale(1.4);
+}
+
+#linkedIcon:hover{
+    transform: scale(1.4);
+
+}
+
+#twitterIcon:hover{
+
+    transform: scale(1.4);
+}
+
+#youtubeIcon:hover{
+
+    transform: scale(1.4);
+}
+
+#instaIcon:hover{
+
+    transform: scale(1.4);
+}
