@@ -1,5 +1,5 @@
 *{
-font-family: 'Orbitron', sans-serif;
+/*font-family: 'Orbitron', sans-serif;*/
 }
 .catalogfirstAnkers{
     margin-left: 50px;    
@@ -10,9 +10,11 @@ font-family: 'Orbitron', sans-serif;
     overflow: hidden;
 }
 .catalogFilters{
-    width:25%;
+    width:50%;
     height: 100%;
-    border: 2px solid black ;
+    border:1px solid rgb(194, 194, 194);
+    border-radius: 5px;
+    box-shadow: 2px 2px  rgb(194, 194, 194) ;
     
 }
 .catalogSearchContainer{
@@ -47,17 +49,19 @@ font-family: 'Orbitron', sans-serif;
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    border:1px solid black;
+    border:1px solid rgb(194, 194, 194);
     margin: 5px;
     box-sizing: border-box;
     transition: 0.3s;
     border-radius: 10px;
     cursor: pointer;
-
+    box-shadow: 5px 5px 2px rgb(150, 228, 231), inset -2px -2px 2px rgb(140, 226, 239) , inset 2px 2px 2px rgb(168, 223, 224);
+    
 }
 .catalogProductCard:hover{
     transform: scale(1.1);
-    background: rgb(192, 187, 187);
+    background: rgb(246, 242, 242);
+
 }
 
 .catalogProductDetails{
@@ -111,4 +115,15 @@ font-family: 'Orbitron', sans-serif;
     .catalogProducts{
         width: 100%;
     }
+}
+.price-inputs{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.BrandCheckWrapper{
+    padding:10px;
+}
+.catalogSortBar{
+    margin-bottom: 5px;
+    margin-left: 40px;
+    margin-top: 30px;
 }
