@@ -89,6 +89,7 @@ function goToPage(PageNumber){
     const productstToShow = catalogProductsToDisplay.slice(startIndex,endIndex);
     viewAllProducts(productstToShow);
 
+        window.scrollTo({top:0,behavior:"smooth"});
     // trying something
     const url = new URL(window.location);
     url.searchParams.set('page',PageNumber);
@@ -225,8 +226,18 @@ catalogBrandCreation();
         const FinalFilteredArray =AvailableProducts.filter(product=>product.price>=minPrice && product.price<=maxPrice);
         catalogProductsToDisplay=FinalFilteredArray;
 
+        // Doing The Sort Logic 
+        const sortOption = document.getElementById("sortSelect").value;
+        catalogProductsToDisplay=applySorting(catalogProductsToDisplay,sortOption);
+
+        //----
+
         creatingCatalogPagination();
     }
+
+
+
+
         //-- Updating The SliderItself
 function updatePriceSliderRange(products){
     if(products.length == 0){
@@ -276,7 +287,17 @@ function catalogSearch(){
 }
 
 
-
-
+//----------------------- Sorting Function
+const sortSelection = document.getElementById("sortSelect");
+sortSelection.addEventListener('change',ApplyAllFilters);
+function applySorting(products, sortType){
+    const sortedProducts =[...products]
+    if(sortType=='price-low'){
+        return sortedProducts.sort((a,b)=>a.price-b.price);
+    }else if (sortType=='price-high'){
+        return sortedProducts.sort((a,b)=> b.price-a.price);
+    }
+    return sortedProducts;
+}
 
 ////------------

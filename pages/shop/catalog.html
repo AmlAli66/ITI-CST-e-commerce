@@ -45,15 +45,15 @@
         <div class="catalogFilters">
             <div class="catalogFiltersWrapper">
                 <div class="catalogFilterPrice">
-    <h3>Price Range</h3>
+    <h5>Price Range</h5>
     <div class="price-inputs">
-        <span>Min : $<span id="catalogMinPrice">0</span></span> : <br>
+        <span>Min : $<span id="catalogMinPrice">0</span></span> -
         <span> Max :$<span id="catalogMaxPrice">100000</span></span>
     </div>
     <input type="range" id="priceMin" min="0" max="100" value="0"><br>
     <input type="range" id="priceMax" min="0" max="100" value="1000">
 </div>
-                <h3>Categories</h2>
+                <h3>Categories</h3>
                     <div class="catalogCheckBoxWrapper">
                     <div class="catalogCheckBoxContainer">
                         <input type="checkbox" value="Fashion">Fashion <br>
@@ -71,7 +71,7 @@
                         <input type="checkbox" value="Beauty">Beauty <br>
                     </div>
                     </div>
-                    </div>
+                    </div><br>
             <div class="catalogFilterBrand" id="catalogFilterBrand">
                 <h3>Brands </h3>
                 
@@ -81,9 +81,23 @@
         <!---- end of filters -->
 
 
+        <div class="ProductsWrapper">    
+            <div class="catalogSortBar">
+                <span>Sort By : </span>
+                <select id="sortSelect">
+                    <option value=""> Default</option>
+                    <option value="price-low"> Low To High</option>
+                    <option value="price-high"> Hight To Low </option>
+                </select>
+            </div> 
+            <div class="catalogProducts row justify-content-center" id="catalogProducts">
+            
 
-        <div class="catalogProducts row justify-content-center" id="catalogProducts"></div>
+
+        </div>
     </div>
+    </div>
+
 
 
 
