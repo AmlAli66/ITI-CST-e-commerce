@@ -102,3 +102,12 @@ displayFeaturedProducts();
 function viewProductDetails(productID){
     window.location.href=`./pages/shop/product-details.html?id=${productID}`;
 }
+//--- trying the redirecting 
+const homeCategoryCards = document.querySelectorAll(".homeCategoryCard");
+homeCategoryCards.forEach(card=>{
+    card.addEventListener('click',function(){
+        const category = this.getAttribute("data-Category");
+        window.location.href=`./pages/shop/catalog.html?category=${category}`
+    })
+})
+// ---

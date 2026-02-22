@@ -300,4 +300,18 @@ function applySorting(products, sortType){
     return sortedProducts;
 }
 
-////------------
+////------------ trying the linking of home  category
+const urlparams=  new URLSearchParams(window.location.search);
+const categoryParam = urlparams.get("category");
+if(categoryParam){
+    const checkbox=document.querySelector(`.catalogCheckBoxContainer input[value="${categoryParam}"]`)
+    if(checkbox){
+        checkbox.checked=true;
+        ApplyAllFilters();
+    }
+}
+
+
+
+
+//-------------------------------

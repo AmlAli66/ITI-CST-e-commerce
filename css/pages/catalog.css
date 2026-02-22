@@ -10,12 +10,15 @@
     overflow: hidden;
 }
 .catalogFilters{
-    width:50%;
+    width:300px;
     height: 100%;
     border:1px solid rgb(194, 194, 194);
     border-radius: 5px;
     box-shadow: 2px 2px  rgb(194, 194, 194) ;
-    
+    min-width: 200px;
+    max-width: 200px;
+    flex-grow: 0;
+
 }
 .catalogSearchContainer{
     text-align: center;
@@ -59,8 +62,10 @@
     
 }
 .catalogProductCard:hover{
-    transform: scale(1.1);
+    
     background: rgb(246, 242, 242);
+    transform: translateY(-5px)scale(1.1);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
 
 }
 

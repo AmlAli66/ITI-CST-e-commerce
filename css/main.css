@@ -295,7 +295,7 @@ body {
     margin-top: 20px;
     margin-bottom: 80px;
 }
-.homeCategoreCard{
+.homeCategoryCard{
     background: linear-gradient(135deg, #e2e5f1 0%, #c095eb 100%);
     padding: 50px;
     border : 2px solid whitesmoke;
@@ -303,10 +303,10 @@ body {
     transition: 0.5s;
     perspective: 1000px; 
 }
-.homeCategoreCard:hover{
+.homeCategoryCard:hover{
     cursor: pointer;
 }
-.homeCategoreCard:hover .homeFlipped{
+.homeCategoryCard:hover .homeFlipped{
     transform: rotateY(180deg) scale(1.1);
 }
 .homeFlipped{
