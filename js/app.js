@@ -111,3 +111,86 @@ homeCategoryCards.forEach(card=>{
     })
 })
 // ---
+//------------ Login Handling
+const homeLogin= document.getElementById("homeLogin");
+const homeRegister = document.getElementById("homeRegister")
+const homeLogout =document.getElementById("homeLogout");
+const user = getCurrentUser();
+if(user){
+    homeLogin.style.display="none";
+    homeRegister.style.display="none";
+}
+if(!user){
+    homeLogout.style.display="none"
+}
+homeLogout.addEventListener('click',logout)
+//---------------------------
+///---- Logout Handling
+
+
+//-----------------------
+
+//--------------- Register Handling
+
+
+
+
+
+//------------------------------
+
+
+
+//-------- Mocking The User 
+function createMockUser(){
+    if(!localStorage.getItem('currentUser')){
+    const mockUser ={
+    id:"4",
+    name:"Freeze",
+    email:"freeze@icemart.com",
+    password:"123456",
+    role:"customer",
+    phone:"01234567896",
+    address : "789 try later, try again , egy",
+    status:"active",
+    dateCreated:"2026-02-22"
+
+    }
+    localStorage.setItem('currentUser',JSON.stringify(mockUser))
+
+}
+else {
+        console.log("ℹ️ User already exists, skipping mock creation");
+    }
+
+}
+function getCurrentUser(){
+    const userStr= localStorage.getItem('currentUser');
+    return userStr? JSON.parse(userStr) : null;
+}
+function IsLoggedIn(){
+    return getCurrentUser()!=null;
+}
+function logout(){
+    console.log("🚪 LOGOUT FUNCTION STARTED");
+    console.log("📦 Before remove:", localStorage.getItem('currentUser'));
+    localStorage.removeItem("currentUser");
+    //updateNavbar();
+    console.log("📦 After remove:", localStorage.getItem('currentUser'));
+    console.log("🔄 About to redirect...");
+    
+    window.location.href = "/index.html";
+}
+// function updateNavbar() {
+//     const user = getCurrentUser();
+//     const navUserName = document.getElementById("navUserName");
+    
+//     if(navUserName) {
+//         navUserName.innerText = user ? `Welcome ${user.name}` : "";
+//     }
+// }
+
+
+
+
+
+//----------------------

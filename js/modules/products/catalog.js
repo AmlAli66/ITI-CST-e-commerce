@@ -24,9 +24,14 @@ function viewAllProducts(productsArray){
                     Price : ${product.price}$
                     </div>
                     <div>
-                    <button class="homeShowDetails" onclick="viewProductDetails('${product.id}')">
+                    <div class="catalogProductButtons">
+                    <button class="catalogAddToCard" onclick="viewProductDetails('${product.id}')">
+                    Add To Cart
+                    </button>                
+                    <button class="catalogShowDetails " onclick="viewProductDetails('${product.id}')">
                     Show Details
                     </button>
+                    </div>
                     </div>
             </div>
         </div>
@@ -265,8 +270,11 @@ function updatePriceSliderRange(products){
 
     maxSlider.max = roundedPrice;
     maxSlider.step = 1;
+    //try
     
-    // ✅ If range increased OR value is outside range, reset
+    maxDisplay.innerText = roundedPrice;  //  Always update display
+    //--
+    // If range increased OR value is outside range, reset
     if(roundedPrice > currentMax || parseInt(maxSlider.value) > roundedPrice) {
         maxSlider.value = roundedPrice;
         maxDisplay.innerText = roundedPrice;

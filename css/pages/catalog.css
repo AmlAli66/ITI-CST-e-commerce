@@ -68,7 +68,11 @@
     box-shadow: 0 8px 16px rgba(0,0,0,0.15);
 
 }
-
+.catalogProductButtons{
+    display: flex;
+    gap:10px;
+    justify-content: center;
+}
 .catalogProductDetails{
     width: 220px;
 }
@@ -131,4 +135,35 @@
     margin-bottom: 5px;
     margin-left: 40px;
     margin-top: 30px;
+}
+.catalogAddToCard{
+     padding: 5px 15px;
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);     color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+.catalogAddToCard:hover{
+transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+.catalogShowDetails{
+        padding: 10px 15px;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+    margin-bottom: 20px;
+    }
+.catalogShowDetails:hover{
+    background: #667eea;
+    color: white;
 }

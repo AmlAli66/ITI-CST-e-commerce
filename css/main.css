@@ -67,7 +67,22 @@ body {
 
 }
 .homeSignIn {
-    background-color:rgb(255, 255, 255);
+    background-color:rgb(95, 185, 241);
+    padding: 10px;
+    border-radius: 30px;
+    transition: all 0.5s;
+    margin-right: 10px;
+    font-weight:bold;
+    font-family: 'Poppins', sans-serif;
+    
+}
+
+.homeSignIn:hover{
+    transform: scale(1.1);
+        border: 2px solid white;
+        box-shadow:inset 1px 1px 5px #667eea,inset -1px -1px 5px #764ba2;
+}
+.homeLogOut{
     padding: 10px;
     border-radius: 30px;
     transition: all 0.5s;
@@ -75,13 +90,11 @@ body {
     font-weight:bold;
     font-family: 'Poppins', sans-serif;
 }
-.homeSignIn a{
-    color:rgb(102, 197, 197);
-}
-.homeSignIn:hover{
+.homeLogOut:hover{
     transform: scale(1.1);
         border: 2px solid white;
         box-shadow:inset 1px 1px 5px #667eea,inset -1px -1px 5px #764ba2;
+
 }
 .homeHeroExplore{
     background-color:white;
@@ -101,13 +114,27 @@ body {
 
 }
 .homeAdd div{
-    display:inline-block;
-    background: rgb(237, 214, 245);
-    color:rgb(171, 120, 160);
-    border: 2px solid white ;
-    border-radius: 30px;
-    padding: 10px;
-    transition: 0.5s;
+   display: inline-block;
+
+  /* Strong but calm base */
+  background: linear-gradient(
+    135deg,
+    #1e1b4b,
+    #312e81
+  );
+
+  color: #e0f2fe;
+
+  border-radius: 22px;
+  padding: 18px 28px;
+  margin: 10px;
+
+  border: 1px solid rgba(56, 189, 248, 0.35);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35);
+
+  transition: all 0.35s ease;
 }
 .homeAdd{
     display: flex;
@@ -120,7 +147,11 @@ body {
     margin-left: 20px;
 }
 .homeAdd div:hover{
-    transform: scale(1.1);
+    transform: translateY(-6px) scale(1.05);
+
+  box-shadow:
+    0 20px 45px rgba(56, 189, 248, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 .homeFeatureCards {
     display: flex;
@@ -143,7 +174,11 @@ body {
 .homeFeatureCard:hover{
     background: rgba(255, 255, 255, 0.15);
     transform: translateY(-5px);
+      box-shadow:
+    0 20px 45px rgba(56, 189, 248, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 
+    
 }
 .homeHeroFlex {
     display: flex;
@@ -296,7 +331,11 @@ body {
     margin-bottom: 80px;
 }
 .homeCategoryCard{
-    background: linear-gradient(135deg, #e2e5f1 0%, #c095eb 100%);
+    background: linear-gradient(
+    135deg,
+    #ede9fe,
+    #d8b4fe
+    );
     padding: 50px;
     border : 2px solid whitesmoke;
     border-radius: 50px;
@@ -305,16 +344,21 @@ body {
 }
 .homeCategoryCard:hover{
     cursor: pointer;
+    box-shadow:
+    0 25px 55px rgba(124, 58, 237, 0.35);
+    outline: 2px solid rgba(124, 58, 237, 0.35);
 }
 .homeCategoryCard:hover .homeFlipped{
     transform: rotateY(180deg) scale(1.1);
 }
 .homeFlipped{
     display: inline-block;
-    transition: 0.8s;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;    
 }
 .homeelectricIcongradient{
-    color: #38bdf8;
+    
+    color:linear-gradient(135deg, #08729f, #206772);
     text-shadow:
     0 0 2px #00f5ff,
     0 0 4px rgba(124,58,237,0.9);
@@ -345,20 +389,33 @@ display: flex;
 justify-content: space-between;
 border: 2px solid whitesmoke ;
 border-radius: 50px;
-gap: 20px;
+gap: 24px;
 padding: 20px;
-background: linear-gradient(135deg, #e2e5f1 0%, #c095eb 100%);
-flex-wrap: wrap;
+background: linear-gradient(
+    135deg,
+    #1e1b4b,
+    #4338ca,
+    #7c3aed
+  );flex-wrap: wrap;
 margin-bottom: 20px;
 }
 .homeProductCard{
     border: 2px solid white;
     border-radius: 2px;
     width: 200px;
-    background: linear-gradient(135deg, #e2e5f1 0%, #cdb3e8 100%);
-    padding: 20px;
+background: linear-gradient(
+    135deg,
+    #1e1b4b,
+    #312e81
+    );    padding: 20px;
     text-align: center;
     border-radius: 30px;
+    color: #e0f2fe;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+
+    box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.35);
+    transition: all 0.35s ease;
     cursor: pointer;
 }
 .homeShowDetails{
@@ -373,12 +430,24 @@ margin-bottom: 20px;
     transform: scale(1.1);
 }
 .homeProductPriceCard{
-    padding: 5px;
-    
+margin: 10px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #7dd3fc;    
 }
 .homeProductCard:hover{
-    transform: scale(1.1);
-}
+ transform: translateY(-8px) scale(1.03);
+
+  background: linear-gradient(
+    135deg,
+    #078ecd,
+    #0faac2
+  );
+
+  color: #020617;
+
+  box-shadow:
+    0 25px 60px rgba(56, 189, 248, 0.6);}
 .homeFeaturedProducts{
 margin-top: 50px;
 margin-bottom: 50px;
