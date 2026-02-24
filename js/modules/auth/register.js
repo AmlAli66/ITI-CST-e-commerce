@@ -98,7 +98,7 @@ const input = document.querySelector("#phone");
 const errorMsg = document.getElementById("phoneError");
 
 const iti = window.intlTelInput(input, {
-  initialCountry: "eg", // الدولة الافتراضية
+  initialCountry: "eg",
   preferredCountries: ["eg", "sa", "ae"],
   separateDialCode: true,
   utilsScript:

@@ -17,11 +17,11 @@ window.onload = function () {
   }
 };
 function redirectBasedOnRole(role) {
-  if (role === "Customer") {
+  if (role === "customer") {
     window.location.href = "/index.html";
-  } else if (role === "Seller") {
+  } else if (role === "seller") {
     window.location.href = "/pages/seller/seller-dashboard.html";
-  } else if (role === "Admin") {
+  } else if (role === "admin") {
     window.location.href = "/pages/admin/admin-panel.html";
   }
 }
@@ -54,7 +54,6 @@ form.addEventListener("submit", function (e) {
     window.location.href = "/index.html";
   }
 });
-
 //----------------------//---- Initilaizing the users
 async function initilaizeUsers() {
   const existingUser = localStorage.getItem("users");
