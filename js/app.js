@@ -193,4 +193,26 @@ function logout(){
 
 
 
-//----------------------
+//----------------------//---- Initilaizing the users
+// async function initilaizeUsers(){
+//     const existingUser = localStorage.getItem('users');
+// if (!existingUser) {
+//         console.log('Loading User into localStorage...');
+        
+//         try {
+//             // Fetch from JSON
+//             const userResponse = await fetch('/data/users.json');
+//             const users = await userResponse.json();
+            
+//             // Store in localStorage
+//             localStorage.setItem('users', JSON.stringify(users));
+            
+//             console.log('users loaded successfully:', users.length);
+//         } catch (error) {
+//             console.error(' Error loading users:', error);
+//         }
+//     } else {
+//         console.log('✅ Products already in localStorage');
+//     }
+// }
+// initilaizeUsers();
