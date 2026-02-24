@@ -119,7 +119,7 @@ function goToPage(PageNumber){
     // trying something
     const url = new URL(window.location);
     url.searchParams.set('page',PageNumber);
-    window.history.pushState({},'',url);
+    window.history.replaceState({},'',url);
     //---------
 }
 
