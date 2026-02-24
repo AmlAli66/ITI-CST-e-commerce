@@ -44,19 +44,22 @@
     <div class="catalogContainer">
         <div class="catalogFilters">
             <div class="catalogFiltersWrapper">
+                <div class="catalogClearAllFilters">
+                    <button id="catalogClearAllFilters">Clear All Filters</button>
+                </div>
                 <div class="catalogFilterPrice">
-    <h5>Price Range</h5>
-    <div class="price-inputs">
-        <span>Min : $<span id="catalogMinPrice">0</span></span> -
-        <span> Max :$<span id="catalogMaxPrice">100000</span></span>
-    </div>
-    <input type="range" id="priceMin" min="0" max="100" value="0"><br>
-    <input type="range" id="priceMax" min="0" max="100" value="1000">
-</div>
+                    <h5>Price Range</h5>
+                    <div class="price-inputs">
+                        <span>Min : $<span id="catalogMinPrice">0</span></span> -
+                        <span> Max :$<span id="catalogMaxPrice">100000</span></span>
+                    </div>
+                    <input type="range" id="priceMin" min="0" max="100" value="0"><br>
+                    <input type="range" id="priceMax" min="0" max="100" value="1000">
+                </div>
                 <h3>Categories</h3>
                     <div class="catalogCheckBoxWrapper">
                     <div class="catalogCheckBoxContainer">
-                        <input type="checkbox" value="Fashion">Fashion <br>
+                        <span class="catalogPointerFilter"><input type="checkbox" value="Fashion">Fashion <br></span>
                     </div>
                     <div class="catalogCheckBoxContainer">
                         <input type="checkbox" value="Mobiles">Mobiles <br>
@@ -73,7 +76,7 @@
                     </div>
                     </div><br>
             <div class="catalogFilterBrand" id="catalogFilterBrand">
-                <h3>Brands </h3>
+                <h3 class="ps-3">Brands </h3>
                 
             </div>
 
@@ -102,6 +105,9 @@
 
 
     <div id="catalogPagination" class="catalogPagination">
+    </div>
+    <div class="catalogCurrentNumberic">
+        <span id="catalogCurrentNumberic"></span>
     </div>
 
     <!-- Shared Footer -->

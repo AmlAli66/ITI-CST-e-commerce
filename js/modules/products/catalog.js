@@ -54,6 +54,23 @@ function creatingCatalogPagination(){
     // here changed the used array : to change the pagination on filtering :
     const numberOfPages=Math.ceil( catalogProductsToDisplay.length / productsPerPage);
     const PaginationContainer = document.getElementById("catalogPagination");
+    
+    
+    //--- trying to add "no products found"
+    if(catalogProductsToDisplay.length==0){
+        const productsContainer= document.getElementById("catalogProducts");
+        productsContainer.innerHTML = `
+            <div class="no-results text-center">
+                <i class="fa-solid text-primary fa-magnifying-glass fa-3x mb-3"></i>
+                <h3>No Products Found</h3>
+                <p>Try adjusting your filters or search terms</p>
+            </div>
+        `;
+        PaginationContainer.innerHTML = '';  // Clear pagination too
+        return;
+    }
+
+    //-------------------
     PaginationContainer.innerHTML='';
     for(let i = 1 ; i <= numberOfPages ;i++){
         const button = document.createElement("button");
@@ -93,7 +110,11 @@ function goToPage(PageNumber){
     const endIndex = startIndex+productsPerPage;
     const productstToShow = catalogProductsToDisplay.slice(startIndex,endIndex);
     viewAllProducts(productstToShow);
+    //trying to add count of current products 
+    const cuurentNumeric= document.getElementById("catalogCurrentNumberic");
+    cuurentNumeric.innerText=`${endIndex} / ${getAllProducts().length}`
 
+    // 
         window.scrollTo({top:0,behavior:"smooth"});
     // trying something
     const url = new URL(window.location);
@@ -319,7 +340,15 @@ if(categoryParam){
     }
 }
 
-
-
-
 //-------------------------------
+
+//--------- Clear All Filters 
+const ClearFiltersBtn = document.getElementById("catalogClearAllFilters")
+ ClearFiltersBtn.addEventListener('click',ClearAllFilters)
+ function ClearAllFilters(){
+     const allCheckedFilters = document.querySelectorAll("input[type='checkbox']:checked")
+     allCheckedFilters.forEach(cb=>cb.checked=false);
+    ApplyAllFilters();
+}
+
+//----------------------------------
