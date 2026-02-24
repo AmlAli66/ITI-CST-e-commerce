@@ -141,28 +141,28 @@ homeLogout.addEventListener('click',logout)
 
 
 //-------- Mocking The User 
-function createMockUser(){
-    if(!localStorage.getItem('currentUser')){
-    const mockUser ={
-    id:"4",
-    name:"Freeze",
-    email:"freeze@icemart.com",
-    password:"123456",
-    role:"admin",
-    phone:"01234567896",
-    address : "789 try later, try again , egy",
-    status:"active",
-    dateCreated:"2026-02-22"
+// function createMockUser(){
+//     if(!localStorage.getItem('currentUser')){
+//     const mockUser ={
+//     id:"4",
+//     name:"Freeze",
+//     email:"freeze@icemart.com",
+//     password:"123456",
+//     role:"admin",
+//     phone:"01234567896",
+//     address : "789 try later, try again , egy",
+//     status:"active",
+//     dateCreated:"2026-02-22"
 
-    }
-    localStorage.setItem('currentUser',JSON.stringify(mockUser))
+//     }
+//     localStorage.setItem('currentUser',JSON.stringify(mockUser))
 
-}
-else {
-        console.log("ℹ️ User already exists, skipping mock creation");
-    }
+// }
+// else {
+//         console.log("ℹ️ User already exists, skipping mock creation");
+//     }
 
-}
+// }
 function getCurrentUser(){
     const userStr= localStorage.getItem('currentUser');
     return userStr? JSON.parse(userStr) : null;
