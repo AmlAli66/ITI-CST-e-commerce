@@ -148,7 +148,7 @@ function createMockUser(){
     name:"Freeze",
     email:"freeze@icemart.com",
     password:"123456",
-    role:"customer",
+    role:"admin",
     phone:"01234567896",
     address : "789 try later, try again , egy",
     status:"active",
