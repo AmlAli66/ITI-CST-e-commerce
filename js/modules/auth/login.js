@@ -16,11 +16,11 @@ window.onload = function () {
   }
 };
 function redirectBasedOnRole(role) {
-  if (role === "Customer") {
+  if (role === "customer") {
     window.location.href = "/index.html";
-  } else if (role === "Seller") {
+  } else if (role === "seller") {
     window.location.href = "/pages/seller/seller-dashboard.html";
-  } else if (role === "Admin") {
+  } else if (role === "admin") {
     window.location.href = "/pages/admin/admin-panel.html";
   }
 }
@@ -45,11 +45,36 @@ form.addEventListener("submit", function (e) {
 
   localStorage.setItem("currentUser", JSON.stringify(user));
 
-  if (user.role === "Customer") {
+  if (user.role === "customer") {
     window.location.href = "/index.html";
-  } else if (user.role === "Seller") {
+  } else if (user.role === "seller") {
     window.location.href = "/index.html";
-  } else if (user.role === "Admin") {
+  } else if (user.role === "admin") {
     window.location.href = "/index.html";
   }
 });
+
+
+//---- Initilaizing the users
+async function initilaizeUsers(){
+    const existingUser = localStorage.getItem('users');
+if (!existingUser) {
+        console.log('Loading User into localStorage...');
+        
+        try {
+            // Fetch from JSON
+            const userResponse = await fetch('/data/users.json');
+            const users = await userResponse.json();
+            
+            // Store in localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            console.log('users loaded successfully:', users.length);
+        } catch (error) {
+            console.error(' Error loading users:', error);
+        }
+    } else {
+        console.log('✅ Products already in localStorage');
+    }
+}
+initilaizeUsers();
