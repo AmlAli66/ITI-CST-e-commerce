@@ -54,11 +54,11 @@ form.addEventListener("submit", function (event) {
     showError("This email is already registered!");
     return;
   }
-  let newId = users.length > 0 ? users[users.length - 1].id + 1 : 1;
-
+  let maxId = users.reduce((max, user) => Math.max(max, parseInt(user.id)), 0);
+  let newId = maxId + 1;
   const newUser = {
     id: newId,
-    fullName: fullName,
+    name: fullName,
     email: email,
     password: password,
     role: role,
@@ -98,7 +98,7 @@ const input = document.querySelector("#phone");
 const errorMsg = document.getElementById("phoneError");
 
 const iti = window.intlTelInput(input, {
-  initialCountry: "eg", // الدولة الافتراضية
+  initialCountry: "eg",
   preferredCountries: ["eg", "sa", "ae"],
   separateDialCode: true,
   utilsScript:
