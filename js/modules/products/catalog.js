@@ -28,7 +28,7 @@ function viewAllProducts(productsArray){
                     <button class="catalogAddToCard" onclick="viewProductDetails('${product.id}')">
                     Add To Cart
                     </button>                
-                    <button class="catalogShowDetails " onclick="viewProductDetails('${product.id}')">
+                    <button class="catalogShowDetails " onclick=" viewProductDetails('${product.id}')">
                     Show Details
                     </button>
                     </div>

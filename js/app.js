@@ -85,7 +85,7 @@ function displayFeaturedProducts(){
                     <span>price : ${product.price} $</span>
                     </div>
 
-                <button class="homeShowDetails" onclick="viewProductDetails('${product.id}')">
+                <button class="homeShowDetails" onclick=" viewProductDetails('${product.id}')">
                 Show Details
                 </button>
             </div>
