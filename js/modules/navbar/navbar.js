@@ -26,8 +26,10 @@ function logout(){
 }
 // logic of login and redirection 
     const navLogin= document.getElementById("navLogin");
-
-
+    // navLogin.addEventListener("click",goToLoginPage)
+    // function goToLoginPage(){
+    //     window.localStorage.href=`./pages/auth/login.html`
+    // }
 //-------------------------------------
 // updating the navbar
 function updateNavbar() {

@@ -68,35 +68,35 @@ function getProductById(id) {
     const allProducts = getAllProducts();
     return allProducts.find(product => product.id === id);
 }
-function displayFeaturedProducts(){
-    const featuredProducts = getFeaturedProducts();
-    console.log("Featured Products Found :"+ featuredProducts.length);
-    const container = document.getElementById("homeFeaturedproductsgrid");
-    if(!container){
-        console.log("Container Not Found");
-    }
-    container.innerHTML= featuredProducts.map(product=>{
-        return `
-        <div class="homeProductCard" onclick="viewProductDetails('${product.id}')">
-        <img src="${product.image}" alt="${product.name}" class="homeProductImages">
-            <div class="homeProductDetails">
-                <h6>${product.name}</h6>
-                    <div class="homeProductPriceCard">
-                    <span>price : ${product.price} $</span>
-                    </div>
+    function displayFeaturedProducts(){
+        const featuredProducts = getFeaturedProducts();
+        console.log("Featured Products Found :"+ featuredProducts.length);
+        const container = document.getElementById("homeFeaturedproductsgrid");
+        if(!container){
+            console.log("Container Not Found");
+        }
+        container.innerHTML= featuredProducts.map(product=>{
+            return `
+            <div class="homeProductCard" onclick="viewProductDetails('${product.id}')">
+            <img src="${product.image}" alt="${product.name}" class="homeProductImages">
+                <div class="homeProductDetails">
+                    <h6>${product.name}</h6>
+                        <div class="homeProductPriceCard">
+                        <span>price : ${product.price} $</span>
+                        </div>
 
-                <button class="homeShowDetails" onclick="viewProductDetails('${product.id}')">
-                Show Details
-                </button>
+                    <button class="homeShowDetails" onclick="viewProductDetails('${product.id}')">
+                    Show Details
+                    </button>
+                </div>
             </div>
-        </div>
-        
-        
-        `
+            
+            
+            `
 
 
-    }).join('')
-}
+        }).join('')
+    }
 
 displayFeaturedProducts();
 function viewProductDetails(productID){
