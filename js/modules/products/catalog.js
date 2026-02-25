@@ -28,7 +28,7 @@ function viewAllProducts(productsArray){
                     <button class="catalogAddToCard" onclick="viewProductDetails('${product.id}')">
                     Add To Cart
                     </button>                
-                    <button class="catalogShowDetails " onclick="viewProductDetails('${product.id}')">
+                    <button class="catalogShowDetails " onclick=" event.stopPropagation();  viewProductDetails('${product.id}')">
                     Show Details
                     </button>
                     </div>
@@ -43,7 +43,7 @@ function viewAllProducts(productsArray){
 
 // Redirecting to the product details
 function viewProductDetails(productID){
-    window.location.href=`./pages/shop/product-details.html?id=${productID}`;
+    window.location.href=`/pages/shop/product-details.html?id=${productID}`;
 }
 //
 
