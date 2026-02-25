@@ -68,24 +68,24 @@ function getProductById(id) {
     const allProducts = getAllProducts();
     return allProducts.find(product => product.id === id);
 }
-function displayFeaturedProducts(){
-    const featuredProducts = getFeaturedProducts();
-    console.log("Featured Products Found :"+ featuredProducts.length);
-    const container = document.getElementById("homeFeaturedproductsgrid");
-    if(!container){
-        console.log("Container Not Found");
-    }
-    container.innerHTML= featuredProducts.map(product=>{
-        return `
-        <div class="homeProductCard" onclick="viewProductDetails('${product.id}')">
-        <img src="${product.image}" alt="${product.name}" class="homeProductImages">
-            <div class="homeProductDetails">
-                <h6>${product.name}</h6>
-                    <div class="homeProductPriceCard">
-                    <span>price : ${product.price} $</span>
-                    </div>
+    function displayFeaturedProducts(){
+        const featuredProducts = getFeaturedProducts();
+        console.log("Featured Products Found :"+ featuredProducts.length);
+        const container = document.getElementById("homeFeaturedproductsgrid");
+        if(!container){
+            console.log("Container Not Found");
+        }
+        container.innerHTML= featuredProducts.map(product=>{
+            return `
+            <div class="homeProductCard" onclick="viewProductDetails('${product.id}')">
+            <img src="${product.image}" alt="${product.name}" class="homeProductImages">
+                <div class="homeProductDetails">
+                    <h6>${product.name}</h6>
+                        <div class="homeProductPriceCard">
+                        <span>price : ${product.price} $</span>
+                        </div>
 
-                <button class="homeShowDetails" onclick=" viewProductDetails('${product.id}')">
+                <button class="homeShowDetails" onclick="event.stopPropagation(); viewProductDetails('${product.id}')">
                 Show Details
                 </button>
             </div>
@@ -95,8 +95,8 @@ function displayFeaturedProducts(){
         `
 
 
-    }).join('')
-}
+        }).join('')
+    }
 
 displayFeaturedProducts();
 function viewProductDetails(productID){
@@ -141,28 +141,28 @@ homeLogout.addEventListener('click',logout)
 
 
 //-------- Mocking The User 
-function createMockUser(){
-    if(!localStorage.getItem('currentUser')){
-    const mockUser ={
-    id:"4",
-    name:"Freeze",
-    email:"freeze@icemart.com",
-    password:"123456",
-    role:"admin",
-    phone:"01234567896",
-    address : "789 try later, try again , egy",
-    status:"active",
-    dateCreated:"2026-02-22"
+// function createMockUser(){
+//     if(!localStorage.getItem('currentUser')){
+//     const mockUser ={
+//     id:"4",
+//     name:"Freeze",
+//     email:"freeze@icemart.com",
+//     password:"123456",
+//     role:"admin",
+//     phone:"01234567896",
+//     address : "789 try later, try again , egy",
+//     status:"active",
+//     dateCreated:"2026-02-22"
 
-    }
-    localStorage.setItem('currentUser',JSON.stringify(mockUser))
+//     }
+//     localStorage.setItem('currentUser',JSON.stringify(mockUser))
 
-}
-else {
-        console.log("ℹ️ User already exists, skipping mock creation");
-    }
+// }
+// else {
+//         console.log("ℹ️ User already exists, skipping mock creation");
+//     }
 
-}
+// }
 function getCurrentUser(){
     const userStr= localStorage.getItem('currentUser');
     return userStr? JSON.parse(userStr) : null;

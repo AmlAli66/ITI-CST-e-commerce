@@ -28,7 +28,7 @@ function viewAllProducts(productsArray){
                     <button class="catalogAddToCard" onclick="viewProductDetails('${product.id}')">
                     Add To Cart
                     </button>                
-                    <button class="catalogShowDetails " onclick=" viewProductDetails('${product.id}')">
+                    <button class="catalogShowDetails " onclick="  event.stopPropagation();  viewProductDetails('${product.id}')">
                     Show Details
                     </button>
                     </div>
@@ -43,7 +43,7 @@ function viewAllProducts(productsArray){
 
 // Redirecting to the product details
 function viewProductDetails(productID){
-    window.location.href=`./pages/shop/product-details.html?id=${productID}`;
+    window.location.href=`/pages/shop/product-details.html?id=${productID}`;
 }
 //
 
@@ -112,8 +112,8 @@ function goToPage(PageNumber){
     viewAllProducts(productstToShow);
     //trying to add count of current products 
     const cuurentNumeric= document.getElementById("catalogCurrentNumberic");
-    cuurentNumeric.innerText=`${endIndex} / ${getAllProducts().length}`
-
+    const actualEnd = Math.min(endIndex, catalogProductsToDisplay.length);
+    cuurentNumeric.innerText = `${actualEnd} / ${catalogProductsToDisplay.length}`;
     // 
         window.scrollTo({top:0,behavior:"smooth"});
     // trying something
@@ -305,6 +305,10 @@ function updatePriceSliderRange(products){
         minSlider.value = 0;
         minDisplay.innerText = 0;
     }
+    //
+    minDisplay.innerText = minSlider.value;
+    maxDisplay.innerText = maxSlider.value;
+    //
 }
 
 //------SEARCH ALGORITHMS 
