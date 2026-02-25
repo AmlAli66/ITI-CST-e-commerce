@@ -197,7 +197,8 @@ body {
     width: 38px;
     height: 38px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    /* background: linear-gradient(135deg, #3b82f6, #6366f1); */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -228,7 +229,8 @@ body {
 /* Active State */
 .seller-sidebar .nav-link.active,
 .main-btn {
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    /* background: linear-gradient(135deg, #3b82f6, #6366f1); */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
 }
