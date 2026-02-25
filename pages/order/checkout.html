@@ -13,6 +13,10 @@
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="../../css/pages/checkout.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
 </head>
 
 <body>
@@ -21,9 +25,116 @@
     <div id="navbar-container"></div>
 
     <!-- Page Content -->
-    <div class="container mt-4">
-        <h2>Checkout</h2>
-    </div>
+
+
+
+    <!-- <div class="container mt-4">
+        <h2>Checkout</h2> -->
+
+
+       
+<!-- <div class="container mt-4"> -->
+
+    <h2 class="mb-4 text-center">Checkout</h2>
+
+    <div class="row">
+
+        <!-- LEFT SIDE - 8 COL -->
+        <div class="col-lg-8">
+
+            <!-- Billing Details -->
+            <div class="card p-4 mb-4 shadow-sm ">
+                <h5 class="mb-3">Billing Details</h5>
+            
+                <div class="row">
+                  
+                    <div class="col-md-6 mb-3 " >
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName">
+                        <div class="invalid-feedback">Invalid name</div>
+                    </div>
+            
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phone">
+                        <div class="invalid-feedback">Invalid phone number</div>
+                    </div>
+                </div>
+            
+                <div class="mb-3">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-control" id="address" rows="3"></textarea>
+                    <div class="invalid-feedback">Address is required</div>
+                </div>
+            </div>
+
+
+            <!-- Payment Method -->
+            <div class="card p-4 shadow-sm mb-3">
+                <h5 class="mb-3">Payment Method</h5>
+            
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="paymentMethod" value="cod" checked>
+                    <label class="form-check-label">Cash on Delivery</label>
+                </div>
+            
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="paymentMethod" value="visa">
+                    <label class="form-check-label">Visa / MasterCard</label>
+                </div>
+            
+                <!-- Visa Details -->
+                <div id="visaDetails" class="d-none mb-3">
+            
+                    <div class="mb-3">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-control" id="cardNumber">
+                    </div>
+            
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Expiry</label>
+                            <input type="text" class="form-control" placeholder="MM/YY" id="expiry">
+                        </div>
+            
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-4">
+             <!-- Cart Summary -->
+             <div class="card p-4 mt-4 shadow-sm">
+                 <h5 class="mb-3">Order Summary</h5>
+                 <ul id="orderList" class="list-group mb-3"></ul>
+             
+                 <div class="d-flex justify-content-between">
+                     <strong>Subtotal:</strong>
+                     <span id="subTotal">$0</span>
+                 </div>
+                 <div class="d-flex justify-content-between">
+                     <strong>Shipping:</strong>
+                     <span>$10</span>
+                 </div>
+                 <div class="d-flex justify-content-between">
+                     <strong>Total:</strong>
+                     <span id="total">$0</span>
+                 </div>
+             </div>
+             
+                <button type="button" class="btn btn-primary w-100 mt-3" id="placeOrder">
+                    Place Order
+                </button>
+            </div>
+        <!-- </div>
+  -->
+
+
 
     <!-- Shared Footer -->
     <div id="footer-container"></div>
@@ -34,7 +145,9 @@
     <!-- <script src="../../js/core/storage.js"></script> -->
 
     <!-- Page Module -->
-    <script src="../../js/modules/order/checkout.js"></script>
+    <script src="../../js/modules/checkout/checkout.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
