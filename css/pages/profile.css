@@ -98,6 +98,7 @@
     border-color: #38bdf8;
 }
 .profilePersionalInfo{
+    margin-top: 5px ;
     background: #0d1526;
     border: 1px solid rgba(56, 189, 248, 0.08);
     border-radius: 16px;

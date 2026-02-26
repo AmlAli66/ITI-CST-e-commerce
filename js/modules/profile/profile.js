@@ -36,3 +36,48 @@ function ProfileDisplayInfo(){
     }
 }
 ProfileDisplayInfo();
+// Handling the edit modal
+function  openEditModal(){
+    document.getElementById('editName').value = currentUser.name;
+    document.getElementById('editPhone').value = currentUser.phone;
+    document.getElementById('editAddress').value = currentUser.address;
+    new bootstrap.Modal(document.getElementById('editProfileModal')).show();
+}
+// Saving the editted 
+function saveProfile(){
+    // getting the new  values
+    const newName = document.getElementById('editName').value.trim();
+    const newPhone = document.getElementById('editPhone').value.trim();
+    const newAddress = document.getElementById('editAddress').value.trim();
+    // Validation
+    if(!newName||!newPhone||!newAddress){
+        alert("All Fields Are Required");
+        return;
+    }
+    //-- add the validation spans here
+    if(!isNaN(newName)|| !isNaN(newName[0])){
+        alert("Name Can't be A number");
+        return;
+    }
+    if(newPhone)
+    ///
+    // Assigning the new values to the currentUser
+    currentUser.name = newName;
+    currentUser.phone = newPhone;
+    currentUser.address = newAddress;
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    // Finding the Current user inside the original Array
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    const userIndex = users.findIndex(u => u.id === currentUser.id);
+    if (userIndex !== -1) {
+        users[userIndex].name = newName;
+        users[userIndex].phone = newPhone;
+        users[userIndex].address = newAddress;
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+    ProfileDetails();
+    ProfileDisplayInfo();
+    bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
+    window.location.reload();
+
+}

@@ -240,7 +240,7 @@ catalogBrandCreation();
             AvailableProducts= AvailableProducts.filter(product=>checkedBrands.includes(product.brand))
         }
         if(searchTerm.length>0){
-            AvailableProducts=AvailableProducts.filter(product=> product.name.toLowerCase().includes(searchTerm))
+            AvailableProducts=AvailableProducts.filter(product=> product.name.toLowerCase().includes(searchTerm)||product.brand.toLowerCase().includes(searchTerm))
         };
         //--
             updatePriceSliderRange(AvailableProducts);
