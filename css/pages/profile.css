@@ -1,5 +1,5 @@
 body {
-    background: #060b18;
+background: #8ac8f1; 
 }
 .profileHeader {
     display: flex;
@@ -10,6 +10,8 @@ body {
     border-radius: 20px;
     padding: 40px;
     position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .profileHeader::before {
     content: '';
@@ -151,4 +153,115 @@ body {
 }
 .profileInfoFull {
     grid-column: 1 / -1;
+}
+.profileOrdersContainer {
+    background: #0d1526;
+    border: 1px solid rgba(194, 204, 209, 0.08);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.profileOrderIcon i {
+    color: #38bdf8;
+    font-size: 1.1rem;
+}
+.profileOrderItem {
+    display: flex;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.06);
+    gap: 14px;
+}
+.profileOrderIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: rgba(56, 189, 248, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+.profileOrderDetails {
+    flex: 1;
+    min-width: 0;
+}
+.profileOrderName {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e8edf5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.profileOrderMore {
+    color: #6b7fa3;
+    font-weight: 400;
+}
+.profileOrderDate {
+    font-size: 0.75rem;
+    color: #6b7fa3;
+    margin-top: 2px;
+}
+.profileOrderStatus {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
+.status-pending {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+}
+.status-shipped {
+    background: rgba(56, 189, 248, 0.1);
+    color: #38bdf8;
+}
+.status-delivered {
+    background: rgba(52, 211, 153, 0.1);
+    color: #34d399;
+}
+.profileOrderPrice {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #e8edf5;
+    flex-shrink: 0;
+    min-width: 70px;
+    text-align: right;
+}
+.profileOrderViewBtn {
+    background: transparent;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+}
+.profileOrderViewBtn:hover {
+    background: #38bdf8;
+    color: #020617;
+    border-color: #38bdf8;
+}
+.profileEmptyState {
+    text-align: center;
+    padding: 40px 20px;
+    color: #3d4f6f;
+}
+.profileEmptyState i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+.profileEmptyState p {
+    margin-top: 10px;
+    font-size: 0.9rem;
 }

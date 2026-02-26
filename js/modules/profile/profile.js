@@ -86,3 +86,44 @@ function saveProfile(){
     window.location.reload();
 
 }
+// Getting the orders from the local storage 
+function displayProfileOrders(){
+    const orders = JSON.parse(localStorage.getItem('orders'))||[];
+    const userOrders = orders.filter(o=> o.userId==currentUser.id);
+    const profileOrdersContainer = document.getElementById("profileOrderList");
+    if(userOrders.length==0){
+        profileOrdersContainer.innerHTML=`
+        <div class='profileEmptyState'>
+        <i class="fas fa-box-open"></i>
+        <p> No Orders Yet</p>
+        </div>
+        
+        `;
+        return;
+    }
+    profileOrdersContainer.innerHTML=userOrders.map(order=>{
+        const itemsCount = order.items.length;
+        const firstProductName = order.items[0].productName;
+        const summary = itemsCount>1 ? `${firstProductName}<span class="profileOrderMore">+${itemsCount-1} more</span>` :firstProductName;
+        const date = new Date(order.orderDate).toLocaleString();
+        
+        return `
+            <div class="profileOrderItem">
+                <div class="profileOrderIcon"><i class="fas fa-box"></i></div>
+                <div class="profileOrderDetails">
+                    <div class="profileOrderName">${summary}</div>
+                    <div class="profileOrderDate">${date} • ${itemsCount} item ${itemsCount>1 ? 's':''}</div>
+                </div>
+                <span class="profileOrderStatus status-${order.status.toLowerCase()}">${order.status}</span>
+                <span class="profileOrderPrice">$${order.totalPrice.toFixed(2)}</span>
+                <button class="profileOrderViewBtn" onclick="viewOrderDetails('${order.id}')"> View Details</button>
+            </div>
+        `
+
+
+    }).join('');
+    
+    // end of mapping the orders 
+
+}
+displayProfileOrders();
