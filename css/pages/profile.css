@@ -1,3 +1,6 @@
+body {
+    background: #060b18;
+}
 .profileHeader {
     display: flex;
     align-items: center;
@@ -7,8 +10,6 @@
     border-radius: 20px;
     padding: 40px;
     position: relative;
-}.profileEditBTN {
-    margin-left: auto;
 }
 .profileHeader::before {
     content: '';

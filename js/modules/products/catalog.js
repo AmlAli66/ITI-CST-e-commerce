@@ -348,10 +348,10 @@ if(categoryParam){
 
 //--------- Clear All Filters 
 const ClearFiltersBtn = document.getElementById("catalogClearAllFilters")
- ClearFiltersBtn.addEventListener('click',ClearAllFilters)
- function ClearAllFilters(){
-     const allCheckedFilters = document.querySelectorAll("input[type='checkbox']:checked")
-     allCheckedFilters.forEach(cb=>cb.checked=false);
+ClearFiltersBtn.addEventListener('click',ClearAllFilters)
+function ClearAllFilters(){
+    const allCheckedFilters = document.querySelectorAll("input[type='checkbox']:checked")
+    allCheckedFilters.forEach(cb=>cb.checked=false);
     ApplyAllFilters();
 }
 

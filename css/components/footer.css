@@ -1,0 +1,134 @@
+/* ============ FOOTER ============ */
+.homeFoot {
+    background: #0a0e1a !important;
+    padding: 60px 0 20px;
+    color: #94a3b8;
+    font-family: 'Outfit', sans-serif;
+    border-top: 1px solid rgba(56, 189, 248, 0.08);
+}
+
+.footer-logo i {
+    font-size: 1.8rem;
+    margin-right: 8px;
+}
+
+.footer-logo span {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #f1f5f9 !important;
+}
+
+.footer-text {
+    color: #64748b;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    margin: 16px 0 20px;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    gap: 10px;
+}
+
+.social-link {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(56, 189, 248, 0.06);
+    border: 1px solid rgba(56, 189, 248, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #64748b !important;
+    font-size: 0.85rem;
+}
+
+.social-link:hover {
+    background: #38bdf8;
+    color: #020617 !important;
+    border-color: #38bdf8;
+    transform: translateY(-3px);
+}
+
+.social-link i {
+    color: inherit !important;
+}
+
+/* Section Titles */
+.footer-title {
+    color: #f1f5f9;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    margin-top: 0 !important;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background: #38bdf8;
+    border-radius: 2px;
+}
+
+/* Links */
+.footer-links li {
+    margin-bottom: 12px;
+    font-size: 0.88rem;
+    transition: all 0.2s ease;
+}
+
+.footer-links li a {
+    color: #64748b !important;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-links li a:hover {
+    color: #38bdf8 !important;
+    padding-left: 4px;
+}
+
+.footer-links li a i {
+    color: #3d4f6f !important;
+    font-size: 0.8rem;
+    width: 16px;
+    text-align: center;
+}
+
+.footer-links li a:hover i {
+    color: #38bdf8 !important;
+}
+
+/* Contact info (not links) */
+.footer-links li i {
+    color: #38bdf8;
+    width: 16px;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+/* Copyright */
+.copyright {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(56, 189, 248, 0.06);
+}
+
+.copyright p {
+    color: #3d4f6f;
+    font-size: 0.82rem;
+}
+
+.copyright .fa-heart {
+    color: #38bdf8 !important;
+}

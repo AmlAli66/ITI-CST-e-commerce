@@ -59,7 +59,12 @@ function saveProfile(){
         alert("Name Can't be A number");
         return;
     }
-    if(newPhone)
+    const phoneRegex = /^\+?[\d\s\-()]{7,20}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if(!phoneRegex.test(newPhone)){
+        alert("Enter Valid phone number")
+        return;
+    }
     ///
     // Assigning the new values to the currentUser
     currentUser.name = newName;
