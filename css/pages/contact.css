@@ -1,6 +1,6 @@
 /* css */
 
-body{
+/* body{
 
     background: linear-gradient(
         45deg,
@@ -12,7 +12,7 @@ body{
         #aa98c2
     );
 
-}
+} */
 
 .insta-gradient {
     background: linear-gradient(
@@ -24,6 +24,7 @@ body{
         #bc1888
     );
     -webkit-background-clip: text;
+    background-clip: text; 
     -webkit-text-fill-color: transparent;
 }
 
