@@ -121,26 +121,19 @@ body {
 }
 .homeAdd div{
    display: inline-block;
-
-  /* Strong but calm base */
-  background: linear-gradient(
+    background: linear-gradient(
     135deg,
     #1e1b4b,
     #312e81
-  );
-
-  color: #e0f2fe;
-
-  border-radius: 22px;
-  padding: 18px 28px;
-  margin: 10px;
-
-  border: 1px solid rgba(56, 189, 248, 0.35);
-
-  box-shadow:
+    );
+    color: #e0f2fe;
+    border-radius: 22px;
+    padding: 18px 28px;
+    margin: 10px;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.35);
-
-  transition: all 0.35s ease;
+    transition: all 0.35s ease;
 }
 .homeAdd{
     display: flex;
@@ -155,7 +148,7 @@ body {
 .homeAdd div:hover{
     transform: translateY(-6px) scale(1.05);
 
-  box-shadow:
+    box-shadow:
     0 20px 45px rgba(56, 189, 248, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
@@ -182,7 +175,7 @@ body {
 .homeFeatureCard:hover{
     background: rgba(255, 255, 255, 0.15);
     transform: translateY(-5px);
-      box-shadow:
+    box-shadow:
     0 20px 45px rgba(56, 189, 248, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 
