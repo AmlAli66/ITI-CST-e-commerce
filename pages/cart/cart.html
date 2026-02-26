@@ -77,7 +77,7 @@
                         <span id="shipping">$0.00</span>
                     </div>
                     <div class="summary-row">
-                        <span>Tax (15%)</span>
+                        <span>Tax (2%)</span>
                         <span id="tax">$0.00</span>
                     </div>
                     <div class="summary-total">
@@ -124,7 +124,7 @@
         <span id="toastText">Product added to cart</span>
     </div>
 
-    <!-- Modal تأكيد الحذف -->
+    <!-- Modal delete-->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -153,9 +153,6 @@
 
 
 
-    <!--Login Required Modal -->
-
-<!-- Login Required Modal -->
 <!-- Login Required Modal -->
 <div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
@@ -165,7 +162,7 @@
                     <i class="fas fa-exclamation-triangle text-warning me-2"></i>
                     Login Required
                 </h5>
-                <!-- تم إزالة زر الإغلاق -->
+                <!-- remove btn exit-->
             </div>
             <div class="modal-body text-center">
                 <div class="modal-icon-wrapper mb-3">
@@ -175,7 +172,7 @@
                 <p class="text-muted mb-0">Please login to view your cart and make purchases.</p>
             </div>
             <div class="modal-footer justify-content-center">
-                <!-- زر واحد فقط - Login Now -->
+                <!-- Login Now -->
                 <button type="button" class="btn btn-primary btn-lg px-5" onclick="window.location.href='/pages/auth/login.html'">
                     <i class="fas fa-sign-in-alt me-2"></i>Login Now
                 </button>
