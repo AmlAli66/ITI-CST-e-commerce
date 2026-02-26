@@ -3,3 +3,122 @@
 body {
     overflow-x: hidden;
 }
+
+/* Payment Methods */
+.payment-methods {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.payment-methods small {
+    color: var(--secondary);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.payment-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.payment-icons i {
+    font-size: 2rem;
+    transition: transform 0.2s;
+}
+
+.payment-icons i:hover {
+    transform: translateY(-3px);
+}
+
+.fa-cc-visa { color: #1a1f71; }
+.fa-cc-mastercard { color: #eb001b; }
+.fa-cc-paypal { color: #003087; }
+.fa-cc-amex { color: #2e77bb; }
+
+/* Trust Badges */
+.trust-badges {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.trust-badge {
+    text-align: center;
+}
+
+.trust-badge i {
+    font-size: 1.2rem;
+    color: var(--success);
+    margin-bottom: 0.25rem;
+}
+
+.trust-badge span {
+    font-size: 0.8rem;
+    color: var(--secondary);
+}
+#placeOrder{
+ 
+    background: linear-gradient(to right, #3a53d2, #293dc3);
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 10px;
+
+}
+
+#placeOrder:hover{
+
+    transform: scale(1.1);
+
+
+}
+
+/* Subtotal, Shipping, Tax */
+#subTotal, #shipping, #tax {
+    color: #999; 
+}
+
+/* Shipping Free */
+#shipping.free {
+    color: green;
+    font-weight: bold;
+}
+
+/* Total row */
+.total-row strong {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.total-row #total {
+    font-size: 1.3rem; 
+    color: green;
+    font-weight: bold;
+}
+
+/* Free Shipping Badge */
+.free-shipping-badge {
+    background: #ecfdf5;
+    color: var(--success);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.checkout-container {
+    margin-top: 40px; 
+    margin-bottom: 500px; 
+}
+
+
+
+.shadow-sm {
+
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12), 0 8px 25px rgba(0, 0, 0, 0.12);
+   
+}
