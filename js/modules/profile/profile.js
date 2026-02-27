@@ -127,3 +127,12 @@ function displayProfileOrders(){
 
 }
 displayProfileOrders();
+
+// start of Order Details Modal Showing 
+function viewOrderDetails(orderId){
+window.location.href = `order-details.html?id=${orderId}`;
+}
+
+
+
+//- end of order details modal

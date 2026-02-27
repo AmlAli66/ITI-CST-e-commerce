@@ -1,0 +1,110 @@
+body{
+    min-height: 100vh;
+    background: #eef0f7;
+}
+#orderDetailsContainer{
+    min-height: 90vh;
+}
+.orderInfo label {
+    display: block;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.06);
+    color: #1a1245;
+    font-size: 0.9rem;
+}
+.orderInfo h2 {
+    color: #1a1245;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.15);
+}
+.orderInfo,
+.orderItemRow {
+    background: #ffffff;
+}
+.orderItemRow img{
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #f4f5fb;
+    padding: 8px;
+}
+.orderItems{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.orderInfo{
+    padding: 20px;
+    word-spacing: 5px;
+    border: 1px solid rgba(102, 126, 234, 0.1);    border-radius: 8px;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.orderItemRow{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid rgba(102, 126, 234, 0.1);    border-radius: 8px;
+    padding: 10px;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+.orderItemRow:hover{
+transform: translateY(-3px);
+    border-color: rgba(102, 126, 234, 0.2);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.12);
+}
+.orderInfo label:last-child {
+     border-bottom: none; 
+    } 
+
+.orderTotals{
+    background: #ffffff;
+        padding: 20px;
+    word-spacing: 5px;
+    border: 1px solid rgba(102, 126, 234, 0.1);    border-radius: 8px;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+.orderTotalRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    color: #1a1245;
+    font-size: 0.9rem;
+}
+.orderTotalFinal {
+    border-top: 2px solid rgba(102, 126, 234, 0.15);
+    margin-top: 8px;
+    padding-top: 12px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #667eea;
+}
+.orderBackBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 20px 0;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white !important;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+.orderBackBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
