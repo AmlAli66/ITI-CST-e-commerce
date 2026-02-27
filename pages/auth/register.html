@@ -1,36 +1,142 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Catalog</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Register</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css"
+    />
 
     <!-- Global CSS -->
-    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/main.css" />
 
     <!-- Page CSS -->
-    <link rel="stylesheet" href="../../css/pages/auth.css">
-</head>
+    <link rel="stylesheet" href="../../css/pages/auth.css" />
+  </head>
 
-<body>
+  <body>
+    <div class="container-fluid mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card shadow p-4">
+            <h3 class="text-center mb-4">Create Account</h3>
+            <form class="needs-validation" id="registerForm" novalidate>
+              <!-- FullName -->
+              <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fullName"
+                  minlength="4"
+                  required
+                />
+                <div class="invalid-feedback">
+                  Please enter your full name (at least 3 characters).
+                </div>
+              </div>
+              <!-- End Of Full Name -->
+              <!-- Email -->
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  required
+                  minlength="6"
+                />
+                <div class="invalid-feedback">
+                  Please enter a valid email address.
+                </div>
+              </div>
+              <!-- End Of Email -->
+              <!-- Password -->
 
-    <!-- Page Content -->
-    <div class="container mt-4">
-        <h2>Register</h2>
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  required
+                  minlength="6"
+                />
+                <div class="invalid-feedback">
+                  Password must contain 1 capital letter and 1 number And One
+                  Special Char And More Than 6 Letters.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Confirm Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="confirmPassword"
+                  required
+                />
+                <div class="invalid-feedback">Passwords do not match</div>
+              </div>
+              <!-- End Of Password -->
+              <!-- Phone -->
+              <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" id="phone" class="form-control" required />
+                <div id="phoneError" class="text-danger mt-1"></div>
+              </div>
+              <!-- End Of Phone -->
+              <!-- Address -->
+              <div class="mb-3">
+                <label class="form-label">Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  required
+                  minlength="5"
+                />
+                <div class="invalid-feedback">Enter Valid Address</div>
+              </div>
+              <!-- End Of Adress -->
+              <!-- Role -->
+              <div class="mb-3">
+                <label class="form-label">Role</label>
+                <select class="form-select" id="role" required>
+                  <option value="">Select Role</option>
+                  <option value="customer">customer</option>
+                  <option value="seller">seller</option>
+                </select>
+                <div class="invalid-feedback">Please choose a role.</div>
+              </div>
+              <!-- End Of Rule -->
+              <!-- Button -->
+              <div id="message" class="text-center mb-3 fw-bold"></div>
+              <button type="submit" class="btn btn-primary w-100">
+                Register
+              </button>
+              <!-- End Of Button -->
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-
-
     <!-- Core Scripts -->
     <script src="../../js/core/include.js"></script>
     <!-- <script src="../../js/core/utils.js"></script> -->
     <!-- <script src="../../js/core/storage.js"></script> -->
 
     <!-- Page Module -->
+    <!-- Tele -->
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"></script>
     <script src="../../js/modules/auth/register.js"></script>
-
-</body>
-
+  </body>
 </html>

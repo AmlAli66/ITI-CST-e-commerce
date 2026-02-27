@@ -1,14 +1,59 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<style>
+.navAdimPanel,.navSellerDashboard{
+    display:none;
+}
+.navlogo{
+    padding-left: 2px;
+    padding-right: 5px;
+}
+.navlogo:hover{
+    border: 1px solid black;
+}
+</style>
+
+<nav class="navbar navbar-expand-lg  "style="background-color: #e3f2fd;" >
+  <div class="container-fluid">
+    <a class="navbar-brand navlogo" href="index.html"><i class="fa-solid fa-snowflake text-info fa-2x"></i><span class="fs-1  ">IceMart</span> </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end"  id="navbarNavDropdown">
+      <ul class="navbar-nav gap-5 fs-5">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./../pages/shop/catalog.html">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./../pages/support/contact.html">Contacts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+        </li> <li class="nav-item">
+          <a class="nav-link navAdimPanel" href="./../pages/admin/admin-panel.html">AdminPannel</a>
+        </li>
+        </li> <li class="nav-item">
+          <a class="nav-link navSellerDashboard" href="./../pages/seller/seller-dashboard.html">Sellers Dashboard</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/">E-Shop Navbar</a>
+        <a class="navbar-brand" href="/">IceMart</a>
 
         <a href="/pages/shop/home.html">Home</a>
         <a href="/pages/shop/catalog.html">Catalog</a>
         <a href="/pages/cart/cart.html">Cart</a>
-        <a href="/pages/auth/login.html">Login</a>
+        <a href="/pages/auth/login.html">Login</a>-->
 
-        <!-- Role-specific links -->
+        <!-- Role-specific links
         <a id="seller-link" href="/pages/seller/seller-dashboard.html" style="display:none;">Seller Dashboard</a>
         <a id="admin-link" href="/pages/admin/admin-panel.html" style="display:none;">Admin Panel</a>
     </div>
-</nav>
+</nav> -->
