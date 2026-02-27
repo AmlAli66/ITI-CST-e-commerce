@@ -3,6 +3,16 @@
 
 console.log("checkout module loaded");
 
+
+
+// ===============================
+// CHECK AUTH
+// ===============================
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+if (!currentUser) {
+    window.location.href = "../../index.html"; 
+}
 // ===============================
 // SELECT ELEMENTS
 // ===============================
@@ -25,7 +35,7 @@ const cardNumber = document.getElementById("cardNumber");
 const expiry = document.getElementById("expiry");
 const cvv = document.getElementById("cvv");
 
-const shippingFee = 10;
+const shippingFee = 0;
 
 // ===============================
 // PAYMENT METHOD SHOW / HIDE
@@ -130,7 +140,7 @@ function validateCardDetails() {
         const month = parseInt(monthStr);
         const year = parseInt(yearStr);
 
-        // شرط السنة >= 26
+       
         if (year < 26) {
             expiry.classList.add("is-invalid");
             valid = false;
@@ -217,6 +227,11 @@ function updateTotals(subtotal) {
 placeOrderBtn.addEventListener("click", async () => {
     if (!validateForm()) return;
 
+///////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////
+
+
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     if (!currentUser) return;
@@ -255,12 +270,25 @@ placeOrderBtn.addEventListener("click", async () => {
     const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 
     if ((selectedMethod === "visa" || selectedMethod === "MasterCard") && !validateCardDetails()) {
-        alert("Enter valid card details:\n- Card Number: 16 digits\n- Expiry: MM/YY\n- CVV: 3 digits");
+        alert("Enter valid card details:\n- Card Number: 16 digits\n- Expiry: MM/YY (M>=12,Y>=2026)\n- CVV: 3 digits");
         return;
     }
 
+
+
+
+    // Confirmation
+
+  
+    const confirmOrder = confirm("Are you sure you want to place this order?");
+
+    if (!confirmOrder) {
+        return; 
+    }
+
+
     const shippingCost = subtotal > 100 ? 0 : shippingFee;
-    const tax = subtotal * 0.15;
+    const tax = subtotal * 0.02;
     const totalPrice = subtotal + shippingCost + tax;
 
     const newOrder = {
@@ -316,9 +344,11 @@ placeOrderBtn.addEventListener("click", async () => {
     window.location.href = "../cart/cart.html";
 });
 
+
 // ===============================
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
     loadCartSummary();
 });
+

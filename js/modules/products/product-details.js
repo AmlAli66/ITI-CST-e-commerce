@@ -1,15 +1,3 @@
-// read id
-// fetch products.json
-// show product
-
-// addToCartBtn.onclick = () => {
-//   addToCart(product);
-// };
-
-
-
-// const params = new URLSearchParams(window.location.search);
-// const productId = params.get("id");
 
 
 // Initialize AOS
@@ -24,13 +12,87 @@ let allProducts = [];
 let selectedRating = 0;
 let allReviews = {};
 
-// Quantity Functions
-// function increaseQuantity() {
-//     const input = document.getElementById('quantity');
-//     if (parseInt(input.value) < currentProduct.stock) {
-//         input.value = parseInt(input.value) + 1;
-//     }
-// }
+
+// ======== Wishlist ==========
+
+function toggleWishlist() {
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+        showLoginModal();
+         return;
+    }
+
+    let wishlistData = {};
+    const storedWishlist = localStorage.getItem('wishlist');
+    if (storedWishlist) {
+        try {
+            wishlistData = JSON.parse(storedWishlist);
+            if (typeof wishlistData !== 'object' || wishlistData === null || Array.isArray(wishlistData)) {
+                wishlistData = {};
+            }
+        } catch (e) {
+            wishlistData = {};
+        }
+    }
+
+    if (!wishlistData[currentUser.id] || !Array.isArray(wishlistData[currentUser.id])) {
+        wishlistData[currentUser.id] = [];
+    }
+
+    const existingIndex = wishlistData[currentUser.id].findIndex(
+        item => item && item.productId === currentProduct.id
+    );
+
+    const wishlistIcon = document.getElementById('wishlistIcon');
+    if (!wishlistIcon) return;
+
+    if (existingIndex !== -1) {
+        wishlistData[currentUser.id].splice(existingIndex, 1);
+        wishlistIcon.className = 'far fa-heart';
+        showToast('❤️ Removed from wishlist', 'info');
+    } else {
+        wishlistData[currentUser.id].push({
+            productId: currentProduct.id,
+            addedAt: new Date().toISOString()
+        });
+        wishlistIcon.className = 'fas fa-heart';
+        showToast('❤️ Added to wishlist', 'success');
+    }
+
+    localStorage.setItem('wishlist', JSON.stringify(wishlistData));
+}
+//check wishlist
+function checkWishlistStatus() {
+    if (!currentProduct) return;
+
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) return;
+
+    let wishlistData = {};
+    const storedWishlist = localStorage.getItem('wishlist');
+    if (storedWishlist) {
+        try {
+            wishlistData = JSON.parse(storedWishlist);
+            if (typeof wishlistData !== 'object' || wishlistData === null || Array.isArray(wishlistData)) {
+                wishlistData = {};
+            }
+        } catch (e) {
+            wishlistData = {};
+        }
+    }
+
+    let userWishlist = wishlistData[currentUser.id];
+    if (!Array.isArray(userWishlist)) {
+        userWishlist = [];
+    }
+
+    const isInWishlist = userWishlist.some(item => item && item.productId === currentProduct.id);
+    const wishlistIcon = document.getElementById('wishlistIcon');
+    if (wishlistIcon) {
+        wishlistIcon.className = isInWishlist ? 'fas fa-heart' : 'far fa-heart';
+    }
+}
+
 // Quantity Functions with login check
 function increaseQuantity() {
     // Check if user is logged in first
@@ -64,25 +126,6 @@ function decreaseQuantity() {
     }
 }
 
-// function decreaseQuantity() {
-//     const input = document.getElementById('quantity');
-//     if (parseInt(input.value) > 1) {
-//         input.value = parseInt(input.value) - 1;
-//     }
-// }
-
-// // Load product data from JSON
-// function loadProduct() {
-//     fetch('/data/products.json')
-//         .then(res => res.json())
-//         .then(products => {
-//             allProducts = products;
-//             const productId = new URLSearchParams(window.location.search).get('id');
-//             currentProduct = products.find(p => p.id === productId);
-//             displayProduct();
-//         })
-//         .catch(err => console.error('Error loading JSON:', err));
-// }
 // Load product from localStorage
 function loadProduct() {
     allProducts = JSON.parse(localStorage.getItem('products')) || [];
@@ -90,9 +133,6 @@ function loadProduct() {
     currentProduct = allProducts.find(p => p.id === productId);
     displayProduct();
 }
-
-
-
 
 
 // Display Product Details
@@ -141,6 +181,8 @@ function displayProduct() {
     countInStock();
     displaylistofimgs();
     displayRelatedProducts();
+    checkWishlistStatus();    
+
 }
 
 // Count in stock and display availability
@@ -156,111 +198,6 @@ function countInStock() {
         stockElement.style.color = "green";
     }
 }
-
-// // Display Related Products
-// function displayRelatedProducts() {
-//     const container = document.getElementById('relatedProducts');
-//     if (!container || !currentProduct || !allProducts) return;
-
-//     const data = JSON.parse(localStorage.getItem('ecommerce_app')) || {};
-//     const allReviews = data.reviews || {};
-
-//     const related = allProducts
-//         .filter(p => p.category === currentProduct.category && p.id !== currentProduct.id)
-//         .slice(0, 4);
-
-//     if (related.length === 0) {
-//         container.innerHTML = '<div class="col-12 text-center py-4"><p class="text-muted">No related products found</p></div>';
-//         return;
-//     }
-
-//     container.innerHTML = related.map(product => {
-//         const hasDiscount = product.discount && product.discount > 0;
-//         const finalPrice = hasDiscount
-//             ? product.price * (1 - product.discount / 100)
-//             : product.price;
-
-//         const productReviews = allReviews[product.id] || [];
-//         const reviewCount = productReviews.length;
-//         const total = productReviews.reduce((sum, r) => sum + r.rating, 0);
-//         const avg = productReviews.length > 0 ? total / productReviews.length : 0;
-
-//         return `
-//             <div class="col-md-3 col-6">
-//                 <div class="related-product-card" onclick="viewProduct('${product.id}')">
-//                     <div class="related-product-image-wrapper" style="position: relative; overflow: hidden;">
-//                         <img src="${product.image}" class="related-product-image" alt="${product.name}" 
-//                             onerror="this.src='/assets/images/placeholder.jpg'">
-                        
-//                         ${hasDiscount ? `
-//                             <div class="discount-badge" style="
-//                                 position: absolute;
-//                                 top: 12px;
-//                                 right: 12px;
-//                                 background: linear-gradient(135deg, var(--danger), #ff6b6b);
-//                                 color: white;
-//                                 padding: 8px 12px;
-//                                 border-radius: 30px;
-//                                 font-size: 0.9rem;
-//                                 font-weight: 700;
-//                                 box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
-//                                 z-index: 10;
-//                                 display: flex;
-//                                 align-items: center;
-//                                 gap: 5px;
-//                                 animation: pulseDiscount 2s infinite;
-//                             ">
-//                                 <i class="fas fa-tag"></i>
-//                                 <span>-${product.discount}%</span>
-//                             </div>
-//                         ` : ''}
-//                     </div>
-                    
-//                     <div class="related-product-body">
-//                         <h6 class="related-product-title">${product.name}</h6>
-//                         <div class="stars small mb-2">
-//                             ${generateStarsFromAvg(avg)}
-//                             <span class="rating-count ms-1">(${reviewCount})</span>
-//                         </div>
-                        
-//                         <div class="d-flex align-items-center flex-wrap gap-2">
-//                             <span class="related-product-price" style="
-//                                 color: var(--primary);
-//                                 font-weight: 700;
-//                                 font-size: 1.2rem;
-//                             ">
-//                                 $${finalPrice.toFixed(2)}
-//                             </span>
-                            
-//                             ${hasDiscount ? `
-//                                 <span class="original-price" style="
-//                                     color: var(--secondary);
-//                                     text-decoration: line-through;
-//                                     font-size: 0.9rem;
-//                                 ">
-//                                     $${product.price.toFixed(0)}
-//                                 </span>
-                                
-//                                 <span class="save-badge" style="
-//                                     background: var(--success);
-//                                     color: white;
-//                                     padding: 3px 8px;
-//                                     border-radius: 20px;
-//                                     font-size: 0.7rem;
-//                                     font-weight: 600;
-//                                     white-space: nowrap;
-//                                 ">
-//                                     Save $${(product.price - finalPrice).toFixed(0)}
-//                                 </span>
-//                             ` : ''}
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-//         `;
-//     }).join('');
-// }
-
 
 
 function displayRelatedProducts() {
@@ -418,96 +355,6 @@ function changeMainImage(src, thumb) {
     thumb.classList.add('active');
 }
 
-// // Add to cart button
-// function addToCart() {
-//     let ecommerceData = JSON.parse(localStorage.getItem('ecommerce_app'));
-//     // if (!ecommerceData || !ecommerceData.users || !ecommerceData.users.currentUser) {
-//     //     showToast('You must login first', 'error');
-//     //     window.location.href = '/auth/login.html';
-//     //     return;
-//     // }
-//     const quantity = parseInt(document.getElementById('quantity').value);
-//     const userId = ecommerceData.users.currentUser.id;
-
-//     if (!ecommerceData.carts) {
-//         ecommerceData.carts = {};
-//     }
-//     if (!ecommerceData.carts[userId]) {
-//         ecommerceData.carts[userId] = [];
-//     }
-//     const existingItem = ecommerceData.carts[userId].find(
-//         item => item.productId === currentProduct.id);
-
-//     if (existingItem) {
-//         existingItem.quantity += quantity;
-//         existingItem.addedAt = new Date().toISOString();
-//         showToast(`✅ Updated quantity of ${currentProduct.name} in cart`, 'success');
-//     } else {
-//         ecommerceData.carts[userId].push({
-//             productId: currentProduct.id,
-//             quantity: quantity,
-//             addedAt: new Date().toISOString()
-//         });
-//         showToast(`✅ Added ${currentProduct.name} to cart`, 'success');
-//     }
-//     localStorage.setItem('ecommerce_app', JSON.stringify(ecommerceData));
-//     cartNotification();
-// }
-
-
-
-// Add to cart button
-// function addToCart() {
-//     //fetch data from localStorage
-//     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-//     let products = JSON.parse(localStorage.getItem('products')) || [];
-//     let users = JSON.parse(localStorage.getItem('users')) || [];
-//     //fetch cart from localStorage or initialize empty array    
-//     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-//     //check if user is logged in
-//     if (!currentUser) {
-//         showToast('You must login first', 'error');
-//         window.location.href = '/auth/login.html';
-//         return;
-//     }
-    
-//     const quantity = parseInt(document.getElementById('quantity').value);
-//     //search for existing cart item for this product and user    
-//     const existingItemIndex = cart.findIndex(
-//         item => item.productId === currentProduct.id && item.userId === currentUser.id
-//     );
-
-//     if (existingItemIndex !== -1) {
-//         //update quantity and timestamp of existing item
-//         cart[existingItemIndex].quantity += quantity;
-//         cart[existingItemIndex].addedAt = new Date().toISOString();
-//         showToast(`✅ Updated quantity of ${currentProduct.name} in cart ${cart[existingItemIndex].quantity}`, 'success');
-//     } else {
-//    //add new item to cart with userId, productId, quantity, and timestamp
-//       cart.push({
-//             userId: currentUser.id,
-//             productId: currentProduct.id,
-//             quantity: quantity,
-//             addedAt: new Date().toISOString()
-//         });
-//         showToast(`✅ Added ${currentProduct.name} to cart`, 'success');
-//     }
-//    //save updated cart back to localStorage    
-//     localStorage.setItem('cart', JSON.stringify(cart));
-//     cartNotification();
-// }
-
-// // Buy Now
-// function buyNow() {
-//     addToCart();
-//     setTimeout(() => {
-//         window.location.href = '/pages/cart/cart.html';
-//     }, 500);
-//     cartNotification();
-// }
-
-
 
 
 // Add to cart button
@@ -586,13 +433,6 @@ function buyNow() {
         window.location.href = '/pages/cart/cart.html';
     }, 500);
 }
-
-// Show login required modal
-// function showLoginModal() {
-//     const modalElement = document.getElementById('loginRequiredModal');
-//     const modal = new bootstrap.Modal(modalElement);
-//     modal.show();
-// }
 
 
 // Show login required modal
@@ -673,37 +513,6 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-// Cart notification
-// function cartNotification() {
-//     const cartIcon = document.querySelector('.fa-cart-shopping');
-//     if (!cartIcon) {
-//         setTimeout(cartNotification, 100);
-//         return;
-//     }
-    
-//     const cartLink = cartIcon.closest('a');
-//     if (!cartLink) return;
-    
-//     cartLink.style.position = "relative";
-//     let existingBadge = cartLink.querySelector('.cart-badge-modern');
-//     if (existingBadge) existingBadge.remove();
-    
-//     const badge = document.createElement("span");
-//     badge.classList.add("cart-badge-modern");
-    
-//     const data = JSON.parse(localStorage.getItem('ecommerce_app'));
-//     const currentUser = data?.users?.currentUser;
-//     const cartItems = data?.carts?.[currentUser?.id] || [];
-//     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    
-//     if (totalQuantity <= 0) return;
-    
-//     badge.textContent = totalQuantity;
-//     cartLink.appendChild(badge);
-// }
-
-
-
 
 // Cart notification
 function cartNotification() {
@@ -739,16 +548,6 @@ function getCurrentUser() {
     return JSON.parse(localStorage.getItem('currentUser')) || null;
 }
 
-// // Load reviews
-// function loadReviews() {
-//     if (!currentProduct) return;
-
-//     const data = JSON.parse(localStorage.getItem('ecommerce_app')) || {};
-//     const productReviews = data.reviews?.[currentProduct.id] || [];
-
-//     displayReviews(productReviews);
-//     updateProductRatingFromReviews();
-// }
 // Load reviews
 function loadReviews() {
     if (!currentProduct) return;
@@ -922,26 +721,6 @@ function updateReviewSummary(reviews) {
 }
 
 // Update product rating based on reviews
-// function updateProductRatingFromReviews() {
-//     if (!currentProduct) return;
-
-//     const data = JSON.parse(localStorage.getItem('ecommerce_app')) || {};
-//     const productReviews = data.reviews?.[currentProduct.id] || [];
-
-//     if (productReviews.length === 0) {
-//         document.getElementById('productRating').innerHTML = generateStars(0);
-//         document.getElementById('reviewsCount').textContent = '(0 reviews)';
-//         return;
-//     }
-
-//     const total = productReviews.reduce((sum, r) => sum + r.rating, 0);
-//     const avg = total / productReviews.length;
-
-//     document.getElementById('productRating').innerHTML = generateStarsFromAvg(avg);
-//     document.getElementById('reviewsCount').textContent = `(${productReviews.length} reviews)`;
-// }
-
-// Update product rating based on reviews
 function updateProductRatingFromReviews() {
     if (!currentProduct) return;
 
@@ -981,78 +760,6 @@ function setRating(rating) {
         }
     });
 }
-
-// // Submit review form
-// document.addEventListener('DOMContentLoaded', function() {
-//     const reviewForm = document.getElementById('reviewForm');
-//     if (reviewForm) {
-//         reviewForm.addEventListener('submit', function(e) {
-//             e.preventDefault();
-
-//             const rating = document.getElementById('reviewRating').value;
-//             const comment = document.getElementById('reviewComment').value.trim();
-
-//             const currentUser = getCurrentUser();
-//             if (!currentUser) {
-//                 showToast('Please login first', 'error');
-//                 setTimeout(() => window.location.href = '/auth/login.html', 1500);
-//                 return;
-//             }
-            
-//             if (!rating || rating === '0') {
-//                 showToast('Please select a rating', 'warning');
-//                 return;
-//             }
-
-//             if (!comment) {
-//                 showToast('Please write your review', 'warning');
-//                 return;
-//             }
-
-//             const newReview = {
-//                 reviewId: 'rev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
-//                 userId: currentUser.id,
-//                 userName: currentUser.name,
-//                 userAvatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 100)}.jpg`,
-//                 date: new Date().toISOString().split('T')[0],
-//                 rating: parseInt(rating),
-//                 comment: comment
-//             };
-
-//             const data = JSON.parse(localStorage.getItem('ecommerce_app')) || {};
-
-//             if (!data.reviews) {
-//                 data.reviews = {};
-//             }
-
-//             if (!data.reviews[currentProduct.id]) {
-//                 data.reviews[currentProduct.id] = [];
-//             }
-
-//             data.reviews[currentProduct.id].push(newReview);
-//             localStorage.setItem('ecommerce_app', JSON.stringify(data));
-
-//             showToast('Review submitted successfully!', 'success');
-
-//             document.getElementById('reviewComment').value = '';
-//             setRating(0);
-
-//             loadReviews();
-//             updateProductRatingFromReviews();
-//         });
-//     }
-// });
-
-
-
-
-
-
-
-
-
-
-
 
 
 

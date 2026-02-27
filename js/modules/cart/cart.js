@@ -1,10 +1,10 @@
 // CART MODULE
 
 // Global variables
-let allProducts = [];              // Store all products from localStorage
-let currentUser = null;             // Current logged in user
-let userCart = [];                  // Current user's cart items
-let productToDelete = null;         // Product ID to delete (for single item)
+let allProducts = [];              
+let currentUser = null;             
+let userCart = [];                 
+let productToDelete = null;         
 let isClearCartMode = false;        // Flag to differentiate between delete single vs delete all
 
 // Load products from localStorage
@@ -20,118 +20,6 @@ function getProductDetails(productId) {
     return allProducts.find(p => p.id === productId) || null;
 }
 
-// // Display cart items in the UI
-// function displayCart() {
-//     const container = document.getElementById('cartItems');
-//     const shippingProgress = document.getElementById('shippingProgress');
-    
-//     if (!container) return;
-    
-//     // Get current user and cart from localStorage
-//     currentUser = JSON.parse(localStorage.getItem('currentUser'));
-//     userCart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-
-//      if (!currentUser) {
-//         showLoginModal();}
-
-
-    
-//     // Filter items for current user only
-//     const userCartItems = userCart.filter(item => item.userId === currentUser?.id) || [];
-    
-//     // If cart is empty show empty cart message
-//     if (userCartItems.length === 0) {
-//         container.innerHTML = `
-//             <div class="empty-cart-modern">
-//                 <i class="fas fa-shopping-cart"></i>
-//                 <h4>Your cart is empty</h4>
-//                 <p>Looks like you haven't added anything to your cart yet.</p>
-//                 <a href="/pages/shop/catalog.html" class="btn-shop-now">
-//                     <i class="fas fa-store me-2"></i>
-//                     Start Shopping
-//                 </a>
-//             </div>
-//         `;
-//         if (shippingProgress) shippingProgress.style.display = "none";
-//         // document.getElementById('cartSummary').style.display = 'none';
-//         return;
-//     }
-
-//     if (shippingProgress) shippingProgress.style.display = "block";
-//     document.getElementById('cartSummary').style.display = 'block';
-
-//     let html = '';
-//     let subtotal = 0;
-    
-//     // Generate HTML for each cart item
-//     userCartItems.forEach(item => {
-//         const product = getProductDetails(item.productId);
-//         if (!product) return;
-        
-//         const hasDiscount = product.discount && product.discount > 0;
-//         const finalPrice = hasDiscount ? product.price * (1 - product.discount / 100) : product.price;
-//         const itemTotal = finalPrice * item.quantity;
-//         subtotal += itemTotal;
-
-//         html += `
-//             <div class="cart-item-modern" data-product-id="${product.id}">
-//                 <div class="row align-items-center">
-//                     <div class="col-md-2 col-3">
-//                         <img src="${product.image || '/assets/images/placeholder.jpg'}" 
-//                              class="cart-item-image" 
-//                              alt="${product.name}"
-//                              onerror="this.src='/assets/images/placeholder.jpg'">
-//                     </div>
-                    
-//                     <div class="col-md-4 col-9">
-//                         <div class="cart-item-details">
-//                             <h6>${product.name}</h6>
-//                             ${hasDiscount ? `
-//                                 <div class="discount-badge small">
-//                                     <i class="fas fa-tag"></i> -${product.discount}% OFF
-//                                 </div>
-//                             ` : ''}
-//                             <div class="price-details">
-//                                 <span class="cart-item-price">$${finalPrice.toFixed(2)}</span>
-//                                 ${hasDiscount ? `
-//                                     <span class="original-price">$${product.price.toFixed(2)}</span>
-//                                 ` : ''}
-//                             </div>
-//                         </div>
-//                     </div>
-                    
-//                     <div class="col-md-3 col-5 mt-3 mt-md-0">
-//                         <div class="quantity-control-modern">
-//                             <button class="quantity-btn-modern" onclick="updateQuantity('${product.id}', -1)">
-//                                 <i class="fas fa-minus"></i>
-//                             </button>
-//                             <input type="text" class="quantity-input-modern" value="${item.quantity}" readonly>
-//                             <button class="quantity-btn-modern" onclick="updateQuantity('${product.id}', 1)">
-//                                 <i class="fas fa-plus"></i>
-//                             </button>
-//                         </div>
-//                     </div>
-                    
-//                     <div class="col-md-2 col-4 mt-3 mt-md-0 text-center">
-//                         <span class="item-total">$${itemTotal.toFixed(2)}</span>
-//                     </div>
-                    
-//                     <div class="col-md-1 col-3 mt-3 mt-md-0 text-center">
-//                         <button class="remove-btn-modern" onclick="removeFromCart('${product.id}')">
-//                             <i class="fas fa-trash-alt"></i>
-//                         </button>
-//                     </div>
-//                 </div>
-//             </div>
-//         `;
-//     });
-
-//     container.innerHTML = html;
-//     updateCartSummary(subtotal);
-// }
-
-
 // Display cart items in the UI
 function displayCart() {
     const container = document.getElementById('cartItems');
@@ -146,7 +34,7 @@ function displayCart() {
 
     if (!currentUser) {
         showLoginModal();
-        return; // مهم: نضيف return عشان يكملش تنفيذ
+        return;   
     }
     
     // Filter items for current user only
@@ -327,7 +215,6 @@ function clearCart() {
 }
 
 // Update modal content based on operation type (delete single vs clear all)
-// Update modal content based on operation type (delete single vs clear all)
 function updateModalContent(action) {
     const modalTitle = document.querySelector('#deleteConfirmModal .modal-title');
     const modalBody = document.querySelector('#deleteConfirmModal .modal-body');
@@ -374,7 +261,7 @@ function updateModalContent(action) {
 function updateCartSummary(subtotal) {
     // Free shipping for orders over $100
     const shipping = subtotal > 100 ? 0 : 10;
-    const tax = subtotal * 0.15;
+    const tax = subtotal * 0.02;
     const total = subtotal + shipping + tax;
     
     document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
