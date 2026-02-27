@@ -88,7 +88,7 @@ else {
 
 // trying to adjust /// Tries to adjust with product details
 // trying add to cart
-function addToCart(productId) {
+function navAddToCart(productId) {
     // 1. Check if user is logged in
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
@@ -171,7 +171,7 @@ navLinks.forEach(link => {
 });
 cartNotification();
 
-window.addToCart = addToCart;
+window.navAddToCart = navAddToCart;
 window.cartNotification = cartNotification;
 
 
