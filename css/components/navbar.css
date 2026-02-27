@@ -13,7 +13,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-weight:  900px;
+    font-weight:  900;
     font-family: 'Poppins', sans-serif;
 }
 #navUserName{
@@ -26,9 +26,12 @@
     background: transparent;
     border: 2px solid #fff;
     color: #fff;
-    padding: 6px 20px;
+    padding: 3px 5px;
     border-radius: 20px;
     transition: all 0.3s ease;
+    font-size: small;
+    text-align: center;
+
 }
 #navLogin:hover{
     background: #fff;
@@ -39,13 +42,28 @@
     background: transparent;
     border: 2px solid #fff;
     color: #fff;
-    padding: 6px 20px;
+    padding: 3px 5px;
     border-radius: 20px;
     transition: all 0.3s ease;
     font-size: small;
-
+    text-align: center;
 }
 #navLogout:hover{
     background: #fff;
     color: #333;
+}
+.cart-badge-modern {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

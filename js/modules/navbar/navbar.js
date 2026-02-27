@@ -26,8 +26,10 @@ function logout(){
 }
 // logic of login and redirection 
     const navLogin= document.getElementById("navLogin");
-
-
+    // navLogin.addEventListener("click",goToLoginPage)
+    // function goToLoginPage(){
+    //     window.localStorage.href=`./pages/auth/login.html`
+    // }
 //-------------------------------------
 // updating the navbar
 function updateNavbar() {
@@ -84,13 +86,86 @@ else {
 
 
 
+// trying to adjust /// Tries to adjust with product details
+// trying add to cart
+function addToCart(productId) {
+    // 1. Check if user is logged in
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+        alert('Please login first');
+        return;
+    }
+
+    // 2. Get the product
+    const product = getAllProducts().find(p => p.id === productId);
+    if (!product) return;
+
+    // 3. Get existing cart
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // 4. Check if this user already has this product in cart
+    const existingItem = cart.find(item => item.productId === productId && item.userId === currentUser.id);
+
+    if (existingItem) {
+        // Already in cart → increase quantity
+        if (existingItem.quantity >= product.stock) {
+            alert('No more stock available');
+            return;
+        }
+        existingItem.quantity += 1;
+    } else {
+        // New item → push to array
+        cart.push({
+            productId: productId,
+            userId: currentUser.id,
+            quantity: 1,
+            addedAt: new Date().toISOString()
+        });
+    }
+
+    // 5. Save back to localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Added to cart!');
+    cartNotification();
+}
+// Notification on the cart simpol 
+function cartNotification() {
+    // 1. Find the cart icon in the navbar
+    const cartIcon = document.querySelector('.fa-cart-shopping');
+    if (!cartIcon) {
+        setTimeout(cartNotification, 100); // retry if navbar hasn't loaded yet
+        return;
+    }
+
+    // 2. Get the <a> tag wrapping the icon
+    const cartLink = cartIcon.closest('a');
+    cartLink.style.position = "relative"; // needed so the badge positions correctly
+
+    // 3. Remove any existing badge (to avoid duplicates)
+    let existingBadge = cartLink.querySelector('.cart-badge-modern');
+    if (existingBadge) existingBadge.remove();
+
+    // 4. Count this user's items
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const userCartItems = cart.filter(item => item.userId === currentUser.id);
+    const totalQuantity = userCartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+    if (totalQuantity <= 0) return; // no badge if cart is empty
+
+    // 5. Create the badge element and append it
+    const badge = document.createElement("span");
+    badge.classList.add("cart-badge-modern");
+    badge.textContent = totalQuantity;
+    cartLink.appendChild(badge);
+}
 
 
 
+cartNotification();
 
-
-
-
+window.addToCart = addToCart;
+window.cartNotification = cartNotification;
 
 
 // افترضي عندك عناصر خاصة بالـ role موجودة في navbar.html

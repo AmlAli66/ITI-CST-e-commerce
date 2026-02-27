@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Catalog</title>
+    <title>Shopping Cart</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
@@ -13,6 +13,12 @@
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="../../css/pages/cart.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -20,22 +26,169 @@
     <!-- Shared Navbar -->
     <div id="navbar-container"></div>
 
-    <!-- Page Content -->
+    <!-- Breadcrumb -->
     <div class="container mt-4">
-        <h2>cart</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/index.html">Home</a></li>
+                <li class="breadcrumb-item active">Shopping Cart</li>
+            </ol>
+        </nav>
     </div>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">
+            <i class="fas fa-shopping-cart text-primary me-2"></i>
+            Shopping Cart
+        </h2>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Free Shipping Progress -->
+                <div class="free-shipping-badge" id="shippingProgress">
+                    <i class="fas fa-truck"></i>
+                    <span>You qualify for FREE shipping!</span>
+                </div>
+                <!-- Cart Items -->
+                <div id="cartItems"></div>
+                <!-- Cart btn clear and continue -->
+                <div class="cart-actions">
+                    <a href="/pages/shop/catalog.html" class="btn-continue">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Continue Shopping
+                    </a>
+                    <button class="btn-clear" onclick="clearCart()">
+                        <i class="fas fa-trash me-2"></i>
+                        Clear Cart
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="col-lg-4">
+                <div class="cart-summary" id="cartSummary">
+                    <div class="summary-title">Order Summary</div>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span id="shipping">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (2%)</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                    <button class="checkout-btn" onclick="checkout()">
+                        <i class="fas fa-lock me-2"></i>Proceed to Checkout
+                    </button>                
+                    <!-- Payment Methods -->
+                    <div class="payment-methods">
+                        <small>Secure Payment with</small>
+                        <div class="payment-icons">
+                            <i class="fab fa-cc-visa"></i>
+                            <i class="fab fa-cc-mastercard"></i>
+                            <i class="fab fa-cc-paypal"></i>
+                            <i class="fab fa-cc-amex"></i>
+                        </div>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Secure</span>
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-lock"></i>
+                            <span>Encrypted</span>
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-undo"></i>
+                            <span>30 Days Return</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-simple" id="toastMessage">
+        <i class="fas fa-check-circle" id="toastIcon"></i>
+        <span id="toastText">Product added to cart</span>
+    </div>
+
+    <!-- Modal delete-->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-trash-alt text-danger me-2"></i>
+                        Confirm Deletion
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">Are you sure you want to remove this item from your cart?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="fas fa-trash me-2"></i>Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>  
+
+
+
+
+<!-- Login Required Modal -->
+<div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                    Login Required
+                </h5>
+                <!-- remove btn exit-->
+            </div>
+            <div class="modal-body text-center">
+                <div class="modal-icon-wrapper mb-3">
+                    <i class="fas fa-user-lock text-warning" style="font-size: 3.5rem;"></i>
+                </div>
+                <p class="mb-2 fw-bold">You need to login first!</p>
+                <p class="text-muted mb-0">Please login to view your cart and make purchases.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <!-- Login Now -->
+                <button type="button" class="btn btn-primary btn-lg px-5" onclick="window.location.href='/pages/auth/login.html'">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login Now
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- Shared Footer -->
     <div id="footer-container"></div>
 
     <!-- Core Scripts -->
     <script src="../../js/core/include.js"></script>
-    <!-- <script src="../../js/core/utils.js"></script> -->
-    <!-- <script src="../../js/core/storage.js"></script> -->
-
-    <!-- Page Module -->
-    <script src="../../js/modules/cart/cart.js"></script>
-
+    <!-- Page JavaScript -->
+     <script src="/js/modules/cart/cart.js"></script>
+    <!-- <script src="../../js/modules/shop/cart.js"></script> -->
 </body>
 
 </html>

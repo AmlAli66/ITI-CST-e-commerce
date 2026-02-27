@@ -13,6 +13,12 @@
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="../../css/pages/details.css">
+
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -21,21 +27,286 @@
     <div id="navbar-container"></div>
 
     <!-- Page Content -->
-    <div class="container mt-4">
-        <h2>Product Details</h2>
+    <div class="container" style="margin-top: 100px;">
+        <nav class="breadcrumb-custom">
+            <a href="/index.html">Home</a>
+            <span class="mx-2">/</span>
+            <a href="/pages/shop/catalog.html">Products</a>
+            <span class="mx-2">/</span>
+            <span class="active" id="productBreadcrumb">Product Details</span>
+        </nav>
     </div>
+
+    <!-- Product Details -->
+    <div class="container my-5">
+        <div class="row g-5">
+            <!-- Gallery Column -->
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="gallery-wrapper">
+                    <div class="main-image-container">
+                        <img src="" class="main-image small image" id="mainImage" alt="Product">
+                        <button class="wishlist-btn" onclick="toggleWishlist()">
+                            <i class="far fa-heart" id="wishlistIcon"></i>
+                        </button>
+                        <button class="share-btn" onclick="shareProduct()">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                    <div class="listofimgs-wrapper" id="listofimgs"></div>
+                </div>
+            </div>
+
+            <!-- Info Column -->
+            <div class="col-lg-6" data-aos="fade-right">
+                <!-- Badges -->
+                <div>
+                    <span class="product-badge badge-new" id="newBadge">
+                        <i class="fas fa-star me-1"></i> New Arrival
+                    </span>
+                    <span class="product-badge badge-sale" id="saleBadge">
+                        <i class="fas fa-tag me-1"></i> Limited Time Offer
+                    </span>
+                </div>
+                <h1 id="productName" class="product-title">Product Name</h1>
+                <!-- Title & Rating -->
+                <h1 class="product-title" id="productName"></h1>
+                <div class="rating">
+                    <div class="stars" id="productRating"></div>
+                    <span class="rating-count" id="reviewsCount"></span>
+                </div>
+                <!-- Price Section -->
+                <div class="price-wrapper">
+                    <span class="New-price" id="NewPrice"></span>
+                    <span class="original-price" id="originalPrice"></span>
+                    <span class="discount-price" id="discountPrice"></span>
+                </div>
+                <!-- Short Description -->
+                <p class="short-description" id="productDescription"></p>
+                <!-- Product Meta -->
+                <div class="product-meta">
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="meta-content">
+                            <p class="meta-label">Availability</p>
+                            <p class="meta-value" id="stockStatus"></p>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <div class="meta-content">
+                            <p class="meta-label">Category</p>
+                            <p class="meta-value" id="productCategory"></p>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="meta-content">
+                            <p class="meta-label">Brand</p>
+                            <p class="meta-value" id="productBrand"></p>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="fas fa-barcode"></i>
+                        </div>
+                        <div class="meta-content">
+                            <p class="meta-label">SKU</p>
+                            <p class="meta-value" id="productSku"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quantity & Actions -->
+                <div class="d-flex align-items-center gap-4 mb-4">
+                    <span class="fw-bold">Quantity:</span>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="decreaseQuantity()">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" class="quantity-input" id="quantity" value="1" min="1" readonly>
+                        <button class="quantity-btn" onclick="increaseQuantity()">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn-add-to-cart" onclick="addToCart()">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        Add to Cart
+                    </button>
+                    <button class="btn-buy-now" onclick="buyNow()">
+                        <i class="fas fa-bolt me-2"></i>
+                        Buy Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container my-5">
+            <!-- Features Row -->
+            <div class="row g-3">
+                <div class="col-12 col-md-4">
+                    <div class="feature-item">
+                        <i class="fas fa-truck-fast feature-icon"></i>
+                        <div class="feature-title">Free Shipping</div>
+                        <div class="feature-text">On orders over $50</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="feature-item">
+                        <i class="fas fa-rotate-left feature-icon"></i>
+                        <div class="feature-title">30 Days Return</div>
+                        <div class="feature-text">Money back guarantee</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="feature-item">
+                        <i class="fas fa-shield-halved feature-icon"></i>
+                        <div class="feature-title">Secure Payment</div>
+                        <div class="feature-text">100% secure</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Section -->
+        <div class="mt-5">
+            <div class="custom-tabs d-flex">
+                <button class="custom-tab active" onclick="showTab(event,'description')">
+                    <i class="fas fa-align-left me-2"></i>
+                    Description
+                </button>
+                <button class="custom-tab" onclick="showTab(event,'reviews')">
+                    <i class="fas fa-star me-2"></i>
+                    Reviews
+                </button>
+            </div>
+
+            <div class="tab-content">
+                <!-- Description Tab -->
+                <div id="descriptionTab" class="tab-pane" style="display: block;">
+                    <div class="p-4 bg-light rounded-4" id="fullDescription"></div>
+                </div>
+
+                <!-- Reviews Tab -->
+                <div id="reviewsTab" class="tab-pane" style="display: none;">
+                    <div class="reviews-section">
+                        <div class="review-summary" id="reviewSummary">
+                            <div class="summary-left">
+                                <span class="avg-rating">0.0</span>
+                                <div class="stars-display">☆☆☆☆☆</div>
+                                <span class="review-count">0 reviews</span>
+                            </div>
+                        </div>
+
+                        <div class="reviews-list" id="reviewsList">
+                            <div class="text-center p-4">
+                                <i class="far fa-comment-dots fa-3x text-secondary mb-3"></i>
+                                <h6>Loading reviews...</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm mt-4">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-4">
+                                <i class="fas fa-pen me-2 text-primary"></i>
+                                <b style="font-size: 25px;">Write a Review</b>
+                            </h5>
+                            <form id="reviewForm">
+                                <div class="mb-3">
+                                    <label class="form-label"><b style="font-size: 20px;">Rating</b></label>
+                                    <div class="rating-input">
+                                        <i class="far fa-star" onclick="setRating(1)"></i>
+                                        <i class="far fa-star" onclick="setRating(2)"></i>
+                                        <i class="far fa-star" onclick="setRating(3)"></i>
+                                        <i class="far fa-star" onclick="setRating(4)"></i>
+                                        <i class="far fa-star" onclick="setRating(5)"></i>
+                                    </div>
+                                    <input type="hidden" id="reviewRating" value="5">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Your Review</label>
+                                    <textarea class="form-control" id="reviewComment" rows="4" placeholder="Share your thoughts about this product..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="fas fa-paper-plane me-2"></i>
+                                    Submit Review
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        <section class="mt-5">
+            <h2 class="mb-4">You Might Also Like</h2>
+            <div class="row g-4" id="relatedProducts"></div>
+        </section>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-simple" id="toastMessage">
+        <i class="fas fa-check-circle" id="toastIcon"></i>
+        <span id="toastText">Product added to cart</span>
+    </div>
+
+
+
+<!-- model login  -->
+<div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                    Login Required
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="modal-icon-wrapper mb-3">
+                    <i class="fas fa-user-lock text-warning" style="font-size: 3.5rem;"></i>
+                </div>
+                <p class="mb-2 fw-bold">You need to login first!</p>
+                <p class="text-muted mb-0">Please login to add items to your cart or make a purchase.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="loginNowBtn">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login Now
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
     <!-- Shared Footer -->
     <div id="footer-container"></div>
 
     <!-- Core Scripts -->
     <script src="../../js/core/include.js"></script>
-    <!-- <script src="../../js/core/utils.js"></script> -->
-    <!-- <script src="../../js/core/storage.js"></script> -->
 
-    <!-- Page Module -->
+    <!-- AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
     <script src="../../js/modules/products/product-details.js"></script>
-
+    <!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
