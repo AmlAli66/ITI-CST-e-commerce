@@ -42,6 +42,8 @@ if (!existingProducts) {
     } else {
         console.log('✅ Products already in localStorage');
     }
+    displayFeaturedProducts();
+
 }
 initializeProducts();
 
@@ -67,38 +69,42 @@ function getProductsByCategory(category) {
 function getProductById(id) {
     const allProducts = getAllProducts();
     return allProducts.find(product => product.id === id);
-}
-    function displayFeaturedProducts(){
-        const featuredProducts = getFeaturedProducts();
-        console.log("Featured Products Found :"+ featuredProducts.length);
-        const container = document.getElementById("homeFeaturedproductsgrid");
-        if(!container){
-            console.log("Container Not Found");
-        }
-        container.innerHTML= featuredProducts.map(product=>{
-            return `
-            <div class="homeProductCard" onclick="viewProductDetails('${product.id}')">
-            <img src="${product.image}" alt="${product.name}" class="homeProductImages">
-                <div class="homeProductDetails">
-                    <h6>${product.name}</h6>
-                        <div class="homeProductPriceCard">
-                        <span>price : ${product.price} $</span>
-                        </div>
 
-                <button class="homeShowDetails" onclick="event.stopPropagation(); viewProductDetails('${product.id}')">
-                Show Details
-                </button>
+}
+// trying new js 
+function displayFeaturedProducts(){
+    const featuredProducts = getFeaturedProducts();
+    console.log("Featured Products Found :" + featuredProducts.length);
+    const container = document.getElementById("homeFeaturedproductsgrid");
+    if(!container){
+        console.log("Container Not Found");
+        return;
+    }
+    container.innerHTML = featuredProducts.map(product => {
+        return `
+        <div class="homeProductCard" onclick="viewProductDetails('${product.id}')">
+            <div class="homeProductImgWrap">
+                <span class="homeProductBadge">Featured</span>
+                <img src="${product.image}" alt="${product.name}" class="homeProductImages">
+            </div>
+            <div class="homeProductBody">
+                <div class="homeProductCategory">${product.category}</div>
+                <div class="homeProductName">${product.name}</div>
+                <div class="homeProductPriceRow">
+                    <span class="homeProductPriceCard"><span class="currency">$</span>${product.price}</span>
+                    <button class="homeShowDetails" onclick="event.stopPropagation(); viewProductDetails('${product.id}')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
             </div>
         </div>
-        
-        
         `
+    }).join('');
+}
 
 
-        }).join('')
-    }
 
-displayFeaturedProducts();
+//displayFeaturedProducts();
 function viewProductDetails(productID){
     window.location.href=`./pages/shop/product-details.html?id=${productID}`;
 }
@@ -125,44 +131,9 @@ if(!user){
 }
 homeLogout.addEventListener('click',logout)
 //---------------------------
-///---- Logout Handling
-
-
-//-----------------------
-
-//--------------- Register Handling
 
 
 
-
-
-//------------------------------
-
-
-
-//-------- Mocking The User 
-// function createMockUser(){
-//     if(!localStorage.getItem('currentUser')){
-//     const mockUser ={
-//     id:"4",
-//     name:"Freeze",
-//     email:"freeze@icemart.com",
-//     password:"123456",
-//     role:"admin",
-//     phone:"01234567896",
-//     address : "789 try later, try again , egy",
-//     status:"active",
-//     dateCreated:"2026-02-22"
-
-//     }
-//     localStorage.setItem('currentUser',JSON.stringify(mockUser))
-
-// }
-// else {
-//         console.log("ℹ️ User already exists, skipping mock creation");
-//     }
-
-// }
 function getCurrentUser(){
     const userStr= localStorage.getItem('currentUser');
     return userStr? JSON.parse(userStr) : null;
@@ -180,38 +151,7 @@ function logout(){
     
     window.location.href = "/index.html";
 }
-// function updateNavbar() {
-//     const user = getCurrentUser();
-//     const navUserName = document.getElementById("navUserName");
-    
-//     if(navUserName) {
-//         navUserName.innerText = user ? `Welcome ${user.name}` : "";
-//     }
-// }
 
 
 
 
-//----------------------//---- Initilaizing the users
-// async function initilaizeUsers(){
-//     const existingUser = localStorage.getItem('users');
-// if (!existingUser) {
-//         console.log('Loading User into localStorage...');
-        
-//         try {
-//             // Fetch from JSON
-//             const userResponse = await fetch('/data/users.json');
-//             const users = await userResponse.json();
-            
-//             // Store in localStorage
-//             localStorage.setItem('users', JSON.stringify(users));
-            
-//             console.log('users loaded successfully:', users.length);
-//         } catch (error) {
-//             console.error(' Error loading users:', error);
-//         }
-//     } else {
-//         console.log('✅ Products already in localStorage');
-//     }
-// }
-// initilaizeUsers();

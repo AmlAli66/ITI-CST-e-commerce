@@ -1,62 +1,165 @@
-#navAdminPanel,#navSellerDashboard{
-    display:none;
+/* ============ NAVBAR - ICY GRADIENT ============ */
+.navbar {
+    background: linear-gradient(135deg, #0c1445 0%, #1a1060 40%, #2d1b69 70%, #1b2a6b 100%) !important;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+    box-shadow: 0 4px 25px rgba(10, 10, 40, 0.4);
+    position: relative;
 }
-.navlogo{
+
+/* Bottom glow line */
+.navbar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #38bdf8, #818cf8, #38bdf8, transparent);
+    opacity: 0.5;
+}
+
+/* Logo */
+.navlogo {
     padding-left: 2px;
     padding-right: 5px;
+    transition: all 0.3s ease;
 }
-.navlogo:hover{
-    border: 1px solid black;
+
+.navlogo:hover {
+    opacity: 0.85;
+    border: none;
 }
-.navIngredient{
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+.navlogo .fa-snowflake {
+    color: #38bdf8 !important;
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.4));
+}
+
+.navIngredient {
+    background: linear-gradient(135deg, #7dd3fc, #c4b5fd);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-weight:  900;
+    font-weight: 900;
     font-family: 'Poppins', sans-serif;
 }
-#navUserName{
+
+/* Nav Links */
+.navbar-nav .nav-link {
+    color: rgba(203, 213, 225, 0.85) !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    padding: 8px 4px;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #7dd3fc !important;
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+/* Hover underline glow */
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+    width: 60%;
+}
+
+/* Cart icon */
+.navbar-nav .nav-link .fa-cart-shopping {
+    color: rgba(203, 213, 225, 0.85);
+    transition: all 0.25s ease;
+}
+
+.navbar-nav .nav-link:hover .fa-cart-shopping {
+    color: #7dd3fc;
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.3));
+}
+
+/* Username */
+#navUserName {
     padding-left: 5px;
-    font-weight: 100;
-    margin:0 auto ;
-    font-size: small;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: #7dd3fc;
 }
-#navLogin{
-    background: transparent;
-    border: 2px solid #fff;
-    color: #fff;
-    padding: 3px 5px;
-    border-radius: 20px;
+
+/* Login Button - icy outline */
+#navLogin {
+    background: rgba(56, 189, 248, 0.08);
+    border: 1.5px solid rgba(56, 189, 248, 0.3);
+    padding: 5px 16px;
+    border-radius: 8px;
     transition: all 0.3s ease;
     font-size: small;
-    text-align: center;
-
 }
-#navLogin:hover{
-    background: #fff;
-    color: #333;
-}
-#navLogout{
 
-    background: transparent;
-    border: 2px solid #fff;
-    color: #fff;
-    padding: 3px 5px;
-    border-radius: 20px;
+#navLogin a {
+    color: #7dd3fc !important;
+}
+
+#navLogin:hover {
+    background: linear-gradient(135deg, #38bdf8, #818cf8);
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+}
+
+#navLogin:hover a {
+    color: #020617 !important;
+}
+
+/* Logout Button - soft red */
+#navLogout {
+    background: rgba(248, 113, 113, 0.08);
+    border: 1.5px solid rgba(248, 113, 113, 0.2);
+    padding: 5px 16px;
+    border-radius: 8px;
     transition: all 0.3s ease;
     font-size: small;
-    text-align: center;
 }
-#navLogout:hover{
-    background: #fff;
-    color: #333;
+
+#navLogout a {
+    color: #f87171 !important;
 }
+
+#navLogout:hover {
+    background: #f87171;
+    border-color: #f87171;
+    box-shadow: 0 4px 15px rgba(248, 113, 113, 0.25);
+}
+
+#navLogout:hover a {
+    color: #fff !important;
+}
+
+/* Hidden role links */
+#navAdminPanel,
+#navSellerDashboard {
+    display: none;
+}
+
+/* Cart Badge */
 .cart-badge-modern {
     position: absolute;
     top: -8px;
     right: -8px;
-    background: #ef4444;
+    background: blue;
     color: white;
     font-size: 0.7rem;
     font-weight: 700;
@@ -66,4 +169,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+}
+
+/* Mobile Toggler */
+.navbar-toggler {
+    border: 1px solid rgba(125, 211, 252, 0.2);
+    padding: 4px 8px;
+}
+
+.navbar-toggler-icon {
+    filter: invert(0.7) sepia(0.5) hue-rotate(170deg);
+}
+
+/* Mobile Dropdown */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background: linear-gradient(135deg, #0c1445, #2d1b69);
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 10px;
+        border: 1px solid rgba(56, 189, 248, 0.1);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
 }

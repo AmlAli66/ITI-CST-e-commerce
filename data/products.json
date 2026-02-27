@@ -45,7 +45,7 @@
       "reviewCount": 72,
       "status": "approved",
       "dateAdded": "2026-02-12",
-      "featured":false
+      "featured":true
     },
     {
       "id": "3",
@@ -141,7 +141,7 @@
     "reviewCount": 86,
     "status": "approved",
     "dateAdded": "2026-02-15",
-    "featured":false 
+    "featured":true 
   },
   {
     "id": "7",
@@ -167,7 +167,7 @@
     "reviewCount": 143,
     "status": "approved",
     "dateAdded": "2026-02-15",
-    "featured":false
+    "featured":true
   },
   {
     "id": "8",
@@ -216,7 +216,7 @@
     "reviewCount": 91,
     "status": "approved",
     "dateAdded": "2026-02-15",
-    "featured":false
+    "featured":true
   },
   {
     "id": "10",
@@ -266,7 +266,7 @@
     "reviewCount": 128,
     "status": "approved",
     "dateAdded": "2026-02-15",
-    "featured":false
+    "featured":true
 },
 {
     "id": "12",
@@ -342,7 +342,7 @@
     "reviewCount": 7,
     "status": "approved",
     "dateAdded": "2026-02-15",
-    "featured":false
+    "featured":true
 },
 {
     "id": "15",
@@ -421,7 +421,7 @@
     "reviewCount": 45,
     "status": "approved",
     "dateAdded": "2026-02-15",
-    "featured":false
+    "featured":true
 },
 {
     "id": "18",
