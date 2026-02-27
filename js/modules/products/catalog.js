@@ -25,7 +25,7 @@ function viewAllProducts(productsArray){
                     </div>
                     <div>
                     <div class="catalogProductButtons">
-                    <button class="catalogAddToCard" onclick=" event.stopPropagation(); addToCart('${product.id}')">
+                    <button class="catalogAddToCard" onclick=" event.stopPropagation(); navAddToCart('${product.id}')">
                     Add To Cart
                     </button>                
                     <button class="catalogShowDetails " onclick="  event.stopPropagation();  viewProductDetails('${product.id}')">
