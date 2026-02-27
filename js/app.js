@@ -69,37 +69,40 @@ function getProductsByCategory(category) {
 function getProductById(id) {
     const allProducts = getAllProducts();
     return allProducts.find(product => product.id === id);
-}
-    function displayFeaturedProducts(){
-        const featuredProducts = getFeaturedProducts();
-        console.log("Featured Products Found :"+ featuredProducts.length);
-        const container = document.getElementById("homeFeaturedproductsgrid");
-        if(!container){
-            console.log("Container Not Found");
-            return;
-        }
-        container.innerHTML= featuredProducts.map(product=>{
-            return `
-            <div class="homeProductCard" onclick="viewProductDetails('${product.id}')">
-            <img src="${product.image}" alt="${product.name}" class="homeProductImages">
-                <div class="homeProductDetails">
-                    <h6>${product.name}</h6>
-                        <div class="homeProductPriceCard">
-                        <span>price : ${product.price} $</span>
-                        </div>
 
-                <button class="homeShowDetails" onclick="event.stopPropagation(); viewProductDetails('${product.id}')">
-                Show Details
-                </button>
+}
+// trying new js 
+function displayFeaturedProducts(){
+    const featuredProducts = getFeaturedProducts();
+    console.log("Featured Products Found :" + featuredProducts.length);
+    const container = document.getElementById("homeFeaturedproductsgrid");
+    if(!container){
+        console.log("Container Not Found");
+        return;
+    }
+    container.innerHTML = featuredProducts.map(product => {
+        return `
+        <div class="homeProductCard" onclick="viewProductDetails('${product.id}')">
+            <div class="homeProductImgWrap">
+                <span class="homeProductBadge">Featured</span>
+                <img src="${product.image}" alt="${product.name}" class="homeProductImages">
+            </div>
+            <div class="homeProductBody">
+                <div class="homeProductCategory">${product.category}</div>
+                <div class="homeProductName">${product.name}</div>
+                <div class="homeProductPriceRow">
+                    <span class="homeProductPriceCard"><span class="currency">$</span>${product.price}</span>
+                    <button class="homeShowDetails" onclick="event.stopPropagation(); viewProductDetails('${product.id}')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
             </div>
         </div>
-        
-        
         `
+    }).join('');
+}
 
 
-        }).join('')
-    }
 
 //displayFeaturedProducts();
 function viewProductDetails(productID){
