@@ -35,6 +35,8 @@ const cardNumber = document.getElementById("cardNumber");
 const expiry = document.getElementById("expiry");
 const cvv = document.getElementById("cvv");
 
+
+
 const shippingFee = 0;
 
 // ===============================
@@ -222,133 +224,126 @@ function updateTotals(subtotal) {
 }
 
 // ===============================
-// PLACE ORDER
-// ===============================
-placeOrderBtn.addEventListener("click", async () => {
-    if (!validateForm()) return;
-
-///////////////////////////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////////////////////////////
-
-
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (!currentUser) return;
-
-    const userCart = cart.filter(item => item.userId === currentUser.id);
-    if (!Array.isArray(userCart) || userCart.length === 0) {
-        alert("Cart is empty");
-        return;
-    }
-
-    const response = await fetch("../../data/products.json");
-    const products = await response.json();
-
-    let items = [];
-    let subtotal = 0;
-
-    userCart.forEach(item => {
-        const product = products.find(p => p.id === item.productId);
-        if (!product) return;
-
-        const hasDiscount = product.discount && product.discount > 0;
-        const finalPrice = hasDiscount ? product.price * (1 - product.discount / 100) : product.price;
-        const itemTotal = finalPrice * item.quantity;
-        subtotal += itemTotal;
-
-        items.push({
-            productId: product.id,
-            productName: product.name,
-            price: finalPrice,
-            quantity: item.quantity,
-            sellerId: product.sellerId,
-            total: itemTotal
-        });
-    });
-
-    const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-
-    if ((selectedMethod === "visa" || selectedMethod === "MasterCard") && !validateCardDetails()) {
-        alert("Enter valid card details:\n- Card Number: 16 digits\n- Expiry: MM/YY (M>=12,Y>=2026)\n- CVV: 3 digits");
-        return;
-    }
-
-
-
-
-    // Confirmation
-
-  
-    const confirmOrder = confirm("Are you sure you want to place this order?");
-
-    if (!confirmOrder) {
-        return; 
-    }
-
-
-    const shippingCost = subtotal > 100 ? 0 : shippingFee;
-    const tax = subtotal * 0.02;
-    const totalPrice = subtotal + shippingCost + tax;
-
-    const newOrder = {
-        id: Date.now(),
-        userId: currentUser.id,
-        fullName: fullName.value.trim(),
-        phone: phone.value.trim(),
-        address: address.value.trim(),
-        items,
-        subTotal: subtotal,
-        shipping: shippingCost,
-        tax,
-        totalPrice,
-        paymentMethod: selectedMethod,
-        status: (selectedMethod === "visa" || selectedMethod === "MasterCard") ? "Paid" : "Pending",
-        orderDate: new Date().toISOString()
-    };
-
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    orders.push(newOrder);
-    localStorage.setItem("orders", JSON.stringify(orders));
-
-    // Remove user items from cart
-    const remainingCart = cart.filter(item => item.userId !== currentUser.id);
-    localStorage.setItem("cart", JSON.stringify(remainingCart));
-
-    // Reset form & summary
-    fullName.value = "";
-    phone.value = "";
-    address.value = "";
-    cardNumber.value = "";
-    expiry.value = "";
-    cvv.value = "";
-
-    fullName.classList.remove("is-invalid");
-    phone.classList.remove("is-invalid");
-    address.classList.remove("is-invalid");
-    cardNumber.classList.remove("is-invalid");
-    expiry.classList.remove("is-invalid");
-    cvv.classList.remove("is-invalid");
-
-    visaSection.classList.add("d-none");
-    document.querySelector('input[name="paymentMethod"][value="cod"]').checked = true;
-
-    subTotalElement.textContent = "$0";
-    shippingElement.textContent = "$0";
-    taxElement.textContent = "$0";
-    totalElement.textContent = "$0";
-
-    document.getElementById("orderList").innerHTML = "";
-
-    alert("Order Placed Successfully");
-    window.location.href = "../cart/cart.html";
-});
-
-
-// ===============================
-// INIT
+// INIT and placeorder
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-    loadCartSummary();
-});
 
+    loadCartSummary();
+
+    const confirmModal = new bootstrap.Modal(
+        document.getElementById('confirmOrderModal')
+    );
+
+    
+    placeOrderBtn.addEventListener("click", () => {
+
+        if (!validateForm()) return;
+
+        const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+        if ((selectedMethod === "visa" || selectedMethod === "MasterCard") && !validateCardDetails()) {
+            alert("Enter valid card details:\n- Card Number: 16 digits\n- Expiry: MM/YY (M<=12,Y>=2026)\n- CVV: 3 digits");
+            return;
+        }
+
+        confirmModal.show();
+    });
+
+   
+    document.getElementById("confirmOrderBtn").addEventListener("click", async () => {
+
+        confirmModal.hide();
+
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        if (!currentUser) return;
+
+        const userCart = cart.filter(item => item.userId === currentUser.id);
+        if (!Array.isArray(userCart) || userCart.length === 0) {
+            alert("Cart is empty");
+            return;
+        }
+
+        const response = await fetch("../../data/products.json");
+        const products = await response.json();
+
+        let items = [];
+        let subtotal = 0;
+
+        userCart.forEach(item => {
+            const product = products.find(p => p.id === item.productId);
+            if (!product) return;
+
+            const hasDiscount = product.discount && product.discount > 0;
+            const finalPrice = hasDiscount ? product.price * (1 - product.discount / 100) : product.price;
+            const itemTotal = finalPrice * item.quantity;
+            subtotal += itemTotal;
+
+            items.push({
+                productId: product.id,
+                productName: product.name,
+                price: finalPrice,
+                quantity: item.quantity,
+                sellerId: product.sellerId,
+                total: itemTotal
+            });
+        });
+
+        const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+        const shippingCost = subtotal > 100 ? 0 : shippingFee;
+        const tax = subtotal * 0.02;
+        const totalPrice = subtotal + shippingCost + tax;
+
+        const newOrder = {
+            id: Date.now(),
+            userId: currentUser.id,
+            fullName: fullName.value.trim(),
+            phone: phone.value.trim(),
+            address: address.value.trim(),
+            items,
+            subTotal: subtotal,
+            shipping: shippingCost,
+            tax,
+            totalPrice,
+            paymentMethod: selectedMethod,
+            status: (selectedMethod === "visa" || selectedMethod === "MasterCard") ? "Paid" : "Pending",
+            orderDate: new Date().toISOString()
+        };
+
+        const orders = JSON.parse(localStorage.getItem("orders")) || [];
+        orders.push(newOrder);
+        localStorage.setItem("orders", JSON.stringify(orders));
+
+        const remainingCart = cart.filter(item => item.userId !== currentUser.id);
+        localStorage.setItem("cart", JSON.stringify(remainingCart));
+
+        fullName.value = "";
+        phone.value = "";
+        address.value = "";
+        cardNumber.value = "";
+        expiry.value = "";
+        cvv.value = "";
+
+        fullName.classList.remove("is-invalid");
+        phone.classList.remove("is-invalid");
+        address.classList.remove("is-invalid");
+        cardNumber.classList.remove("is-invalid");
+        expiry.classList.remove("is-invalid");
+        cvv.classList.remove("is-invalid");
+
+        visaSection.classList.add("d-none");
+        document.querySelector('input[name="paymentMethod"][value="cod"]').checked = true;
+
+        subTotalElement.textContent = "$0";
+        shippingElement.textContent = "$0";
+        taxElement.textContent = "$0";
+        totalElement.textContent = "$0";
+
+        document.getElementById("orderList").innerHTML = "";
+
+        alert("Order Placed Successfully");
+        window.location.href = "../cart/cart.html";
+    });
+
+});
