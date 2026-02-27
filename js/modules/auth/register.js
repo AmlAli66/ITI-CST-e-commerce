@@ -2,6 +2,7 @@ const form = document.getElementById("registerForm");
 const message = document.getElementById("message");
 form.addEventListener("submit", function (event) {
   event.preventDefault();
+
   const fullName = document.getElementById("fullName").value.trim();
   const email = document.getElementById("email").value.trim().toLowerCase();
   const password = document.getElementById("password").value.trim();
@@ -14,12 +15,12 @@ form.addEventListener("submit", function (event) {
   const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/;
   const addressRegex = /^[\u0600-ۿA-Za-z0-9\s]{3,}$/;
   if (!nameRegex.test(fullName)) {
-    showError("Full Name must be at least 3 letters.");
+    showError("Plese Enter Valid Name!");
     return;
   }
 
   if (!emailRegex.test(email)) {
-    showError("Invalid email format.");
+    showError("Please Enter Valid Email!");
     return;
   }
 
@@ -30,19 +31,19 @@ form.addEventListener("submit", function (event) {
     return;
   }
   if (password !== confirmPassword) {
-    showError("Passwords do not match!");
+    showError("Passwords Not Match!");
     return;
   }
   if (!iti.isValidNumber()) {
-    showError("Enter Valid Phone Number");
+    showError("Please Complete All Fields Before Submit!");
     return;
   }
   if (!addressRegex.test(address)) {
-    showError("Address must start with a letter.");
+    showError("Please Enter Valid Address!");
     return;
   }
   if (!role) {
-    showError("Please Chose Role.");
+    showError("Please Select Role !");
     return;
   }
 
@@ -65,7 +66,7 @@ form.addEventListener("submit", function (event) {
     phone: iti.getNumber(),
     address: address,
     status: "active",
-    createdAt: new Date().toLocaleDateString("en-CA"),
+    dateCreated: new Date().toLocaleDateString("en-CA"),
   };
 
   users.push(newUser);
@@ -80,6 +81,20 @@ form.addEventListener("submit", function (event) {
   form.reset();
   form.classList.remove("was-validated");
 }); //End Of Form
+
+document
+  .querySelectorAll("#registerForm input, #registerForm select")
+  .forEach((field) => {
+    field.addEventListener("blur", function () {
+      if (this.checkValidity()) {
+        this.classList.add("is-valid");
+        this.classList.remove("is-invalid");
+      } else {
+        this.classList.add("is-invalid");
+        this.classList.remove("is-valid");
+      }
+    });
+  });
 
 function showError(msg) {
   message.textContent = msg;

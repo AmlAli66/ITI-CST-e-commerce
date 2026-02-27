@@ -23,7 +23,7 @@
   </head>
 
   <body>
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div class="card shadow p-4">
@@ -36,6 +36,7 @@
                   type="text"
                   class="form-control"
                   id="fullName"
+                  minlength="4"
                   required
                 />
                 <div class="invalid-feedback">
@@ -46,7 +47,13 @@
               <!-- Email -->
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" required />
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  required
+                  minlength="6"
+                />
                 <div class="invalid-feedback">
                   Please enter a valid email address.
                 </div>
@@ -64,7 +71,8 @@
                   minlength="6"
                 />
                 <div class="invalid-feedback">
-                  Password must be at least 6 characters.
+                  Password must contain 1 capital letter and 1 number And One
+                  Special Char And More Than 6 Letters.
                 </div>
               </div>
               <div class="mb-3">
@@ -81,14 +89,20 @@
               <!-- Phone -->
               <div class="mb-3">
                 <label class="form-label">Phone Number</label>
-                <input type="tel" id="phone" class="form-control" />
+                <input type="tel" id="phone" class="form-control" required />
                 <div id="phoneError" class="text-danger mt-1"></div>
               </div>
               <!-- End Of Phone -->
               <!-- Address -->
               <div class="mb-3">
                 <label class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  required
+                  minlength="5"
+                />
                 <div class="invalid-feedback">Enter Valid Address</div>
               </div>
               <!-- End Of Adress -->
