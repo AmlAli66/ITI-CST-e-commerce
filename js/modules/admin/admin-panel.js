@@ -1,7 +1,7 @@
 import { renderDashboard } from "./admin-dashboard.js";
 import { renderUsers } from "./admin-users.js";
 import { renderProducts } from "./admin-products.js";
-// import { renderOrders } from "./admin-orders.js";
+import { renderOrders } from "./admin-orders.js";
 import { renderActivityFeed } from "./admin-activity.js";
 import { initUsers } from "../../core/users-service.js";
 import { initProducts } from "../../core/products-service.js";
@@ -83,7 +83,7 @@ function switchSection(section) {
     if (section === "dashboard") renderDashboard();
     if (section === "users") renderUsers();
     if (section === "products") renderProducts();
-    // if (section === "orders") renderOrders();
+    if (section === "orders") renderOrders();
 }
 
 

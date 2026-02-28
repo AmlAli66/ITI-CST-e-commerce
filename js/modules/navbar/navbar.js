@@ -92,7 +92,7 @@ function navAddToCart(productId) {
     // 1. Check if user is logged in
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
-        alert('Please login first');
+        catalogshowToast('Please login first','warning');
         return;
     }
 
@@ -109,7 +109,7 @@ function navAddToCart(productId) {
     if (existingItem) {
         // Already in cart → increase quantity
         if (existingItem.quantity >= product.stock) {
-            alert('No more stock available');
+            catalogshowToast('no more stock Available', 'error');
             return;
         }
         existingItem.quantity += 1;
@@ -125,7 +125,7 @@ function navAddToCart(productId) {
 
     // 5. Save back to localStorage
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Added to cart!');
+    catalogshowToast('Added to cart!','success');
     cartNotification();
 }
 // Notification on the cart simpol 
@@ -173,6 +173,33 @@ cartNotification();
 
 window.navAddToCart = navAddToCart;
 window.cartNotification = cartNotification;
+
+
+
+// Trying the Toast 
+function catalogshowToast(message, type = 'default') {
+    const toast = document.createElement("div");
+    toast.className = "custom-toast";
+    
+    if(type !== 'default') {
+        toast.classList.add(type);
+    }
+    
+    toast.innerText = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add("show"), 100);
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 300);
+    }, 2500);
+}
+
+
+
+
+
 
 
 // افترضي عندك عناصر خاصة بالـ role موجودة في navbar.html
