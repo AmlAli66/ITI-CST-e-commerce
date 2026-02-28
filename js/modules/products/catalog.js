@@ -43,7 +43,9 @@ function viewAllProducts(productsArray){
 
 // Redirecting to the product details
 function viewProductDetails(productID){
-    window.location.href=`/pages/shop/product-details.html?id=${productID}`;
+    //window.location.href=`/pages/shop/product-details.html?id=${productID}`;
+    // trying 
+    window.location.href = `product-details.html?id=${productID}`;
 }
 //
 
