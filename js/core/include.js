@@ -30,6 +30,9 @@ loadPartial("#navbar-container", "/partials/navbar.html", () => {
 // Load footer normally
 loadPartial("#footer-container", "/partials/footer.html");
 
+// Load footer normally
+loadPartial("#back-btn-container", "/partials/back.btn.html");
+
 
 
 //how to use: add <div id="navbar-container"></div> and <div id="footer-container"></div> and <script src="../../js/core/include.js"></script> in your HTML, and the partials will be loaded automatically.
