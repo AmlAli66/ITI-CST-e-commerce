@@ -5,7 +5,7 @@
 }
 
 .service-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-7px);
 }
 
 .faq-section {
@@ -20,6 +20,11 @@
         #9ec9ee,
         #a483cf
     );
+}
+
+.color-btn:hover{
+
+ transform: scale(1.1);
 }
 
 .cons{
