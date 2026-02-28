@@ -166,8 +166,10 @@ async function loadCartSummary() {
     const userCart = cart.filter(item => item.userId === currentUser.id);
     if (userCart.length === 0) return;
 
-    const response = await fetch("../../data/products.json");
-    const products = await response.json();
+    // const response = await fetch("../../data/products.json");
+    // const products = await response.json();
+
+    const products = JSON.parse(localStorage.getItem("products")) || [];
 
     let html = '';
     let subtotal = 0;
@@ -264,8 +266,10 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const response = await fetch("../../data/products.json");
-        const products = await response.json();
+        // const response = await fetch("../../data/products.json");
+        // const products = await response.json();
+
+        const products = JSON.parse(localStorage.getItem("products")) || [];
 
         let items = [];
         let subtotal = 0;
