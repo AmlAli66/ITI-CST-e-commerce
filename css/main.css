@@ -23,11 +23,11 @@ body {
             user-select: none;
             pointer-events: none;
             animation: fall linear forwards;
-            opacity: 1;  /* Make it more subtle - 0.6 means 60% visible */
+            opacity: 1;  
         }
         @keyframes fall {
             to {
-                transform: translateY(100vh);  /* Move down the full screen height */
+                transform: translateY(100vh);  
             }
         }
         .content {
