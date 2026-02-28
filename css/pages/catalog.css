@@ -264,3 +264,23 @@ transform: translateY(-2px);
     background: linear-gradient(135deg, #f59e0b, #d97706);
     color: #1f2937;
 }
+/* clear Filter */ 
+.mobileClearFilter {
+    padding: 15px;
+    text-align: center;
+}
+
+#catalogClearAllFiltersMobile {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 500;
+    width: 100%;
+    max-width: 300px;
+}
+
+#catalogClearAllFiltersMobile:active {
+    transform: scale(0.98);
+}

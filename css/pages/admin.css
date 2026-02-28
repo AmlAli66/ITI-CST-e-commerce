@@ -538,3 +538,232 @@
         padding: 0;
     }
 }
+
+/*      ahmed part                            */
+
+.ordersFilters {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.ordersFilters h3 {
+    margin: 0;
+    color: #0f172a;
+    font-weight: 700;
+    flex: 1;
+    min-width: 200px;
+}
+
+#orderSearch {
+    padding: 10px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.3s;
+    min-width: 250px;
+}
+
+#orderSearch:focus {
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+#statusFilter {
+    padding: 10px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+    background: white;
+    min-width: 150px;
+}
+
+#statusFilter:focus {
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+/* Orders Display Container */
+#ordersDisplay {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+/* Order Card */
+.orderCard {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-left: 4px solid var(--admin-primary);
+}
+
+.orderCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15);
+}
+
+/* Order Info Labels */
+.orderCardId {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--admin-primary);
+    background: rgba(124, 58, 237, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    width: fit-content;
+}
+
+.orderUserName {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0f172a;
+    display: block;
+}
+
+.orderStatus {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Status Colors */
+.orderCard:has(.orderStatus:contains("Pending")) .orderStatus {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.orderCard label.orderStatus {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+/* Manual status coloring - add these classes in JS */
+.status-pending {
+    background: #fef3c7 !important;
+    color: #92400e !important;
+}
+
+.status-shipped {
+    background: #dbeafe !important;
+    color: #1e40af !important;
+}
+
+.status-delivered {
+    background: #d1fae5 !important;
+    color: #065f46 !important;
+}
+
+.status-cancelled {
+    background: #fee2e2 !important;
+    color: #991b1b !important;
+}
+
+.orderTotalPrice {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #10b981;
+    display: block;
+}
+
+/* Buttons */
+.orderCard button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.viewDetailsBtn {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.viewDetailsBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.cancelBtn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.cancelBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #ordersDisplay {
+        grid-template-columns: 1fr;
+    }
+    
+    .ordersFilters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .ordersFilters h3 {
+        text-align: center;
+    }
+    
+    #orderSearch,
+    #statusFilter {
+        width: 100%;
+    }
+}
+
+.statusDropdown {
+    padding: 10px 16px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #667eea, #764ba2) border-box;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+    min-width: 150px;
+}
+
+.statusDropdown:hover {
+    background: linear-gradient(#f9fafb, #f9fafb) padding-box,
+                linear-gradient(135deg, #667eea, #764ba2) border-box;
+    transform: translateY(-1px);
+}
+
+.statusDropdown:focus {
+    outline: none;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px);
+}
+
+.statusDropdown option:disabled {
+    color: #d1d5db;
+    background: #f3f4f6;
+}
+/*  */ 
