@@ -1,5 +1,21 @@
 console.log("catalog module loaded");
 
+// Ensuring if user gone to products before home
+async function ensureProducts() {
+    if (!localStorage.getItem('products')) {
+        const res = await fetch('../../data/products.json');
+        const products = await res.json();
+        localStorage.setItem('products', JSON.stringify(products));
+    }
+}
+
+ensureProducts().then(() => {
+    catalogProductsToDisplay = getAllProducts();
+    creatingCatalogPagination();
+    catalogBrandCreation();
+    ApplyAllFilters();
+});
+//----
 // Making variable for current display This hold whatever should be displayed at the moment weather it is with filters or search or what
 let catalogProductsToDisplay = getAllProducts();
 
@@ -224,7 +240,7 @@ function catalogBrandCreation(){
         catalogBrandContainer.appendChild(wrapper);
     }
 }
-catalogBrandCreation();
+ // catalogBrandCreation();
 
 //------------------------------
 // SYMPHONY FILTER  The MAIN FUNCTION 
