@@ -32,7 +32,12 @@ function getAllProducts(){
 function viewAllProducts(productsArray){
     //const Products = getAllProducts(); no more need for it 
     const productsContainer = document.getElementById("catalogProducts");
+    const currentUser =JSON.parse(localStorage.getItem('currentUser')||'null');
+    const isAdmin = currentUser?.role=="admin";
     productsContainer.innerHTML= productsArray.map(product=>{
+        //hiding the product add to cart to its seller 
+        const isOwnProduct = currentUser?.role === "seller" && currentUser?.id === product.sellerId;
+
         return `
         <div class="catalogProductCard col-lg-4 col-md-6 col-sm-12 mb-4" onclick="viewProductDetails('${product.id}')">
         <img src="${product.image}" alt="${product.name}"class="catalogproductImage">
@@ -43,7 +48,7 @@ function viewAllProducts(productsArray){
                     </div>
                     <div>
                     <div class="catalogProductButtons">
-                    <button class="catalogAddToCard" onclick=" event.stopPropagation(); navAddToCart('${product.id}')">
+                    <button class="catalogAddToCard" onclick=" event.stopPropagation(); navAddToCart('${product.id}')"  ${(isAdmin||isOwnProduct )? 'style="display:none"' : ''}>
                     Add To Cart
                     </button>                
                     <button class="catalogShowDetails " onclick="  event.stopPropagation();  viewProductDetails('${product.id}')">
@@ -179,7 +184,8 @@ maxSlider.step = 1;
 
 minDisplay.innerText = 0;
 maxDisplay.innerText = highestPrice;
-//----------------------------------- Sliders Event Listerners  input for updating on time change for filter so its after release
+
+//--------------- Sliders Event Listerners  input for updating on time change for filter so its after release
 minSlider.addEventListener('input', updateMinSlider);
 minSlider.addEventListener('change', ApplyAllFilters);
 
