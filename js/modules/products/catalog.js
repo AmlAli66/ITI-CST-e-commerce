@@ -101,9 +101,10 @@ function creatingCatalogPagination(){
     }
     // trying again checking the url to perserve the page on refresh 
     const urlToLoad =  new URLSearchParams(window.location.search);
-    const pageToLoad = urlToLoad.get('page')? parseInt(urlToLoad.get('page')) : 1;
+    let pageToLoad = urlToLoad.get('page')? parseInt(urlToLoad.get('page')) : 1;
 
     //---
+    if (pageToLoad > numberOfPages) pageToLoad = 1;
     goToPage(pageToLoad);
 }
 creatingCatalogPagination();
