@@ -7,7 +7,8 @@ let catalogProductsToDisplay = getAllProducts();
 //-------Data Function to get the products from the local storage 
 function getAllProducts(){
     const AllProducts = localStorage.getItem("products");
-    return AllProducts? JSON.parse(AllProducts) : [];
+    const products =  AllProducts? JSON.parse(AllProducts) : [];
+    return  products.filter(product => product.status === "approved");
 }
 
 // Display Functions 
@@ -252,32 +253,37 @@ catalogBrandCreation();
         // Filter By Category 
         let AvailableProducts = allProducts;
 
+        // Start Filtering 
         // Applying the category filter 
         if(checkedCategories.length>0){
             AvailableProducts= AvailableProducts.filter(products=>checkedCategories.includes(products.category))
         };
+        // Apply Brand Filter 
         if(checkedBrands.length>0){
             AvailableProducts= AvailableProducts.filter(product=>checkedBrands.includes(product.brand))
         }
+        // Apply the search bar -> search by name and brand 
         if(searchTerm.length>0){
             AvailableProducts=AvailableProducts.filter(product=> product.name.toLowerCase().includes(searchTerm)||product.brand.toLowerCase().includes(searchTerm))
         };
-        //--
+        //- Update the Silders To Match the Filters 
             updatePriceSliderRange(AvailableProducts);
         //
 
-        // Filtering By Price
+        // Apply Filter By Price
         const minPrice= parseInt(document.getElementById("priceMin").value);
         const maxPrice = parseInt(document.getElementById("priceMax").value);
         const FinalFilteredArray =AvailableProducts.filter(product=>product.price>=minPrice && product.price<=maxPrice);
+
+        // Update global state 
         catalogProductsToDisplay=FinalFilteredArray;
 
-        // Doing The Sort Logic 
+        // Applying the sort
         const sortOption = document.getElementById("sortSelect").value;
         catalogProductsToDisplay=applySorting(catalogProductsToDisplay,sortOption);
 
         //----
-
+        // Rebuilding the Pagination with the result of sorting 
         creatingCatalogPagination();
     }
 
@@ -352,7 +358,7 @@ function applySorting(products, sortType){
     return sortedProducts;// Default or no sort
 }
 
-////------------ trying the linking of home  category
+////------------ trying the linking of home  category Handles the navigation from home by Category 
 const urlparams=  new URLSearchParams(window.location.search);
 const categoryParam = urlparams.get("category");
 if(categoryParam){
@@ -376,4 +382,10 @@ function ClearAllFilters(){
 
 //----------------------------------
 document.getElementById("catalogClearAllFiltersMobile")?.addEventListener('click', ClearAllFilters);
-
+// dynamic update with the change of storage
+window.addEventListener('storage', function(e) {
+    if (e.key === 'products') {
+        catalogProductsToDisplay = getAllProducts();
+        ApplyAllFilters();
+    }
+});
