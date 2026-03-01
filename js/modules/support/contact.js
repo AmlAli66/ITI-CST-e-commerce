@@ -118,6 +118,7 @@ form.addEventListener("submit", function (e) {
 
     // ===== Save to localStorage =====
     const formData = {
+        id: "MSG-" + Date.now(),
         name,
         email,
         subject,
