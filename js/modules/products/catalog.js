@@ -1,5 +1,21 @@
 console.log("catalog module loaded");
 
+// Ensuring if user gone to products before home
+async function ensureProducts() {
+    if (!localStorage.getItem('products')) {
+        const res = await fetch('../../data/products.json');
+        const products = await res.json();
+        localStorage.setItem('products', JSON.stringify(products));
+    }
+}
+
+ensureProducts().then(() => {
+    catalogProductsToDisplay = getAllProducts();
+    creatingCatalogPagination();
+    catalogBrandCreation();
+    ApplyAllFilters();
+});
+//----
 // Making variable for current display This hold whatever should be displayed at the moment weather it is with filters or search or what
 let catalogProductsToDisplay = getAllProducts();
 
@@ -16,7 +32,12 @@ function getAllProducts(){
 function viewAllProducts(productsArray){
     //const Products = getAllProducts(); no more need for it 
     const productsContainer = document.getElementById("catalogProducts");
+    const currentUser =JSON.parse(localStorage.getItem('currentUser')||'null');
+    const isAdmin = currentUser?.role=="admin";
     productsContainer.innerHTML= productsArray.map(product=>{
+        //hiding the product add to cart to its seller 
+        const isOwnProduct = currentUser?.role === "seller" && currentUser?.id === product.sellerId;
+
         return `
         <div class="catalogProductCard col-lg-4 col-md-6 col-sm-12 mb-4" onclick="viewProductDetails('${product.id}')">
         <img src="${product.image}" alt="${product.name}"class="catalogproductImage">
@@ -27,7 +48,7 @@ function viewAllProducts(productsArray){
                     </div>
                     <div>
                     <div class="catalogProductButtons">
-                    <button class="catalogAddToCard" onclick=" event.stopPropagation(); navAddToCart('${product.id}')">
+                    <button class="catalogAddToCard" onclick=" event.stopPropagation(); navAddToCart('${product.id}')"  ${(isAdmin||isOwnProduct )? 'style="display:none"' : ''}>
                     Add To Cart
                     </button>                
                     <button class="catalogShowDetails " onclick="  event.stopPropagation();  viewProductDetails('${product.id}')">
@@ -85,9 +106,10 @@ function creatingCatalogPagination(){
     }
     // trying again checking the url to perserve the page on refresh 
     const urlToLoad =  new URLSearchParams(window.location.search);
-    const pageToLoad = urlToLoad.get('page')? parseInt(urlToLoad.get('page')) : 1;
+    let pageToLoad = urlToLoad.get('page')? parseInt(urlToLoad.get('page')) : 1;
 
     //---
+    if (pageToLoad > numberOfPages) pageToLoad = 1;
     goToPage(pageToLoad);
 }
 creatingCatalogPagination();
@@ -162,7 +184,8 @@ maxSlider.step = 1;
 
 minDisplay.innerText = 0;
 maxDisplay.innerText = highestPrice;
-//----------------------------------- Sliders Event Listerners  input for updating on time change for filter so its after release
+
+//--------------- Sliders Event Listerners  input for updating on time change for filter so its after release
 minSlider.addEventListener('input', updateMinSlider);
 minSlider.addEventListener('change', ApplyAllFilters);
 
@@ -224,7 +247,7 @@ function catalogBrandCreation(){
         catalogBrandContainer.appendChild(wrapper);
     }
 }
-catalogBrandCreation();
+ // catalogBrandCreation();
 
 //------------------------------
 // SYMPHONY FILTER  The MAIN FUNCTION 
