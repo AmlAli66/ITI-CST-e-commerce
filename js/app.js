@@ -57,7 +57,7 @@ function getAllProducts() {
 //  getting the featured products 'for home'
 function getFeaturedProducts() {
     const allProducts = getAllProducts();
-    return allProducts.filter(product => product.featured === true);
+    return allProducts.filter(product => product.featured === true && product.status=="approved");
 }
 // getting the product by category 
 function getProductsByCategory(category) {

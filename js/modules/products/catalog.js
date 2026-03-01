@@ -7,7 +7,8 @@ let catalogProductsToDisplay = getAllProducts();
 //-------Data Function to get the products from the local storage 
 function getAllProducts(){
     const AllProducts = localStorage.getItem("products");
-    return AllProducts? JSON.parse(AllProducts) : [];
+    const products =  AllProducts? JSON.parse(AllProducts) : [];
+    return  products.filter(product => product.status === "approved");
 }
 
 // Display Functions 
@@ -381,4 +382,10 @@ function ClearAllFilters(){
 
 //----------------------------------
 document.getElementById("catalogClearAllFiltersMobile")?.addEventListener('click', ClearAllFilters);
-
+// dynamic update with the change of storage
+window.addEventListener('storage', function(e) {
+    if (e.key === 'products') {
+        catalogProductsToDisplay = getAllProducts();
+        ApplyAllFilters();
+    }
+});
