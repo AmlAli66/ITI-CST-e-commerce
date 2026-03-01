@@ -43,6 +43,75 @@ export function renderUsers() {
     renderTable();
 }
 
+// function renderTable() {
+//     const users = JSON.parse(localStorage.getItem("users")) || [];
+//     const search = tableState.search;
+//     const roleFilter = tableState.role;
+
+//     let filtered = users.filter(user => {
+//         const matchesSearch = user.name.toLowerCase().includes(search) || user.email.toLowerCase().includes(search);
+//         const matchesRole = roleFilter === "all" || user.role === roleFilter;
+//         return matchesSearch && matchesRole;
+//     });
+
+//     const userContainer = document.getElementById("usersContainer");
+
+//     if (filtered.length === 0) {
+//         userContainer.innerHTML = `
+//             <div class="col-12 text-center py-5 text-muted">
+//                 <i class="bi bi-search fs-1"></i>
+//                 <h5>No Results Found</h5>
+//                 <p>Try adjusting your search or filters</p>
+//             </div>
+//         `;
+//         document.getElementById("pagination").innerHTML = "";
+//         return;
+//     }
+
+//     // Sort
+//     if (tableState.sortField) {
+//         filtered.sort((a, b) => {
+//             let aValue = a[tableState.sortField];
+//             let bValue = b[tableState.sortField];
+//             if (typeof aValue === "string") { aValue = aValue.toLowerCase(); bValue = bValue.toLowerCase(); }
+//             if (aValue < bValue) return tableState.sortDirection === "asc" ? -1 : 1;
+//             if (aValue > bValue) return tableState.sortDirection === "asc" ? 1 : -1;
+//             return 0;
+//         });
+//     }
+
+//     const totalPages = Math.ceil(filtered.length / tableState.rowsPerPage);
+//     const start = (tableState.currentPage - 1) * tableState.rowsPerPage;
+//     const paginated = filtered.slice(start, start + tableState.rowsPerPage);
+
+
+//     userContainer.innerHTML = paginated.map(user => `
+//         <div class="col-12 col-sm-6 col-lg-4 col-xl-3"> <div class="user-card h-100"> <div class="user-header">
+//                     <h6 class="mb-0 text-truncate" style="max-width: 120px;">${user.name}</h6>
+//                     <span class="role-badge ${getRoleClass(user.role)}">${user.role}</span>
+//                 </div>
+//                 <div class="small text-muted text-truncate">
+//                     <i class="bi bi-envelope me-1"></i>${user.email}
+//                 </div>
+//                 <div class="d-flex justify-content-between align-items-center mt-auto pt-3">
+//                     <div class="form-check form-switch mb-0">
+//                         <input class="form-check-input status-toggle" type="checkbox" data-id="${user.id}" ${user.status === "active" ? "checked" : ""}>
+//                     </div>
+//                     <div class="user-actions">
+//                         ${renderActions(user)}
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//     `).join("");
+
+//     renderPagination(totalPages);
+//     attachRowEvents();
+//     attachViewUserEvents();
+
+// }
+
+
 function renderTable() {
     const users = JSON.parse(localStorage.getItem("users")) || [];
     const search = tableState.search;
@@ -68,32 +137,22 @@ function renderTable() {
         return;
     }
 
-    // Sort
-    if (tableState.sortField) {
-        filtered.sort((a, b) => {
-            let aValue = a[tableState.sortField];
-            let bValue = b[tableState.sortField];
-            if (typeof aValue === "string") { aValue = aValue.toLowerCase(); bValue = bValue.toLowerCase(); }
-            if (aValue < bValue) return tableState.sortDirection === "asc" ? -1 : 1;
-            if (aValue > bValue) return tableState.sortDirection === "asc" ? 1 : -1;
-            return 0;
-        });
-    }
-
+    // Pagination Logic
     const totalPages = Math.ceil(filtered.length / tableState.rowsPerPage);
     const start = (tableState.currentPage - 1) * tableState.rowsPerPage;
     const paginated = filtered.slice(start, start + tableState.rowsPerPage);
 
-
     userContainer.innerHTML = paginated.map(user => `
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3"> <div class="user-card h-100"> <div class="user-header">
-                    <h6 class="mb-0 text-truncate" style="max-width: 120px;">${user.name}</h6>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3"> 
+            <div class="user-card h-100"> 
+                <div class="user-header">
+                    <h6 class="mb-0 text-truncate fw-bold" style="max-width: 120px; color: #1e293b;">${user.name}</h6>
                     <span class="role-badge ${getRoleClass(user.role)}">${user.role}</span>
                 </div>
-                <div class="small text-muted text-truncate">
+                <div class="small text-muted text-truncate mt-1">
                     <i class="bi bi-envelope me-1"></i>${user.email}
                 </div>
-                <div class="d-flex justify-content-between align-items-center mt-auto pt-3">
+                <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top border-light">
                     <div class="form-check form-switch mb-0">
                         <input class="form-check-input status-toggle" type="checkbox" data-id="${user.id}" ${user.status === "active" ? "checked" : ""}>
                     </div>
@@ -108,31 +167,31 @@ function renderTable() {
     renderPagination(totalPages);
     attachRowEvents();
     attachViewUserEvents();
-
 }
+
 
 function getRoleClass(role) {
     return {
-        admin: "bg-admin",
-        seller: "bg-seller",
-        customer: "bg-customer"
-    }[role];
+        admin: "status-rejected",
+        seller: "status-pending",
+        customer: "status-approved"
+    }[role] || "bg-light text-dark";
 }
 
 
 function renderActions(user) {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (user.email === currentUser.email) return `<button class="btn btn-sm btn-secondary" disabled><i class="bi bi-shield-lock"></i></button>`;
-    if (user.role === "admin" && user.isMain) return `<button class="btn btn-sm btn-secondary" disabled><i class="bi bi-lock-fill"></i></button>`;
+    if (user.email === currentUser.email) return `<button class="btn btn-sm btn-soft btn-soft-primary" disabled><i class="bi bi-person-badge"></i></button>`;
+    if (user.role === "admin" && user.isMain) return `<button class="btn btn-sm btn-soft btn-soft-primary" disabled><i class="bi bi-lock-fill"></i></button>`;
 
     return `
-        <button class="btn btn-sm btn-info view-user" data-id="${user.id}">
+        <button class="btn btn-sm btn-soft btn-soft-primary view-user" data-id="${user.id}">
             <i class="bi bi-eye"></i>
         </button>
-        <button class="btn btn-sm btn-warning reset-password" data-id="${user.id}">
+        <button class="btn btn-sm btn-soft btn-soft-primary reset-password" data-id="${user.id}">
             <i class="bi bi-key"></i>
         </button>
-        <button class="btn btn-sm btn-danger delete-user" data-id="${user.id}">
+        <button class="btn btn-sm btn-soft btn-soft-danger delete-user" data-id="${user.id}">
             <i class="bi bi-trash"></i>
         </button>
     `;
@@ -298,7 +357,7 @@ function attachUserModalEvents(user) {
 
     // Reset password inside modal
     resetBtn.onclick = () => {
-        resetUserId = user.id; // حفظ معرف المستخدم لإعادة تعيين كلمة المرور
+        resetUserId = user.id;
         const modal = new bootstrap.Modal(document.getElementById("resetModal"));
         document.getElementById("newPasswordBox").classList.add("d-none");
         document.getElementById("confirmResetBtn").disabled = false;

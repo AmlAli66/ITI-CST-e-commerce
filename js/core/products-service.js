@@ -18,8 +18,24 @@ export async function initProducts() {
 }
 
 export function getAllProducts() {
-    return JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+    const products = JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+
+    let updated = false;
+
+    products.forEach(p => {
+        if (!p.finalPrice && p.finalPrice !== 0) {
+            p.finalPrice = calculateFinalPrice(p.price, p.discount);
+            updated = true;
+        }
+    });
+
+    if (updated) {
+        localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+    }
+
+    return products;
 }
+
 
 export function saveProducts(products) {
     localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));

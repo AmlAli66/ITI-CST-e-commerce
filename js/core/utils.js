@@ -25,6 +25,11 @@ export function showToast(message) {
     }, 2500);
 }
 
+export function navigateToProductDetails(productId) {
+    window.location.href = `/pages/shop/product-details.html?id=${productId}`;
+}
+
+
 
 
 // Example usage:

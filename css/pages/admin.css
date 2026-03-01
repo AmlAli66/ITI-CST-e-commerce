@@ -5,7 +5,17 @@
     --modal-primary: #7c3aed;
     --modal-bg: #f8fafc;
     --modal-text: #1e293b;
+
+    --soft-green: #ecfdf5;
+    --soft-green-text: #059669;
+    --soft-amber: #fffbeb;
+    --soft-amber-text: #d97706;
+    --soft-red: #fef2f2;
+    --soft-red-text: #dc2626;
+    --soft-purple: #f5f3ff;
+    --soft-purple-text: #7c3aed;
 }
+
 
 
 /* Sidebar style */
@@ -135,7 +145,7 @@
 .dashboard-sidebar {
     width: 280px;
     background: linear-gradient(180deg, #0f172a, #1e1b4b);
-    /* min-height: 100vh; */
+    min-height: 100vh;
     position: sticky;
     top: 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -184,6 +194,7 @@
         left: -280px;
         /* Hide sidebar off-screen */
         z-index: 1100;
+        /* min-height: 100vh; */
 
     }
 
@@ -377,7 +388,7 @@
 /* -------------------------------- */
 /* users card */
 
-.user-card {
+/* .user-card {
     background: white;
     border-radius: 20px;
     padding: 20px;
@@ -388,10 +399,25 @@
     gap: 12px;
 }
 
+*/
+
+.user-card {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
 .user-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    /* border-color: var(--soft-purple-text); */
 }
+
+
 
 .user-card .user-header {
     display: flex;
@@ -427,12 +453,34 @@
     color: white;
 }
 
+
+.selected-card {
+    border: 2px solid #7c3aed;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15),
+        0 20px 40px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    transition: 0.3s ease;
+}
+
+.selected-card::after {
+    content: "Selected";
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, #7c3aed, #6366f1);
+    color: white;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
 /* --------------------------------------------------- */
 
 /* View User Modal */
 
 .bg-gradient-primary {
-    background: linear-gradient(135deg, #7c3aed, #6366f1);
+    background-image: linear-gradient(135deg, #7c3aed, #6366f1) !important;
 }
 
 .avatar-circle {
@@ -539,6 +587,34 @@
     }
 }
 
+/* --- Modal Soft UI --- */
+.modal-content {
+    border: none;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    background: #ffffff;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 1.5rem;
+}
+
+.modal-body {
+    background: #ffffff;
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #f1f5f9;
+    padding: 1.25rem;
+}
+
+
+
+
+/* --------------------------------------------------- */
 /*      ahmed part                            */
 
 .ordersFilters {
@@ -576,7 +652,9 @@
     box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
 }
 
-#statusFilter {
+#statusFilter,
+#sortSelect,
+#productSearch {
     padding: 10px 16px;
     border: 2px solid #e5e7eb;
     border-radius: 10px;
@@ -587,7 +665,9 @@
     min-width: 150px;
 }
 
-#statusFilter:focus {
+#statusFilter:focus,
+#sortSelect:focus,
+#productSearch:focus {
     border-color: var(--admin-primary);
     box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
 }
@@ -720,16 +800,16 @@
     #ordersDisplay {
         grid-template-columns: 1fr;
     }
-    
+
     .ordersFilters {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .ordersFilters h3 {
         text-align: center;
     }
-    
+
     #orderSearch,
     #statusFilter {
         width: 100%;
@@ -743,7 +823,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     background: linear-gradient(white, white) padding-box,
-                linear-gradient(135deg, #667eea, #764ba2) border-box;
+        linear-gradient(135deg, #667eea, #764ba2) border-box;
     font-size: 0.9rem;
     font-weight: 600;
     color: #374151;
@@ -752,7 +832,7 @@
 
 .statusDropdown:hover {
     background: linear-gradient(#f9fafb, #f9fafb) padding-box,
-                linear-gradient(135deg, #667eea, #764ba2) border-box;
+        linear-gradient(135deg, #667eea, #764ba2) border-box;
     transform: translateY(-1px);
 }
 
@@ -766,4 +846,419 @@
     color: #d1d5db;
     background: #f3f4f6;
 }
-/*  */ 
+
+/* --------------------------------------- */
+/* Products Filters Offcanvas */
+.offcanvas {
+    width: 320px !important;
+    border-left: none;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+}
+
+.offcanvas-header {
+    background: linear-gradient(135deg, #7c3aed, #6366f1);
+    color: white;
+}
+
+.offcanvas-title {
+    font-size: 1.1rem;
+}
+
+.offcanvas-body {
+    padding: 24px;
+}
+
+.offcanvas .form-select {
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.offcanvas button {
+    border-radius: 12px;
+    transition: 0.3s ease;
+}
+
+.offcanvas button:hover {
+    transform: translateY(-2px);
+}
+
+
+/* -------------------------------------- */
+/* Bulk toolbar */
+.bulk-toolbar {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 50px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    z-index: 3000;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.bulk-toolbar.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.bulk-content {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.bulk-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bulk-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.bulk-counter small {
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+.bulk-divider {
+    width: 1px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.bulk-actions button {
+    border-radius: 30px;
+    padding: 6px 16px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.bulk-actions button:hover {
+    transform: translateY(-2px);
+}
+
+/* ------------------------------------------------------------------- */
+
+/* --- Products Section: Soft UI Theme --- */
+:root {
+    --soft-bg: #f0f2f5;
+    --soft-purple: #f3f0ff;
+    --soft-purple-text: #7c3aed;
+    --soft-green: #ecfdf5;
+    --soft-green-text: #059669;
+    --soft-red: #fff1f2;
+    --soft-red-text: #e11d48;
+    --soft-border: #e2e8f0;
+}
+
+#adminProducts h3 {
+    color: #1e293b;
+    letter-spacing: -0.5px;
+}
+
+/* Search and Inputs */
+#productSearch {
+    border: 2px solid var(--soft-border);
+    border-radius: 12px;
+    padding: 0.6rem 1rem;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+#productSearch:focus {
+    border-color: #c4b5fd;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.05);
+}
+
+/* Product Card Styling */
+.product-card {
+    background: #ffffff;
+    border: 1px solid var(--soft-border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    border-color: #ddd6fe;
+}
+
+.product-img-wrapper {
+    position: relative;
+    height: 180px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.product-img-wrapper img {
+    max-height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.product-status-pill {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Soft Color Statuses */
+.status-active {
+    background: var(--soft-green);
+    color: var(--soft-green-text);
+}
+
+.status-pending {
+    background: #fff7ed;
+    color: #d97706;
+}
+
+.status-disabled {
+    background: var(--soft-red);
+    color: var(--soft-red-text);
+}
+
+.product-info {
+    padding: 1.25rem;
+}
+
+.product-category {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-price {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--admin-primary);
+}
+
+/* Action Buttons */
+.product-actions {
+    display: flex;
+    gap: 8px;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.btn-soft {
+    border: none;
+    padding: 8px;
+    border-radius: 10px;
+    transition: 0.2s;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-soft-view {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.btn-soft-delete {
+    background: #fff1f2;
+    color: #e11d48;
+}
+
+.btn-soft:hover {
+    transform: scale(1.05);
+    filter: brightness(0.95);
+}
+
+/* Selection Checkbox Customization */
+.product-select-check {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid #cbd5e1;
+    cursor: pointer;
+    z-index: 10;
+}
+
+
+
+/* --------------------- */
+/* --- Modern Soft UI Products Section --- */
+
+
+/* Product Card Container */
+.product-card {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+}
+
+/* Image Styling */
+.product-image-wrapper {
+    position: relative;
+    padding: 1rem;
+    background: #f8fafc;
+}
+
+.product-image-wrapper img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+/* Soft Status Badges */
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status-approved {
+    background-color: var(--soft-green);
+    color: var(--soft-green-text);
+}
+
+.status-approved-hover,
+.status-rejected-hover,
+.status-pending-hover {
+    transition: all 0.5s;
+}
+
+.status-approved-hover:hover {
+    color: var(--soft-green);
+    background-color: var(--soft-green-text);
+}
+
+.status-pending {
+    background-color: var(--soft-amber);
+    color: var(--soft-amber-text);
+}
+
+.status-pending-hover:hover {
+
+    color: var(--soft-amber);
+    background-color: var(--soft-amber-text);
+}
+
+.status-rejected {
+    background-color: var(--soft-red);
+    color: var(--soft-red-text);
+}
+
+.status-pending-hover:hover {
+    color: var(--soft-red);
+    background-color: var(--soft-red-text);
+}
+
+/* Product Info */
+.product-info {
+    padding: 1.25rem;
+    flex-grow: 1;
+}
+
+.product-category {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.product-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+}
+
+.product-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--admin-primary);
+}
+
+/* Modern Action Buttons */
+.product-actions {
+    display: flex;
+    gap: 8px;
+    padding: 1.25rem;
+    border-top: 1px solid #f1f5f9;
+    flex-wrap: wrap;
+}
+
+.btn-soft {
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.btn-soft-primary {
+    background: var(--soft-purple);
+    color: var(--soft-purple-text);
+}
+
+.btn-soft-primary:hover {
+    background: var(--admin-primary);
+    color: white;
+}
+
+.btn-soft-danger {
+    background: var(--soft-red);
+    color: var(--soft-red-text);
+}
+
+.btn-soft-danger:hover {
+    background: #dc2626;
+    color: white;
+}
