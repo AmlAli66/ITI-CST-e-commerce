@@ -100,6 +100,11 @@ function navAddToCart(productId) {
     const product = getAllProducts().find(p => p.id === productId);
     if (!product) return;
 
+    //trying to handle no left product 
+    if (product.stock <= 0) {
+    catalogshowToast('Out of stock!', 'error');
+    return;
+}
     // 3. Get existing cart
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
