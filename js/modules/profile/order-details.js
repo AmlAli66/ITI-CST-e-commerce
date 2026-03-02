@@ -19,8 +19,9 @@ if(!order||(!isAdmin && order.userId != profileCurrentUser.id)){
     <div class="profileEmptyStats">
         <i class="fas fa-box-open"></i>
             <p>Order not found</p>
-            <a href="profile.html" class="orderBackBtn">Back to Profile</a>
-    </div>
+        <a href="${isAdmin ? '../admin/admin-panel.html' : 'profile.html'}" class="orderBackBtn">
+            Back to ${isAdmin ? 'Admin Panel' : 'Profile'}
+        </a>    </div>
     `
     
 }else{
@@ -78,8 +79,8 @@ const productId=this.getAttribute('data-product-id');
 })// end of clicking divs
 orderItemsContainer.appendChild(orderTotals);
 const backBtn = document.createElement('a');
-backBtn.href = 'profile.html';
+backBtn.href = isAdmin ? '../admin/admin-panel.html' : 'profile.html';
 backBtn.className = 'orderBackBtn';
-backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Back to Profile';
+backBtn.innerHTML = `<i class="fas fa-arrow-left"></i> Back to ${isAdmin ? 'Admin Panel' : 'Profile'}`;
 document.getElementById('orderDetailsContainer').appendChild(backBtn);
 }
