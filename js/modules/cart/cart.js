@@ -5,7 +5,7 @@ let allProducts = [];
 let currentUser = null;             
 let userCart = [];                 
 let productToDelete = null;         
-let isClearCartMode = false;        // Flag to differentiate between delete single vs delete all
+let isClearCartMode = false;      
 
 // Load products from localStorage
 function loadProducts() {
@@ -54,7 +54,13 @@ function displayCart() {
             </div>
         `;
         if (shippingProgress) shippingProgress.style.display = "none";
-        document.getElementById('cartSummary').style.display = 'none';
+        // document.getElementById('cartSummary').style.display = 'none';
+      
+
+      document.getElementById('subtotal').textContent = "$0.00";
+      document.getElementById('shipping').textContent = "$0.00";
+      document.getElementById('tax').textContent = "$0.00";
+      document.getElementById('total').textContent = "$0.00";
         return;
     }
 
@@ -293,10 +299,7 @@ function checkout() {
     window.location.href = '/pages/order/checkout.html';
 }
 
-
-
 /// show login modal
-// ========== LOGIN MODAL FUNCTIONS ==========
 function showLoginModal() {
     const modalElement = document.getElementById('loginRequiredModal');
     if (!modalElement) {
@@ -306,8 +309,6 @@ function showLoginModal() {
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
 }
-
-
 
 // Show Toast notification
 function showToast(message, type = 'success') {

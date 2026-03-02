@@ -14,7 +14,6 @@ let allReviews = {};
 
 
 // ======== Wishlist ==========
-
 function toggleWishlist() {
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
@@ -132,16 +131,18 @@ function loadProduct() {
     const productId = new URLSearchParams(window.location.search).get('id');
     currentProduct = allProducts.find(p => p.id === productId);
     displayProduct();
-}
-
-
+  }
+  
 // Display Product Details
 function displayProduct() {
     if (!currentProduct) return;
 
     document.getElementById('productName').textContent = currentProduct.name;
     document.getElementById('mainImage').src = currentProduct.image;
-    document.getElementById('productBreadcrumb').textContent = currentProduct.name;
+
+    updateBreadcrumb();
+
+    // document.getElementById('productBreadcrumb').textContent = currentProduct.name;
 
     updateProductRatingFromReviews();
 
@@ -182,9 +183,10 @@ function displayProduct() {
     displaylistofimgs();
     displayRelatedProducts();
     checkWishlistStatus();    
+    updateViewBasedOnRole();
+    handleSellerView();
 
 }
-
 // Count in stock and display availability
 function countInStock() {
     if (!currentProduct) return;
@@ -198,8 +200,6 @@ function countInStock() {
         stockElement.style.color = "green";
     }
 }
-
-
 function displayRelatedProducts() {
     const container = document.getElementById('relatedProducts');
     if (!container || !currentProduct || !allProducts) return;
@@ -305,7 +305,6 @@ function displayRelatedProducts() {
 function viewProduct(productId) {
     window.location.href = `product-details.html?id=${productId}`;
 }
-
 // Generate star rating for reviews
 function generateStars(rating) {
     let stars = '';
@@ -354,8 +353,6 @@ function changeMainImage(src, thumb) {
     document.querySelectorAll('.listofimgs').forEach(t => t.classList.remove('active'));
     thumb.classList.add('active');
 }
-
-
 
 // Add to cart button
 function addToCart() {
@@ -434,7 +431,6 @@ function buyNow() {
     }, 500);
 }
 
-
 // Show login required modal
 function showLoginModal() {
     const modalElement = document.getElementById('loginRequiredModal');
@@ -512,7 +508,6 @@ function showToast(message, type = 'success') {
         toast.classList.remove('show');
     }, 3000);
 }
-
 
 // Cart notification
 function cartNotification() {
@@ -740,6 +735,154 @@ function updateProductRatingFromReviews() {
     document.getElementById('reviewsCount').textContent = `(${productReviews.length} reviews)`;
 }
 
+  function updateBreadcrumb() {
+    const breadcrumb = document.querySelector('.breadcrumb-custom');
+    if (!breadcrumb) return;
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const isAdmin = currentUser && currentUser.role === 'admin';
+    
+    if (!currentProduct) return;
+
+    if (isAdmin) {
+        breadcrumb.classList.add('unapproved');
+        breadcrumb.innerHTML = `
+            <span class="active">
+                ${currentProduct.name}
+                <span class="status-badge">${currentProduct.status || 'unapproved'}</span>
+            </span>
+        `;
+    } else {
+        if (currentProduct.status === 'approved') {
+            breadcrumb.classList.remove('unapproved');
+            breadcrumb.innerHTML = `
+                <a href="/index.html">Home</a>
+                <span class="mx-2">/</span>
+                <a href="/pages/shop/catalog.html">Products</a>
+                <span class="mx-2">/</span>
+                <span class="active">${currentProduct.name}</span>
+            `;
+        } 
+    }
+}
+function isAdmin() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    return currentUser && currentUser.role === 'admin';
+}
+
+// function handleSellerView() {
+//     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+//     if (!currentProduct || !currentUser) return;
+//       if (currentUser.id === currentProduct.sellerId) {
+//         console.log('User is the seller of this product');
+//     const quantityWrapper = document.getElementById('quantitySection');
+//         const actionButtons = document.querySelector('.action-buttons');
+//         const wishlistBtn = document.querySelector('.wishlist-btn');
+//         const review = document.getElementById('hidecomment');
+//         if (quantityWrapper)  quantitySection?.classList.add('d-none');
+//         if (actionButtons) actionButtons.style.display = 'none';
+//         if (wishlistBtn) wishlistBtn.style.display = 'none';
+//         if (review) review.style.display = 'none';
+
+//         const sellerSection = document.getElementById('sellerSection');
+//         if (sellerSection) sellerSection.style.display = 'block';
+//     }
+// }
+
+function handleSellerView() {
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentProduct || !currentUser) return;
+
+    const quantityWrapper = document.getElementById('quantitySection');
+    const actionButtons   = document.querySelector('.action-buttons');
+    const wishlistBtn     = document.querySelector('.wishlist-btn');
+    const review          = document.getElementById('hidecomment');
+
+    const isProductSeller = currentUser.id === currentProduct.sellerId;
+
+    let sellerMessageDiv = document.getElementById('sellerMessageDiv');
+
+    if (isProductSeller) {
+
+             if (quantityWrapper)  quantitySection?.classList.add('d-none');
+            if (actionButtons) actionButtons.style.display = 'none';
+            if (wishlistBtn) wishlistBtn.style.display = 'none';
+              if (review) review.style.display = 'none';
+        if (!sellerMessageDiv) {
+
+            sellerMessageDiv = document.createElement('div');
+            sellerMessageDiv.id = 'sellerMessageDiv';
+            sellerMessageDiv.className = 'seller-message p-4 mb-4';
+
+            sellerMessageDiv.innerHTML = `
+                <div class="text-center">
+                    <i class="fas fa-store-alt fa-3x text-primary mb-3"></i>
+                    <h5 class="fw-bold">This is your product</h5>
+                    <p class="text-muted mb-0">You are the seller of this item.</p>
+                </div>
+            `;
+
+            quantitySection?.parentNode?.insertBefore(sellerMessageDiv, quantitySection);
+        } else {
+            sellerMessageDiv.classList.remove('d-none');
+        }
+
+    } 
+    
+}
+
+function updateViewBasedOnRole() {
+    const adminSection = document.getElementById('adminSection');
+    const sellerSection = document.getElementById('sellerSection');
+    const customerSection = document.getElementById('customerSection');
+    const wishlistBtn = document.querySelector('.wishlist-btn');
+    const actionButtons = document.querySelector('.action-buttons');
+    const quantityWrapper = document.getElementById('quantitySection');
+    const review = document.getElementById('hidecomment');
+
+    if (!currentProduct) return;
+
+    // ===== ADMIN VIEW =====
+    if (isAdmin()) {
+        // Show admin section
+        if (adminSection) adminSection.style.display = 'block';
+        quantitySection?.classList.add('d-none');
+        review.classList.add('d-none');
+        // Hide seller & customer sections
+        if (sellerSection) sellerSection.style.display = 'none';
+        if (customerSection) customerSection.style.display = 'none';
+
+        // Hide all customer action elements 
+        if (wishlistBtn) wishlistBtn.style.display = 'none';
+        if (actionButtons) actionButtons.style.display = 'none';
+        if (quantityWrapper) quantityWrapper.style.display = 'none';
+
+        // admin
+        const sellerNameEl = document.getElementById('sellerName');
+        if (sellerNameEl) sellerNameEl.textContent = currentProduct.sellerName || 'Unknown Seller';
+
+        const categoryAdminEl = document.getElementById('productCategoryAdmin');
+        if (categoryAdminEl) categoryAdminEl.textContent = currentProduct.category || '-';
+
+        const productIdAdminEl = document.getElementById('productIdAdmin');
+        if (productIdAdminEl) productIdAdminEl.textContent = currentProduct.id || '-';
+
+        const statusAdminEl = document.getElementById('productStatusAdmin');
+        if (statusAdminEl) statusAdminEl.textContent = currentProduct.status || 'pending';
+
+        return;
+    }
+
+    // ===== CUSTOMER VIEW  =====
+    if (adminSection) adminSection.style.display = 'none';
+    if (sellerSection) sellerSection.style.display = 'none';
+    if (customerSection) customerSection.style.display = 'block';
+    if (wishlistBtn) wishlistBtn.style.display = 'flex';
+    if (actionButtons) actionButtons.style.display = 'flex';
+    if (quantityWrapper) quantityWrapper.style.display = 'flex';
+}
+
 // Format date
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -761,9 +904,6 @@ function setRating(rating) {
     });
 }
 
-
-
-/** share model */
 // Share product function
 function shareProduct() {
     // Get product details
@@ -926,7 +1066,6 @@ function copyShareLink() {
         showToast('Failed to copy link', 'error');
     });
 }
-
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {

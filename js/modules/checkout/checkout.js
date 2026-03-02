@@ -25,7 +25,7 @@ const fullName = document.getElementById("fullName");
 const phone = document.getElementById("phone");
 const address = document.getElementById("address");
 
-// Summary elements
+
 const subTotalElement = document.getElementById("subTotal");
 const shippingElement = document.getElementById("shipping");
 const taxElement = document.getElementById("tax");
@@ -62,13 +62,13 @@ phone.addEventListener("input", () => {
     phone.value = phone.value.replace(/[^0-9]/g, "");
 });
 cardNumber.addEventListener("input", () => {
-    cardNumber.value = cardNumber.value.replace(/[^0-9]/g, "").slice(0,16); // 16 رقم فقط
+    cardNumber.value = cardNumber.value.replace(/[^0-9]/g, "").slice(0,16); 
 });
 cvv.addEventListener("input", () => {
-    cvv.value = cvv.value.replace(/[^0-9]/g, "").slice(0,3); // 3 أرقام فقط
+    cvv.value = cvv.value.replace(/[^0-9]/g, "").slice(0,3); 
 });
 expiry.addEventListener("input", () => {
-    expiry.value = expiry.value.replace(/[^0-9\/]/g, "").slice(0,5); // MM/YY فقط
+    expiry.value = expiry.value.replace(/[^0-9\/]/g, "").slice(0,5); 
 });
 
 // ===============================
@@ -166,8 +166,6 @@ async function loadCartSummary() {
     const userCart = cart.filter(item => item.userId === currentUser.id);
     if (userCart.length === 0) return;
 
-    // const response = await fetch("../../data/products.json");
-    // const products = await response.json();
 
     const products = JSON.parse(localStorage.getItem("products")) || [];
 
@@ -251,103 +249,130 @@ document.addEventListener("DOMContentLoaded", () => {
         confirmModal.show();
     });
 
-   
-    document.getElementById("confirmOrderBtn").addEventListener("click", async () => {
 
-        confirmModal.hide();
 
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        if (!currentUser) return;
+document.getElementById("confirmOrderBtn").addEventListener("click", async () => {
 
-        const userCart = cart.filter(item => item.userId === currentUser.id);
-        if (!Array.isArray(userCart) || userCart.length === 0) {
-            alert("Cart is empty");
-            return;
+    confirmModal.hide();
+
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (!currentUser) return;
+
+    const userCart = cart.filter(item => item.userId === currentUser.id);
+    if (!Array.isArray(userCart) || userCart.length === 0) {
+        alert("Cart is empty");
+        return;
+    }
+
+    const products = JSON.parse(localStorage.getItem("products")) || [];
+
+    let items = [];
+    let subtotal = 0;
+    let stockError = false;
+
+    // ===============================
+    // CHECK STOCK + BUILD ORDER
+    // ===============================
+    for (let item of userCart) {
+
+        const product = products.find(p => p.id === item.productId);
+
+        if (!product) {
+            alert("Product not found");
+            stockError = true;
+            break;
         }
 
-        // const response = await fetch("../../data/products.json");
-        // const products = await response.json();
+        if (product.stock < item.quantity) {
+            alert(`Sorry, only ${product.stock} left in stock for ${product.name}`);
+            stockError = true;
+            break;
+        }
 
-        const products = JSON.parse(localStorage.getItem("products")) || [];
+        const hasDiscount = product.discount && product.discount > 0;
+        const finalPrice = hasDiscount
+            ? product.price * (1 - product.discount / 100)
+            : product.price;
 
-        let items = [];
-        let subtotal = 0;
+        const itemTotal = finalPrice * item.quantity;
+        subtotal += itemTotal;
 
-        userCart.forEach(item => {
-            const product = products.find(p => p.id === item.productId);
-            if (!product) return;
+        product.stock -= item.quantity;
 
-            const hasDiscount = product.discount && product.discount > 0;
-            const finalPrice = hasDiscount ? product.price * (1 - product.discount / 100) : product.price;
-            const itemTotal = finalPrice * item.quantity;
-            subtotal += itemTotal;
-
-            items.push({
-                productId: product.id,
-                productName: product.name,
-                price: finalPrice,
-                quantity: item.quantity,
-                sellerId: product.sellerId,
-                total: itemTotal
-            });
+        items.push({
+            productId: product.id,
+            productName: product.name,
+            price: finalPrice,
+            quantity: item.quantity,
+            sellerId: product.sellerId,
+            total: itemTotal
         });
+    }
 
-        const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+    if (stockError) return;
 
-        const shippingCost = subtotal > 100 ? 0 : shippingFee;
-        const tax = subtotal * 0.02;
-        const totalPrice = subtotal + shippingCost + tax;
+ 
+    localStorage.setItem("products", JSON.stringify(products));
 
-        const newOrder = {
-            id: Date.now(),
-            userId: currentUser.id,
-            fullName: fullName.value.trim(),
-            phone: phone.value.trim(),
-            address: address.value.trim(),
-            items,
-            subTotal: subtotal,
-            shipping: shippingCost,
-            tax,
-            totalPrice,
-            paymentMethod: selectedMethod,
-            status: (selectedMethod === "visa" || selectedMethod === "MasterCard") ? "Paid" : "Pending",
-            orderDate: new Date().toISOString()
-        };
+    const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 
-        const orders = JSON.parse(localStorage.getItem("orders")) || [];
-        orders.push(newOrder);
-        localStorage.setItem("orders", JSON.stringify(orders));
+    const shippingCost = subtotal > 100 ? 0 : shippingFee;
+    const tax = subtotal * 0.02;
+    const totalPrice = subtotal + shippingCost + tax;
 
-        const remainingCart = cart.filter(item => item.userId !== currentUser.id);
-        localStorage.setItem("cart", JSON.stringify(remainingCart));
+    const newOrder = {
+        id: Date.now(),
+        userId: currentUser.id,
+        fullName: fullName.value.trim(),
+        phone: phone.value.trim(),
+        address: address.value.trim(),
+        items,
+        subTotal: subtotal,
+        shipping: shippingCost,
+        tax,
+        totalPrice,
+        paymentMethod: selectedMethod,
+        status: "pending",
+        orderDate: new Date().toISOString()
+    };
 
-        fullName.value = "";
-        phone.value = "";
-        address.value = "";
-        cardNumber.value = "";
-        expiry.value = "";
-        cvv.value = "";
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push(newOrder);
+    localStorage.setItem("orders", JSON.stringify(orders));
 
-        fullName.classList.remove("is-invalid");
-        phone.classList.remove("is-invalid");
-        address.classList.remove("is-invalid");
-        cardNumber.classList.remove("is-invalid");
-        expiry.classList.remove("is-invalid");
-        cvv.classList.remove("is-invalid");
+    const remainingCart = cart.filter(item => item.userId !== currentUser.id);
+    localStorage.setItem("cart", JSON.stringify(remainingCart));
 
-        visaSection.classList.add("d-none");
-        document.querySelector('input[name="paymentMethod"][value="cod"]').checked = true;
+    // ===============================
+    // RESET FORM
+    // ===============================
+    fullName.value = "";
+    phone.value = "";
+    address.value = "";
+    cardNumber.value = "";
+    expiry.value = "";
+    cvv.value = "";
 
-        subTotalElement.textContent = "$0";
-        shippingElement.textContent = "$0";
-        taxElement.textContent = "$0";
-        totalElement.textContent = "$0";
+    fullName.classList.remove("is-invalid");
+    phone.classList.remove("is-invalid");
+    address.classList.remove("is-invalid");
+    cardNumber.classList.remove("is-invalid");
+    expiry.classList.remove("is-invalid");
+    cvv.classList.remove("is-invalid");
 
-        document.getElementById("orderList").innerHTML = "";
+    visaSection.classList.add("d-none");
+    document.querySelector('input[name="paymentMethod"][value="cod"]').checked = true;
 
-        alert("Order Placed Successfully");
-        window.location.href = "../cart/cart.html";
-    });
+    subTotalElement.textContent = "$0";
+    shippingElement.textContent = "$0";
+    taxElement.textContent = "$0";
+    totalElement.textContent = "$0";
 
+    document.getElementById("orderList").innerHTML = "";
+
+    alert("Order Placed Successfully");
+    window.location.href = "../cart/cart.html";
 });
+
+ });
