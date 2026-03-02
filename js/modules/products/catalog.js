@@ -43,14 +43,15 @@ function viewAllProducts(productsArray){
         <img src="${product.image}" alt="${product.name}"class="catalogproductImage">
             <div class="catalogProductDetails">
                 <h6>${product.name}</h6>
-<div>
-${product.discount > 0 
-  ? `Price : <span style="text-decoration: line-through; color: gray;">$${product.price}</span> 
-     <span style="color: green; font-weight: bold;">$${(product.price * (1 - product.discount / 100)).toFixed(0)}</span>
-     <span style="background: red; color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem;">${product.discount}% OFF</span>`
-  : `Price : $${product.price}`
-}
-</div>                    <div>
+                <div>
+                ${product.discount > 0 
+                  ? `Price : <span style="text-decoration: line-through; color: gray;">$${product.price}</span> 
+                     <span style="color: green; font-weight: bold;">$${(product.price * (1 - product.discount / 100)).toFixed(0)}</span>
+                     <span style="background: red; color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem;">${product.discount}% </span>`
+                  : `Price : $${product.price}`
+                }
+                </div>   
+                <div>
                     <div class="catalogProductButtons">
                     <button class="catalogAddToCard" onclick=" event.stopPropagation(); navAddToCart('${product.id}')"  ${(isAdmin||isOwnProduct )? 'style="display:none"' : ''}>
                     Add To Cart
