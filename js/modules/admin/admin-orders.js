@@ -1,6 +1,7 @@
 import { getAllOrders, updateOrderStatus, cancelOrderById } from "../../core/orders-service.js";
 import { showToast } from "../../core/utils.js";
 
+let selectedOrderToCancel = null;
 let ordersState = {
     currentPage: 1,
     rowsPerPage: 6,
@@ -107,82 +108,83 @@ function renderOrdersGrid() {
     attachOrderEvents();
 }
 
-// function orderCard(o) {
-//     // Disable cancel button if status is already cancelled
-//     const cancelDisabled = o.status === "cancelled" ? "disabled" : "";
 
-//     return `
-//         <div class="orderCard p-3 shadow-sm rounded-4 h-100">
-//             <div class="d-flex justify-content-between align-items-center">
-//                 <span class="orderCardId fw-bold">#${o.id.toString().slice(-6)}</span>
-//                 <span class="badge bg-${getStatusColor(o.status)}">
-//                     ${o.status}
-//                 </span>
-//             </div>
-//             <div class="mt-2 small text-muted">User ID: ${o.userId}</div>
-//             <div class="mt-2"><strong>Total:</strong> ${o.totalPrice} EGP</div>
-//             <div class="mt-2 small"><strong>Date:</strong> ${new Date(o.orderDate).toLocaleString()}</div>
-//             <div class="mt-3 d-flex gap-2 flex-wrap">
-//                 <select class="form-select form-select-sm statusDropdown" data-id="${o.id}">
-//                     <option value="pending" ${o.status === "pending" ? "selected" : ""}>Pending</option>
-//                     <option value="shipped" ${o.status === "shipped" ? "selected" : ""}>Shipped</option>
-//                     <option value="delivered" ${o.status === "delivered" ? "selected" : ""}>Delivered</option>
-//                     <option value="cancelled" ${o.status === "cancelled" ? "selected" : ""}>Cancelled</option>
-//                 </select>
-//                 <button class="btn btn-sm btn-danger cancelBtn" data-id="${o.id}" ${cancelDisabled}>Cancel</button>
-//             </div>
-//         </div>
-//     `;
-// }
 
 // function orderCard(o) {
 //     const cancelDisabled = o.status === "cancelled" ? "disabled" : "";
 
 //     return `
-//         <div class="orderCard p-3 shadow-sm rounded-4 h-100">
+//         <div class="orderCard">
 
-//             <div class="d-flex justify-content-between align-items-center">
-//                 <span class="orderCardId fw-bold">#${o.id.toString().slice(-6)}</span>
-//                 <span class="badge bg-${getStatusColor(o.status)}">
+//             <!-- Header -->
+//             <div class="orderCard-header">
+//                 <div>
+//                     <span class="orderCardId">#${o.id.toString().slice(-6)}</span>
+//                     <div class="orderDate">
+//                         ${new Date(o.orderDate).toLocaleDateString()}
+//                     </div>
+//                 </div>
+
+//                 <span class="status-badge status-${o.status}">
 //                     ${o.status}
 //                 </span>
 //             </div>
 
-//             <div class="mt-2 small text-muted">User ID: ${o.userId}</div>
-//             <div class="mt-2"><strong>Total:</strong> ${o.totalPrice} EGP</div>
-//             <div class="mt-2 small">
-//                 <strong>Date:</strong> ${new Date(o.orderDate).toLocaleString()}
+//             <!-- Body -->
+//             <div class="orderCard-body">
+//                 <div class="orderMeta">
+//                     <div>
+//                         <span class="meta-label">User</span>
+//                         <span class="meta-value">${o.userId}</span>
+//                     </div>
+
+//                     <div>
+//                         <span class="meta-label">Total</span>
+//                         <span class="orderTotal">${o.totalPrice} EGP</span>
+//                     </div>
+//                 </div>
 //             </div>
 
-//             <div class="mt-3 d-flex gap-2 flex-wrap">
+//             <!-- Footer -->
+//             <div class="orderCard-footer">
 
-//                 <button class="  viewDetailsBtn btn btn-sm  status-pending status-pending-hover" data-id="${o.id}">
-//                     <i class="bi bi-eye"></i> View
+//                 <button class="btn-soft btn-soft-primary viewDetailsBtn" data-id="${o.id}">
+//                     <i class="bi bi-eye"></i>
+//                     Details
 //                 </button>
 
-//                 <select class="form-select form-select-sm statusDropdown" data-id="${o.id}">
+//                 <select class="statusDropdown" data-id="${o.id}">
 //                     <option value="pending" ${o.status === "pending" ? "selected" : ""}>Pending</option>
 //                     <option value="shipped" ${o.status === "shipped" ? "selected" : ""}>Shipped</option>
 //                     <option value="delivered" ${o.status === "delivered" ? "selected" : ""}>Delivered</option>
 //                     <option value="cancelled" ${o.status === "cancelled" ? "selected" : ""}>Cancelled</option>
 //                 </select>
 
-//                 <button class="btn btn-sm status-rejected-hover status-rejected  cancelBtn " data-id="${o.id}" ${cancelDisabled}>
+//                 <button class="btn-soft btn-soft-danger cancelBtn"
+//                     data-id="${o.id}" ${cancelDisabled}>
 //                     Cancel
 //                 </button>
+
 //             </div>
 //         </div>
 //     `;
 // }
 
-
 function orderCard(o) {
-    const cancelDisabled = o.status === "cancelled" ? "disabled" : "";
+    const isCancelled = o.status === "cancelled";
+    const hideClass = isCancelled ? "d-none" : "";
 
+    // 1. تقريب السعر لخانة عشرية واحدة أو اثنتين (مثلاً 3006.95)
+    // نستخدم Number للتأكد أنه رقم ثم toFixed
+    const formattedPrice = Number(o.totalPrice).toFixed(2);
+
+    // 2. (اختياري) استخدام تنسيق العملة المحلي لشكل أكثر احترافية (مثلاً 3,006.95)
+    const currencyPrice = new Intl.NumberFormat('en-EG', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(o.totalPrice);
     return `
         <div class="orderCard">
-
-            <!-- Header -->
             <div class="orderCard-header">
                 <div>
                     <span class="orderCardId">#${o.id.toString().slice(-6)}</span>
@@ -190,92 +192,130 @@ function orderCard(o) {
                         ${new Date(o.orderDate).toLocaleDateString()}
                     </div>
                 </div>
-
                 <span class="status-badge status-${o.status}">
                     ${o.status}
                 </span>
             </div>
 
-            <!-- Body -->
             <div class="orderCard-body">
                 <div class="orderMeta">
                     <div>
                         <span class="meta-label">User</span>
                         <span class="meta-value">${o.userId}</span>
                     </div>
-
                     <div>
                         <span class="meta-label">Total</span>
-                        <span class="orderTotal">${o.totalPrice} EGP</span>
+                        <span class="orderTotal">${currencyPrice} EGP</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer -->
             <div class="orderCard-footer">
-
                 <button class="btn-soft btn-soft-primary viewDetailsBtn" data-id="${o.id}">
-                    <i class="bi bi-eye"></i>
-                    Details
+                    <i class="bi bi-eye"></i> Details
                 </button>
 
-                <select class="statusDropdown" data-id="${o.id}">
+                <select class="statusDropdown form-select-sm" data-id="${o.id}">
                     <option value="pending" ${o.status === "pending" ? "selected" : ""}>Pending</option>
                     <option value="shipped" ${o.status === "shipped" ? "selected" : ""}>Shipped</option>
                     <option value="delivered" ${o.status === "delivered" ? "selected" : ""}>Delivered</option>
                     <option value="cancelled" ${o.status === "cancelled" ? "selected" : ""}>Cancelled</option>
                 </select>
 
-                <button class="btn-soft btn-soft-danger cancelBtn"
-                    data-id="${o.id}" ${cancelDisabled}>
+                <button class="btn-soft btn-soft-danger cancelBtn ${hideClass}"
+                    data-id="${o.id}">
                     Cancel
                 </button>
-
             </div>
         </div>
     `;
 }
 
 
-function attachOrderEvents() {
+// function attachOrderEvents() {
 
-    // Status change
+//     // Status change
+//     document.querySelectorAll(".statusDropdown").forEach(dropdown => {
+//         dropdown.addEventListener("change", e => {
+//             const id = e.target.dataset.id;
+//             const newStatus = e.target.value.toLowerCase();
+//             const updated = updateOrderStatus(id, newStatus);
+//             if (!updated) return;
+
+//             // Show toast after status update
+//             showToast(`Order #${id} status updated to ${newStatus}`);
+
+//             if (ordersState.statusFilter !== "all" && ordersState.statusFilter !== newStatus) {
+//                 e.target.closest(".orderCard").remove();
+//             } else {
+//                 const badge = e.target.closest(".orderCard").querySelector(".badge");
+//                 badge.className = `badge bg-${getStatusColor(newStatus)}`;
+//                 badge.textContent = newStatus;
+//             }
+
+//             // Disable cancel button if cancelled
+//             const cancelBtn = e.target.closest(".orderCard").querySelector(".cancelBtn");
+//             cancelBtn.disabled = newStatus === "cancelled";
+
+//             renderStatusBadges(getAllOrders());
+//         });
+//     });
+
+//     // Cancel button
+
+//     document.querySelectorAll(".cancelBtn").forEach(btn => {
+//         btn.addEventListener("click", e => {
+//             selectedOrderToCancel = e.target.dataset.id;
+//             const modal = new bootstrap.Modal(document.getElementById("cancelOrderModal"));
+//             modal.show();
+//         });
+//     });
+
+
+//     // View details button
+//     document.querySelectorAll(".viewDetailsBtn").forEach(btn => {
+//         btn.addEventListener("click", (e) => {
+//             const id = e.currentTarget.dataset.id;
+//             viewOrderDetails(id);
+//         });
+//     });
+
+// }
+
+function attachOrderEvents() {
+    // Status change dropdown
     document.querySelectorAll(".statusDropdown").forEach(dropdown => {
         dropdown.addEventListener("change", e => {
             const id = e.target.dataset.id;
             const newStatus = e.target.value.toLowerCase();
-            const updated = updateOrderStatus(id, newStatus);
-            if (!updated) return;
 
-            // Show toast after status update
-            showToast(`Order #${id} status updated to ${newStatus}`);
 
-            if (ordersState.statusFilter !== "all" && ordersState.statusFilter !== newStatus) {
-                e.target.closest(".orderCard").remove();
-            } else {
-                const badge = e.target.closest(".orderCard").querySelector(".badge");
-                badge.className = `badge bg-${getStatusColor(newStatus)}`;
-                badge.textContent = newStatus;
+            if (newStatus === "cancelled") {
+                selectedOrderToCancel = id;
+                const modal = new bootstrap.Modal(document.getElementById("cancelOrderModal"));
+                modal.show();
+
+                renderOrdersGrid();
+                return;
             }
 
-            // Disable cancel button if cancelled
-            const cancelBtn = e.target.closest(".orderCard").querySelector(".cancelBtn");
-            cancelBtn.disabled = newStatus === "cancelled";
-
-            renderStatusBadges(getAllOrders());
+            //   (Pending, Shipped, etc.)  real time update
+            const updated = updateOrderStatus(id, newStatus);
+            if (updated) {
+                showToast(`Order #${id} status updated to ${newStatus}`);
+                renderOrdersGrid();
+            }
         });
     });
 
-    // Cancel button
-    let selectedOrderToCancel = null;
+    // Cancel button open the cancel confirmation modal
     document.querySelectorAll(".cancelBtn").forEach(btn => {
         btn.addEventListener("click", e => {
-            selectedOrderToCancel = e.target.dataset.id;
+            selectedOrderToCancel = e.currentTarget.dataset.id;
             const modal = new bootstrap.Modal(document.getElementById("cancelOrderModal"));
             modal.show();
         });
     });
-
 
     // View details button
     document.querySelectorAll(".viewDetailsBtn").forEach(btn => {
@@ -284,9 +324,7 @@ function attachOrderEvents() {
             viewOrderDetails(id);
         });
     });
-
 }
-
 
 function getStatusColor(status) {
     switch (status) {

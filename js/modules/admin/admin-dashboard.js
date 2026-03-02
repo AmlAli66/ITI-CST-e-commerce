@@ -28,10 +28,8 @@ export function renderDashboard() {
 
     document.getElementById("adminDashboard").classList.remove("hidden");
 
-    document.getElementById("adminDashboard").innerHTML = `
-        <div class="enterprise-dashboard">
-
-            <!-- Executive Header -->
+    /*   for feature
+              <!-- Executive Header -->
             <div class="dashboard-header">
                 <div>
                     <h2>Executive Overview</h2>
@@ -40,6 +38,16 @@ export function renderDashboard() {
                 <div class="dashboard-actions">
                     <button class="btn-soft btn-soft-primary">Export Report</button>
                     <button class="btn-soft btn-soft-danger">System Audit</button>
+                </div>
+            </div> */
+    document.getElementById("adminDashboard").innerHTML = `
+        <div class="enterprise-dashboard">
+
+            <!-- Executive Header -->
+            <div class="dashboard-header">
+                <div>
+                    <h2>Executive Overview</h2>
+                    <p>Operational intelligence & real-time metrics</p>
                 </div>
             </div>
 

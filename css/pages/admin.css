@@ -29,6 +29,13 @@
     flex-direction: column;
     justify-content: space-between;
     color: #cbd5e1;
+
+    position: sticky;
+    top: 30px;
+
+    max-height: calc(100vh - 50px) !important;
+    overflow-y: auto;
+    z-index: 100;
 }
 
 .sidebar-header {
@@ -114,6 +121,7 @@
     color: #f87171;
     cursor: pointer;
     transition: 0.3s;
+
 }
 
 .logout-btn:hover {
@@ -133,13 +141,13 @@
 }
 
 /* --- Base Layout --- */
-.dashboard-container {
+/* .dashboard-container {
     display: flex;
     min-height: 100vh;
     background: #f1f5f9;
     padding: 0;
-    /* Remove padding for edge-to-edge mobile feel */
-}
+
+} */
 
 /* --- Responsive Sidebar --- */
 .dashboard-sidebar {
@@ -179,13 +187,6 @@
 }
 
 /* --- Main Content Area --- */
-.dashboard-main {
-    flex: 1;
-    padding: 30px;
-    overflow-x: hidden;
-    /* Prevent horizontal scroll on small screens */
-    background: #f8fafc;
-}
 
 /* --- Desktop & Mobile Adaptive Logic --- */
 @media (max-width: 991.98px) {
@@ -194,12 +195,21 @@
         left: -280px;
         /* Hide sidebar off-screen */
         z-index: 1100;
-        /* min-height: 100vh; */
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+
+        transition: all 0.3s ease;
 
     }
 
     .dashboard-sidebar.active {
         left: 0;
+    }
+
+    .dashboard-container {
+        padding: 15px;
+        padding-top: 70px;
     }
 
     .sidebar-overlay {
@@ -276,6 +286,7 @@
     background: #f1f5f9;
     padding: 20px;
     gap: 20px;
+    align-items: flex-start;
 }
 
 .dashboard-main {
@@ -284,6 +295,7 @@
     border-radius: 24px;
     padding: 30px;
     overflow-y: auto;
+    min-width: 0;
 }
 
 .hidden {
