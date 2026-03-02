@@ -308,6 +308,16 @@ function catalogBrandCreation(){
         //----
         // Rebuilding the Pagination with the result of sorting 
         creatingCatalogPagination();
+        // Updating url to reflect the current category filter 
+const url = new URL(window.location);
+
+if(checkedCategories.length > 0){
+    url.searchParams.set('category', checkedCategories.join(','));  // e.g., "Electronics,Clothing"
+} else {
+    url.searchParams.delete('category');
+}
+window.history.replaceState({}, '', url);
+        //--------
     }
 
 
@@ -382,16 +392,27 @@ function applySorting(products, sortType){
 }
 
 ////------------ trying the linking of home  category Handles the navigation from home by Category 
-const urlparams=  new URLSearchParams(window.location.search);
+//const urlparams=  new URLSearchParams(window.location.search);
+//const categoryParam = urlparams.get("category");
+//if(categoryParam){
+//    const checkbox=document.querySelector(`.catalogCheckBoxContainer input[value="${categoryParam}"]`)
+//    if(checkbox){
+//        checkbox.checked=true;
+//        ApplyAllFilters();
+//    }
+//}
+const urlparams = new URLSearchParams(window.location.search);
 const categoryParam = urlparams.get("category");
 if(categoryParam){
-    const checkbox=document.querySelector(`.catalogCheckBoxContainer input[value="${categoryParam}"]`)
-    if(checkbox){
-        checkbox.checked=true;
-        ApplyAllFilters();
-    }
+    const categories = categoryParam.split(',');  // Split "Electronics,Clothing" into array
+    categories.forEach(cat => {
+        const checkbox = document.querySelector(`.catalogCheckBoxContainer input[value="${cat}"]`);
+        if(checkbox){
+            checkbox.checked = true;
+        }
+    });
+    ApplyAllFilters();
 }
-
 //-------------------------------
 
 //--------- Clear All Filters 
@@ -400,6 +421,23 @@ ClearFiltersBtn.addEventListener('click',ClearAllFilters)
 function ClearAllFilters(){
     const allCheckedFilters = document.querySelectorAll("input[type='checkbox']:checked")
     allCheckedFilters.forEach(cb=>cb.checked=false);
+    // reset the price sliders 
+    const allProducts = getAllProducts();
+    let highestPrice = 0;
+    for(let i = 0; i < allProducts.length; i++){
+        if(allProducts[i].price > highestPrice){
+            highestPrice = allProducts[i].price;
+        }
+    }
+    minSlider.value = 0;
+    maxSlider.value = highestPrice;
+    minDisplay.innerText = 0;
+    maxDisplay.innerText = highestPrice;
+
+    //--clear url params 
+    const url = new URL(window.location);
+    url.searchParams.delete('category');
+    window.history.replaceState({}, '', url);
     ApplyAllFilters();
 }
 

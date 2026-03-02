@@ -1,22 +1,29 @@
+const checkingIsLogged = localStorage.getItem('currentUser');
+if(!checkingIsLogged){
+    window.location="/index.html"
+}
+const profileCurrentUser = JSON.parse(checkingIsLogged)
 const params =new URLSearchParams(window.location.search);
 const orderId=params.get('id');
 const orders = JSON.parse(localStorage.getItem('orders'))||[];
-const order =orders.find(o=>o.id==orderId);
-if(!order){
-    document.getElementById("orderInfo").innerHTML=`
-    <div class="profileEmptyStats">
-        <i class="fas fa-box-open"></i>
-            <p>Order not found</p>
-            <a href="profile.html">Back to Profile</a>
-    </div>
-    `
-    
-}
 function getProductImage(productId){
     const products = JSON.parse(localStorage.getItem('products')) || [];
     const product = products.find(p => p.id == productId);
     return product ? product.image : '';
 }
+
+const order =orders.find(o=>o.id==orderId);
+const isAdmin = profileCurrentUser.role==="admin";
+if(!order||(!isAdmin && order.userId != profileCurrentUser.id)){
+    document.getElementById("orderInfo").innerHTML=`
+    <div class="profileEmptyStats">
+        <i class="fas fa-box-open"></i>
+            <p>Order not found</p>
+            <a href="profile.html" class="orderBackBtn">Back to Profile</a>
+    </div>
+    `
+    
+}else{
 const orderInfo =document.getElementById('orderInfo');
 orderInfo.innerHTML=`
             <h2>Order Details</h2>
@@ -75,3 +82,4 @@ backBtn.href = 'profile.html';
 backBtn.className = 'orderBackBtn';
 backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Back to Profile';
 document.getElementById('orderDetailsContainer').appendChild(backBtn);
+}
