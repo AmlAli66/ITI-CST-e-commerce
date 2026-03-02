@@ -127,7 +127,9 @@ function displayProfileOrders(){
 
 }
 displayProfileOrders();
-
+if (currentUser.role === "admin") {
+    document.getElementById("profileOrderList").parentElement.style.visibility = "hidden";
+}
 // start of Order Details Modal Showing 
 function viewOrderDetails(orderId){
 window.location.href = `order-details.html?id=${orderId}`;
