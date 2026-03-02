@@ -298,7 +298,7 @@ document.getElementById("confirmOrderBtn").addEventListener("click", async () =>
         const itemTotal = finalPrice * item.quantity;
         subtotal += itemTotal;
 
-        product.stock -= item.quantity;
+        // product.stock -= item.quantity;
 
         items.push({
             productId: product.id,
@@ -313,7 +313,7 @@ document.getElementById("confirmOrderBtn").addEventListener("click", async () =>
     if (stockError) return;
 
  
-    localStorage.setItem("products", JSON.stringify(products));
+    // localStorage.setItem("products", JSON.stringify(products));
 
     const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 
