@@ -268,6 +268,7 @@ transform: translateY(-2px);
 .mobileClearFilter {
     padding: 15px;
     text-align: center;
+    display: none;
 }
 
 #catalogClearAllFiltersMobile {
@@ -283,4 +284,9 @@ transform: translateY(-2px);
 
 #catalogClearAllFiltersMobile:active {
     transform: scale(0.98);
+}
+@media (orientation: portrait) {
+    .mobileClearFilter {
+        display: block;
+    }
 }

@@ -5,6 +5,7 @@ import { renderOrders } from "./admin-orders.js";
 import { renderActivityFeed } from "./admin-activity.js";
 import { initUsers } from "../../core/users-service.js";
 import { initProducts } from "../../core/products-service.js";
+import { renderMessages } from "./admin-messages.js";
 
 
 (async function () {
@@ -84,6 +85,7 @@ function switchSection(section) {
     if (section === "users") renderUsers();
     if (section === "products") renderProducts();
     if (section === "orders") renderOrders();
+    if (section === "messages") renderMessages();
 }
 
 

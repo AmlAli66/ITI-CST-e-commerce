@@ -38,7 +38,8 @@ function updateNavbar() {
     const sellerDashboard=document.getElementById("navSellerDashboard");
     const adminDashboard =document.getElementById("navAdminPanel");
     const navLogin= document.getElementById("navLogin");
-    const navLogout =document.getElementById("navLogout")
+    const navLogout =document.getElementById("navLogout");
+    const navCartIcon=document.getElementById("navCartIcon");
     if(navUserName) {
         navUserName.innerText = user ? `Welcome ${user.name}` : "";
     }
@@ -53,6 +54,9 @@ function updateNavbar() {
     }
     if(!user){
         navLogout.style.display="none";
+    }
+    if(user.role=="admin"){
+        navCartIcon.style.display="none";
     }
 }
 updateNavbar();
@@ -204,25 +208,25 @@ function catalogshowToast(message, type = 'default') {
 
 
 async function navinitilaizeUsers() {
-  const existingUser = localStorage.getItem("users");
-  if (!existingUser) {
+    const existingUser = localStorage.getItem("users");
+    if (!existingUser) {
     console.log("Loading User into localStorage...");
 
     try {
       // Fetch from JSON
-      const userResponse = await fetch("/data/users.json");
-      const users = await userResponse.json();
+        const userResponse = await fetch("/data/users.json");
+        const users = await userResponse.json();
 
       // Store in localStorage
-      localStorage.setItem("users", JSON.stringify(users));
+        localStorage.setItem("users", JSON.stringify(users));
 
-      console.log("users loaded successfully:", users.length);
+        console.log("users loaded successfully:", users.length);
     } catch (error) {
-      console.error(" Error loading users:", error);
+        console.error(" Error loading users:", error);
     }
-  } else {
+    } else {
     console.log("✅ Products already in localStorage");
-  }
+    }
 }
 navinitilaizeUsers();
 async function navinitializeProducts() {
