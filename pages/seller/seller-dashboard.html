@@ -16,15 +16,25 @@
 
 <body class="bg-light">
 
-    <!-- <div id="navbar-container"></div> -->
+    <button id="mobileMenuToggle" class="mobile-menu-toggle d-lg-none">
+        <i class="bi bi-list"></i>
+    </button>
 
     <div class="container-fluid overflow-hidden">
         <div class="row min-vh-100 px-2">
 
             <div class="col-12 col-md-3 col-lg-2  d-flex flex-column position-relative">
-                <aside class="seller-sidebar d-flex flex-column">
+                <aside id="sidebar" class="seller-sidebar d-flex flex-column">
 
-                    <div class="sidebar-header px-4 py-4">
+                    <div class="sidebar-header py-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <button id="backBtn" class="back-btn">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <button class="btn text-white d-lg-none" id="closeSidebar">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
                         <div class="d-flex align-items-center gap-2">
                             <div class="logo-circle">
                                 <i class="bi bi-shop"></i>
@@ -36,7 +46,7 @@
                         </div>
                     </div>
 
-                    <ul class="nav flex-column px-3 mt-3 gap-1">
+                    <ul class="nav flex-column  mt-3 gap-1">
 
                         <li class="nav-item">
                             <a class="nav-link active" data-section="overview">
@@ -64,56 +74,64 @@
 
                     </ul>
 
+                    <div class="sidebar-footer">
+                        <button id="logoutBtn" class="logout-btn my-3">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+
                 </aside>
 
             </div>
 
-            <main class="col-12 col-md-9 col-lg-10 p-lg-5 p-md-4 p-3 overflow-y-auto">
+            <main class="col-12  col-md-9 col-lg-10 p-lg-5 p-md-4 p-3 overflow-y-auto">
 
-                <section id="overviewSection" class="fade-in">
-                    <header class="mb-5">
-                        <h2 class="fw-bold text-dark mb-1">Dashboard Overview</h2>
-                        <p class="text-muted">Welcome back! Here's what's happening today.</p>
-                    </header>
+                <div class="main-container px-5">
+                    <section id="overviewSection" class="fade-in">
+                        <header class="mb-5">
+                            <h2 class="fw-bold text-dark mb-1">Dashboard Overview</h2>
+                            <p class="text-muted">Welcome back! Here's what's happening today.</p>
+                        </header>
 
-                    <div class="row g-4" id="statsCards"></div>
+                        <div class="row g-4" id="statsCards"></div>
 
-                    <div class="row mt-4 g-4">
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body d-flex flex-column justify-content-center p-4"
-                                    id="topProductWidget">
+                        <div class="row mt-4 g-4">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body d-flex flex-column justify-content-center p-4"
+                                        id="topProductWidget">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xl-8 col-md-12">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-header bg-white border-0 pt-4 px-4">
-                                    <h5 class="fw-bold m-0">Revenue Analytics</h5>
-                                </div>
-                                <div class="card-body p-4 d-flex flex-column">
-                                    <div class="chart-container" style="position: relative; height:300px; width:100%">
-                                        <canvas id="salesChart"></canvas>
+                            <div class="col-xl-8 col-md-12">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white border-0 pt-4 px-4">
+                                        <h5 class="fw-bold m-0">Revenue Analytics</h5>
+                                    </div>
+                                    <div class="card-body p-4 d-flex flex-column">
+                                        <div class="chart-container"
+                                            style="position: relative; height:300px; width:100%">
+                                            <canvas id="salesChart"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                    <section id="productsSection" class="d-none fade-in">
+                        <div
+                            class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
+                            <h2 class="fw-bold m-0">My Products</h2>
+                            <div id="productsPagination" class="d-flex justify-content-end"></div>
+                            <button class="btn main-btn text-light px-4 py-2 rounded-3 shadow-sm" data-bs-toggle="modal"
+                                data-bs-target="#addProductModal">
+                                <i class="bi bi-plus-circle"></i> Add New Product
+                            </button>
+                        </div>
 
-                <section id="productsSection" class="d-none fade-in">
-                    <div
-                        class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
-                        <h2 class="fw-bold m-0">My Products</h2>
-                        <button class="btn main-btn text-light px-4 py-2 rounded-3 shadow-sm" data-bs-toggle="modal"
-                            data-bs-target="#addProductModal">
-                            <i class="bi bi-plus-circle"></i> Add New Product
-                        </button>
-                    </div>
-
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body p-0">
-                            <div class="p-3 border-bottom">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body p-3">
                                 <div class="input-group search-group mx-auto">
                                     <span class="input-group-text bg-white border-end-0"><i
                                             class="bi bi-search"></i></span>
@@ -121,19 +139,53 @@
                                         placeholder="Search by name...">
                                 </div>
                             </div>
-                            <div class="table-responsive" id="productsTable"></div>
                         </div>
-                    </div>
-                </section>
 
-                <section id="ordersSection" class="d-none fade-in">
-                    <h2 class="fw-bold mb-4">Order Management</h2>
-                    <div class="card border-0 shadow-sm ">
-                        <div class="card-body p-0">
-                            <div class="table-responsive" id="ordersTable"></div>
+                        <div id="productsTable" class="row g-4">
                         </div>
-                    </div>
-                </section>
+                    </section>
+
+                    <section id="ordersSection" class="d-none fade-in">
+                        <div
+                            class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center mb-4 gap-3">
+                            <div>
+                                <h2 class="fw-bold m-0 text-dark">Order Management</h2>
+                                <p class="text-muted small mb-0">Track and manage your customer orders</p>
+                            </div>
+
+                            <div id="ordersPagination" class="d-flex justify-content-end"></div>
+                            <div class="order-filters-bar d-flex flex-wrap gap-2 p-2 bg-white rounded-4 shadow-sm">
+                                <div class="filter-group d-flex align-items-center px-3">
+                                    <i class="bi bi-filter-left me-2 text-primary"></i>
+                                    <select id="orderStatusFilter"
+                                        class="form-select border-0 shadow-none bg-transparent fw-medium">
+                                        <option value="all">All Statuses</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="processing">Processing</option>
+                                        <option value="shipped">Shipped</option>
+                                        <option value="delivered">Delivered</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+
+                                <div class="filter-divider d-none d-md-block"></div>
+
+                                <div class="filter-group d-flex align-items-center px-3">
+                                    <i class="bi bi-sort-down me-2 text-primary"></i>
+                                    <select id="orderSortOrder"
+                                        class="form-select border-0 shadow-none bg-transparent fw-medium">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div id="ordersCardsContainer" class="row g-4"></div>
+                    </section>
+                </div>
 
             </main>
         </div>
