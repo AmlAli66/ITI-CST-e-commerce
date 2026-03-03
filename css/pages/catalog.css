@@ -1,1 +1,292 @@
-/* css */
+*{
+/*font-family: 'Orbitron', sans-serif;*/
+}
+.catalogfirstAnkers{
+    margin-left: 50px;    
+
+}
+.catalogContainer{
+    display: flex;
+    overflow: hidden;
+}
+.catalogFilters{
+    width:300px;
+    height: 100%;
+    border:1px solid rgb(194, 194, 194);
+    border-radius: 5px;
+    box-shadow: 2px 2px  rgb(194, 194, 194) ;
+    min-width: 200px;
+    max-width: 200px;
+    flex-grow: 0;
+     background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 0;
+
+}
+.catalogSearchContainer{
+    text-align: center;
+    
+}
+.catalogSearchBar{
+    width: 50vw;
+    height: 5vh;
+}
+.catalogSearchBar:hover{
+    border: 2px solid rgb(151, 143, 143);
+    border-radius: 5px;
+}
+.catalogFiltersWrapper{
+    text-align: center;
+    margin-left: 10px;
+        font-family: 'Montserrat', sans-serif;
+
+}
+
+.catalogCheckBoxContainer{
+    
+    display: flex;
+    align-items: center;
+}
+.catalogProductCard{
+    height: 400px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border:1px solid rgb(194, 194, 194);
+    margin: 5px;
+    box-sizing: border-box;
+    transition: 0.3s;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 5px 5px 2px rgb(150, 228, 231), inset -2px -2px 2px rgb(140, 226, 239) , inset 2px 2px 2px rgb(168, 223, 224);
+    
+}
+.catalogProductCard:hover{
+    
+    background: rgb(246, 242, 242);
+    transform: translateY(-5px)scale(1.1);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+
+}
+.catalogProductButtons{
+    display: flex;
+    gap:10px;
+    justify-content: center;
+}
+.catalogProductDetails{
+    width: 220px;
+}
+.catalogproductImage{
+    height: 200px;
+    width: 180px;
+    object-fit: cover;
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+    margin-top: 30px;
+}
+.catalogProducts{
+    gap: 20px;
+    padding: 20px;
+
+}
+.catalogPagination{
+    text-align: center;
+    
+}
+.catalogPaginationButtons{
+    min-width: 40px;
+    height: 40px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: white;
+    border: 2px solid #e5e7eb;
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.catalogPaginationButtons.active{
+background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    border-color: #06b6d4;
+    color: white;
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+    transform: translateY(-2px);}
+.catalogPaginationButtons:hover {
+background: #f9fafb;
+    border-color: #06b6d4;
+    color: #06b6d4;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(6, 182, 212, 0.15);}
+
+.catalogPaginationButtons.active:hover {
+    background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+}
+
+
+@media (orientation: portrait) {
+    
+    .catalogFilters{
+        display: none;
+    }
+    .catalogProducts{
+        width: 100%;
+    }
+}
+.price-inputs{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.BrandCheckWrapper{
+    padding:10px;
+}
+.catalogSortBar{
+    margin-bottom: 5px;
+    margin-left: 40px;
+    margin-top: 30px;
+}
+.catalogAddToCard{
+     padding: 5px 15px;
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);     color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+.catalogAddToCard:hover{
+transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+.catalogShowDetails{
+        padding: 10px 15px;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+    margin-bottom: 20px;
+    }
+.catalogShowDetails:hover{
+    background: #667eea;
+    color: white;
+}
+#catalogClearAllFilters{
+    margin: 10px auto;
+    background: transparent;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+#catalogClearAllFilters:hover{
+    background: #f3f4f6;
+    color: #374151;
+    border-color: #9ca3af;
+}
+.catalogCurrentNumberic{
+    text-align: center;
+        margin: 10px auto;
+
+
+}
+.catalogCurrentNumberic>span{
+    background: transparent;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+        font-size: 13px;
+        padding: 6px 12px;
+    border-radius: 5px;
+    word-spacing: 5px;
+}
+.catalogCurrentNumberic>span:hover{
+    background: #f3f4f6;
+    color: #374151;
+    border-color: #9ca3af;
+
+}
+.catalogPointerFilter{
+    cursor: pointer;
+}
+/* ============================================ */
+/* TOAST NOTIFICATION                          */
+/* ============================================ */
+.custom-toast {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background: linear-gradient(135deg, #0f172a, #1e1b4b);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 9999;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+    min-width: 250px;
+}
+
+.custom-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Success variant */
+.custom-toast.success {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+/* Error variant */
+.custom-toast.error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+/* Warning variant */
+.custom-toast.warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #1f2937;
+}
+/* clear Filter */ 
+.mobileClearFilter {
+    padding: 15px;
+    text-align: center;
+    display: none;
+}
+
+#catalogClearAllFiltersMobile {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 500;
+    width: 100%;
+    max-width: 300px;
+}
+
+#catalogClearAllFiltersMobile:active {
+    transform: scale(0.98);
+}
+@media (orientation: portrait) {
+    .mobileClearFilter {
+        display: block;
+    }
+}

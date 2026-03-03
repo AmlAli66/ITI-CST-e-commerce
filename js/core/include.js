@@ -20,6 +20,8 @@ async function loadPartial(selector, path, callback) {
 // Load navbar and then navbar.js
 loadPartial("#navbar-container", "/partials/navbar.html", () => {
     // بعد ما الـ navbar يتحمل في DOM
+
+
     import("/js/modules/navbar/navbar.js")
         .then(module => console.log("navbar module loaded dynamically"))
         .catch(err => console.error(err));
@@ -27,6 +29,9 @@ loadPartial("#navbar-container", "/partials/navbar.html", () => {
 
 // Load footer normally
 loadPartial("#footer-container", "/partials/footer.html");
+
+// Load footer normally
+loadPartial("#back-btn-container", "/partials/back.btn.html");
 
 
 

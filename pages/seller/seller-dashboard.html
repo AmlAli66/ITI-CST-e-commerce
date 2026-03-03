@@ -3,39 +3,360 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Catalog</title>
+    <title>Seller Dashboard | Analytics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
-    <!-- Global CSS -->
     <link rel="stylesheet" href="../../css/main.css">
-
-    <!-- Page CSS -->
     <link rel="stylesheet" href="../../css/pages/seller.css">
 </head>
 
-<body>
+<body class="bg-light">
 
-    <!-- Shared Navbar -->
-    <div id="navbar-container"></div>
+    <button id="mobileMenuToggle" class="mobile-menu-toggle d-lg-none">
+        <i class="bi bi-list"></i>
+    </button>
 
-    <!-- Page Content -->
-    <div class="container mt-4">
-        <h2>Seller Dashboard</h2>
+    <div class="container-fluid overflow-hidden">
+        <div class="row min-vh-100 px-2">
+
+            <div class="col-12 col-md-3 col-lg-2  d-flex flex-column position-relative">
+                <aside id="sidebar" class="seller-sidebar d-flex flex-column">
+
+                    <div class="sidebar-header py-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <button id="backBtn" class="back-btn">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <button class="btn text-white d-lg-none" id="closeSidebar">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="logo-circle">
+                                <i class="bi bi-shop"></i>
+                            </div>
+                            <div>
+                                <h6 class="m-0 fw-bold ">Seller Panel</h6>
+                                <small class="text-muted">Analytics</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="nav flex-column  mt-3 gap-1">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" data-section="overview">
+                                <i class="bi bi-grid-1x2"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-section="products">
+                                <i class="bi bi-box-seam"></i>
+                                <span>Products</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link d-flex justify-content-between align-items-center" data-section="orders">
+                                <span class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-cart3"></i>
+                                    Orders
+                                </span>
+                                <span class="badge bg-danger rounded-pill d-none" id="pendingBadge">0</span>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <div class="sidebar-footer">
+                        <button id="logoutBtn" class="logout-btn my-3">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+
+                </aside>
+
+            </div>
+
+            <main class="col-12  col-md-9 col-lg-10 p-lg-5 p-md-4 p-3 overflow-y-auto">
+
+                <div class="main-container px-5">
+                    <section id="overviewSection" class="fade-in">
+                        <header class="mb-5">
+                            <h2 class="fw-bold text-dark mb-1">Dashboard Overview</h2>
+                            <p class="text-muted">Welcome back! Here's what's happening today.</p>
+                        </header>
+
+                        <div class="row g-4" id="statsCards"></div>
+
+                        <div class="row mt-4 g-4">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body d-flex flex-column justify-content-center p-4"
+                                        id="topProductWidget">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-md-12">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white border-0 pt-4 px-4">
+                                        <h5 class="fw-bold m-0">Revenue Analytics</h5>
+                                    </div>
+                                    <div class="card-body p-4 d-flex flex-column">
+                                        <div class="chart-container"
+                                            style="position: relative; height:300px; width:100%">
+                                            <canvas id="salesChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="productsSection" class="d-none fade-in">
+                        <div
+                            class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center gap-3 mb-4">
+                            <div>
+                                <h2 class="fw-bold m-0">My Products</h2>
+                                <p class="text-muted small mb-0">Manage your inventory and track performance</p>
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-3 align-items-center">
+                                <div class="order-filters-bar d-flex flex-wrap gap-2 p-2 bg-white rounded-4 shadow-sm">
+                                    <div class="filter-group d-flex align-items-center px-3">
+                                        <i class="bi bi-shield-check me-2 text-primary"></i>
+                                        <select id="productStatusFilter"
+                                            class="form-select border-0 shadow-none bg-transparent fw-medium">
+                                            <option value="all">All Status</option>
+                                            <option value="approved">Approved</option>
+                                            <option value="rejected">Rejected</option>
+                                            <option value="pending">Pending</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="filter-divider d-none d-md-block"></div>
+
+                                    <div class="filter-group d-flex align-items-center px-3">
+                                        <i class="bi bi-sort-down me-2 text-primary"></i>
+                                        <select id="productSortOrder"
+                                            class="form-select border-0 shadow-none bg-transparent fw-medium">
+                                            <option value="newest">Newest First</option>
+                                            <option value="oldest">Oldest First</option>
+                                            <option value="stock-low">Stock: Low to High</option>
+                                            <option value="stock-high">Stock: High to Low</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <button class="btn main-btn text-light px-4 py-2 rounded-3 shadow-sm"
+                                    data-bs-toggle="modal" data-bs-target="#addProductModal">
+                                    <i class="bi bi-plus-circle me-1"></i> Add Product
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 shadow-sm mb-4 rounded-4">
+                            <div class="card-body p-2">
+                                <div class="input-group border-0">
+                                    <span class="input-group-text bg-transparent border-0"><i
+                                            class="bi bi-search text-muted"></i></span>
+                                    <input type="text" id="productSearch" class="form-control border-0 shadow-none"
+                                        placeholder="Search by name or brand...">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="productsTable" class="row g-4"></div>
+                        <div id="productsPagination" class="d-flex justify-content-center mt-4"></div>
+                    </section>
+
+                    <section id="ordersSection" class="d-none fade-in">
+                        <div
+                            class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center mb-4 gap-3">
+                            <div>
+                                <h2 class="fw-bold m-0 text-dark">Order Management</h2>
+                                <p class="text-muted small mb-0">Track and manage your customer orders</p>
+                            </div>
+
+                            <div id="ordersPagination" class="d-flex justify-content-end"></div>
+                            <div class="order-filters-bar d-flex flex-wrap gap-2 p-2 bg-white rounded-4 shadow-sm">
+                                <div class="filter-group d-flex align-items-center px-3">
+                                    <i class="bi bi-filter-left me-2 text-primary"></i>
+                                    <select id="orderStatusFilter"
+                                        class="form-select border-0 shadow-none bg-transparent fw-medium">
+                                        <option value="all">All Statuses</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="processing">Processing</option>
+                                        <option value="shipped">Shipped</option>
+                                        <option value="delivered">Delivered</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+
+                                <div class="filter-divider d-none d-md-block"></div>
+
+                                <div class="filter-group d-flex align-items-center px-3">
+                                    <i class="bi bi-sort-down me-2 text-primary"></i>
+                                    <select id="orderSortOrder"
+                                        class="form-select border-0 shadow-none bg-transparent fw-medium">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div id="ordersCardsContainer" class="row g-4"></div>
+                    </section>
+                </div>
+
+            </main>
+        </div>
     </div>
 
-    <!-- Shared Footer -->
-    <div id="footer-container"></div>
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Add Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="addProductForm" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Product Name</label>
+                            <input type="text" class="form-control bg-light border-0 py-2" id="productName"
+                                placeholder="Enter product name" required minlength="3">
+                            <div class="invalid-feedback">Please enter at least 3 characters.</div>
+                        </div>
 
-    <!-- Core Scripts -->
-    <script src="../../js/core/include.js"></script>
-    <!-- <script src="../../js/core/utils.js"></script> -->
-    <!-- <script src="../../js/core/storage.js"></script> -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Description</label>
+                            <textarea class="form-control bg-light border-0 py-2" id="productDescription" rows="3"
+                                placeholder="Describe your product..." required></textarea>
+                            <div class="invalid-feedback">Description is required.</div>
+                        </div>
 
-    <!-- Page Module -->
-    <script src="../../js/modules/seller/seller-dashboard.js"></script>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-muted">Price</label>
+                                <div class="input-group">
+                                    <span class="input-group-text border-0 bg-light">$</span>
+                                    <input type="number" class="form-control bg-light border-0 py-2" id="productPrice"
+                                        step="0.01" required min="1">
+                                    <div class="invalid-feedback">Price must be at least 1.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-muted">Discount %</label>
+                                <input type="number" class="form-control bg-light border-0 py-2" id="productDiscount"
+                                    value="0" min="0" max="99">
+                                <div class="invalid-feedback">0-99% only.</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-muted">Stock Units</label>
+                                <input type="number" class="form-control bg-light border-0 py-2" id="productStock"
+                                    required min="0">
+                                <div class="invalid-feedback">Cannot be negative.</div>
+                            </div>
+                        </div>
 
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Category</label>
+                                <select class="form-select bg-light border-0 py-2" id="productCategory" required>
+                                    <option value="" selected disabled>Choose...</option>
+                                    <option value="Fashion">Fashion</option>
+                                    <option value="Home">Home</option>
+                                    <option value="Mobiles">Mobiles</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Beauty">Beauty</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a category.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Brand</label>
+                                <input type="text" class="form-control bg-light border-0 py-2" id="productBrand"
+                                    placeholder="e.g. Nike" required>
+                                <div class="invalid-feedback">Brand name is required.</div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Main Image</label>
+                                <input type="file" class="form-control bg-light border-0 py-2" id="productImage"
+                                    accept="image/*">
+                                <div id="imageFeedback" class="text-danger small mt-1 d-none">Main image is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Gallery (Multiple)</label>
+                                <input type="file" class="form-control bg-light border-0 py-2" id="productGallery"
+                                    accept="image/*" multiple>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary  w-100 py-2 fw-bold shadow-sm rounded-3">
+                            <span class="submit-text">Save Product</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-body text-center p-4">
+                    <div class="text-danger mb-3"><i class="bi bi-exclamation-octagon" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="fw-bold">Delete Product?</h5>
+                    <p class="text-muted small">This action cannot be undone.</p>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-light flex-grow-1" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger flex-grow-1" id="confirmDeleteBtn">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="orderDetailsBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" class="toast align-items-center text-bg-primary border-0 shadow" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage">Success!</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="../../js/core/include.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../../js/modules/seller/seller-dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

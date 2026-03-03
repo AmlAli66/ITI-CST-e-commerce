@@ -19,3 +19,139 @@ console.log("App started");
         }
         // Start snow automatically when page loads
         setInterval(createSnowflake, 800);
+
+
+// Initializing 
+async function initializeProducts(){
+    const existingProducts = localStorage.getItem('products');
+if (!existingProducts) {
+        console.log('Loading products into localStorage...');
+        
+        try {
+            // Fetch from JSON
+            const response = await fetch('./data/products.json');
+            const products = await response.json();
+            
+            // Store in localStorage
+            localStorage.setItem('products', JSON.stringify(products));
+            
+            console.log('✅ Products loaded successfully:', products.length);
+        } catch (error) {
+            console.error('❌ Error loading products:', error);
+        }
+    } else {
+        console.log('✅ Products already in localStorage');
+    }
+    displayFeaturedProducts();
+
+}
+initializeProducts();
+
+
+// Getting all the products from the local storage 
+function getAllProducts() {
+    const products = localStorage.getItem('products');
+    return products ? JSON.parse(products) : [];
+}
+
+//  getting the featured products 'for home'
+function getFeaturedProducts() {
+    const allProducts = getAllProducts();
+    return allProducts.filter(product => product.featured === true && product.status=="approved");
+}
+// getting the product by category 
+function getProductsByCategory(category) {
+    const allProducts = getAllProducts();
+    return allProducts.filter(product => product.category === category);
+}
+
+//  Search for product by id 
+function getProductById(id) {
+    const allProducts = getAllProducts();
+    return allProducts.find(product => product.id === id);
+
+}
+// trying new js 
+function displayFeaturedProducts(){
+    const featuredProducts = getFeaturedProducts();
+    console.log("Featured Products Found :" + featuredProducts.length);
+    const container = document.getElementById("homeFeaturedproductsgrid");
+    if(!container){
+        console.log("Container Not Found");
+        return;
+    }
+    container.innerHTML = featuredProducts.map(product => {
+        return `
+        <div class="homeProductCard" onclick="viewProductDetails('${product.id}')">
+            <div class="homeProductImgWrap">
+                <span class="homeProductBadge">Featured</span>
+                <img src="${product.image}" alt="${product.name}" class="homeProductImages">
+            </div>
+            <div class="homeProductBody">
+                <div class="homeProductCategory">${product.category}</div>
+                <div class="homeProductName">${product.name}</div>
+                <div class="homeProductPriceRow">
+                    <span class="homeProductPriceCard"><span class="currency">$</span>${product.price}</span>
+                    <button class="homeShowDetails" onclick="event.stopPropagation(); viewProductDetails('${product.id}')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        `
+    }).join('');
+}
+
+
+
+//displayFeaturedProducts();
+function viewProductDetails(productID){
+    window.location.href=`./pages/shop/product-details.html?id=${productID}`;
+}
+//--- trying the redirecting 
+const homeCategoryCards = document.querySelectorAll(".homeCategoryCard");
+homeCategoryCards.forEach(card=>{
+    card.addEventListener('click',function(){
+        const category = this.getAttribute("data-Category");
+        window.location.href=`./pages/shop/catalog.html?category=${category}`
+    })
+})
+// ---
+//------------ Login Handling
+const homeLogin= document.getElementById("homeLogin");
+const homeRegister = document.getElementById("homeRegister")
+const homeLogout =document.getElementById("homeLogout");
+const user = getCurrentUser();
+if(user){
+    homeLogin.style.display="none";
+    homeRegister.style.display="none";
+}
+if(!user){
+    homeLogout.style.display="none"
+}
+homeLogout.addEventListener('click',logout)
+//---------------------------
+
+
+
+function getCurrentUser(){
+    const userStr= localStorage.getItem('currentUser');
+    return userStr? JSON.parse(userStr) : null;
+}
+function IsLoggedIn(){
+    return getCurrentUser()!=null;
+}
+function logout(){
+    console.log("🚪 LOGOUT FUNCTION STARTED");
+    console.log("📦 Before remove:", localStorage.getItem('currentUser'));
+    localStorage.removeItem("currentUser");
+    //updateNavbar();
+    console.log("📦 After remove:", localStorage.getItem('currentUser'));
+    console.log("🔄 About to redirect...");
+    
+    window.location.href = "/index.html";
+}
+
+
+
+
