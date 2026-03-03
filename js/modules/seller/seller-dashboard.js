@@ -1,6 +1,49 @@
-import { formatPrice } from "/js/core/utils.js";
-const CURRENT_SELLER_ID = 1;
+import { formatPrice, navigateToProductDetails } from "/js/core/utils.js";
 
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+
+if (!currentUser || currentUser.role !== "seller") {
+
+    window.location.href = "/index.html";
+}
+
+
+const CURRENT_SELLER_ID = currentUser ? +currentUser.id : null;
+
+
+
+document.getElementById("backBtn")?.addEventListener("click", () => {
+    window.history.back();
+});
+
+document.getElementById("logoutBtn")?.addEventListener("click", () => {
+    localStorage.removeItem("currentUser");
+    window.location.href = "/pages/auth/login.html";
+});
+
+
+const sidebar = document.getElementById("sidebar");
+const mobileToggle = document.getElementById("mobileMenuToggle");
+const closeSidebar = document.getElementById("closeSidebar");
+let currentStatusFilter = "all";
+let currentSortOrder = "newest";
+
+const toggleSidebar = () => {
+    sidebar.classList.toggle("active");
+};
+
+mobileToggle?.addEventListener("click", toggleSidebar);
+closeSidebar?.addEventListener("click", toggleSidebar);
+
+// Close sidebar when clicking a menu item on mobile
+document.querySelectorAll(".nav .nav-item").forEach(item => {
+    item.addEventListener("click", () => {
+        if (window.innerWidth < 992) {
+            sidebar.classList.remove("active");
+        }
+    });
+});
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -19,6 +62,33 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     renderTopProductWidget(products, orders);
 
+
+    document.getElementById("orderStatusFilter").addEventListener("change", function () {
+        currentStatusFilter = this.value;
+        ordersCurrentPage = 1; // Reset to page 1
+        applyOrderFilters();
+    });
+
+    document.getElementById("orderSortOrder").addEventListener("change", function () {
+        currentSortOrder = this.value;
+        applyOrderFilters();
+    });
+
+
+    document.getElementById("productSearch").addEventListener("input", () => {
+        productsCurrentPage = 1;
+        renderProductsTable(getProducts(), getOrders());
+    });
+
+    document.getElementById("productStatusFilter").addEventListener("change", () => {
+        productsCurrentPage = 1;
+        renderProductsTable(getProducts(), getOrders());
+    });
+
+    document.getElementById("productSortOrder").addEventListener("change", () => {
+        productsCurrentPage = 1;
+        renderProductsTable(getProducts(), getOrders());
+    });
 
 });
 
@@ -90,7 +160,7 @@ function generateTestOrder() {
         tax: total * 0.1,
         shipping: 20,
         totalPrice: total + (total * 0.1) + 20,
-        shippingAddress: "Cairo, Egypt",
+        address: "Cairo, Egypt",
         paymentMethod: "Cash On Delivery",
         status: "pending",
         orderDate: new Date().toISOString()
@@ -126,6 +196,14 @@ function setupNavigation() {
                 .classList.remove("d-none");
         });
     });
+
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth < 992) {
+                document.querySelector('.seller-sidebar').classList.remove('active');
+            }
+        });
+    });
 }
 
 
@@ -148,7 +226,7 @@ function renderStats(products, orders) {
                 <h6>Total Revenue</h6>
                 <h3>${formatPrice(totalRevenue)}</h3>
             </div>
-            <div class="icon-circle bg-primary">
+            <div class="icon-circle bg-soft-info ">
                 <i class="bi bi-currency-dollar"></i>
             </div>
         </div>
@@ -162,7 +240,7 @@ function renderStats(products, orders) {
                 <h6>Total Orders</h6>
                 <h3>${totalOrders}</h3>
             </div>
-            <div class="icon-circle bg-success">
+            <div class="icon-circle bg-soft-success">
                 <i class="bi bi-cart-check"></i>
             </div>
         </div>
@@ -176,7 +254,7 @@ function renderStats(products, orders) {
                 <h6>Active Products</h6>
                 <h3>${activeProducts}</h3>
             </div>
-            <div class="icon-circle bg-warning">
+            <div class="icon-circle bg-soft-warning">
                 <i class="bi bi-box-seam"></i>
             </div>
         </div>
@@ -186,90 +264,103 @@ function renderStats(products, orders) {
 
 }
 
+/* ===========================
+   PAGINATION SETTINGS
+=========================== */
+let productsCurrentPage = 1;
+const productsPerPage = 6; // Shows 6 products per page (2 rows of 3)
+
+let ordersCurrentPage = 1;
+const ordersPerPage = 8;
 
 /* ===========================
-   PRODUCTS TABLE
+   PRODUCTS TABLE WITH PAGINATION
 =========================== */
-let currentPage = 1;
-const productsPerPage = 5;
-
 function renderProductsTable(products, orders) {
-    const totalPages = Math.ceil(products.length / productsPerPage);
-    const start = (currentPage - 1) * productsPerPage;
-    const paginatedProducts = products.slice(start, start + productsPerPage);
+    const container = document.getElementById("productsTable");
+    const paginationContainer = document.getElementById("productsPagination");
 
-    if (!products.length) {
-        document.getElementById("productsTable").innerHTML = `
-            <div class="text-center py-5">
-                <h5 class="mb-3">No Products Yet</h5>
-                <p class="text-muted">Start by adding your first product 🚀</p>
-                <button class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#addProductModal">
-                    + Add Product
-                </button>
-            </div>
-        `;
+    // APPLY FILTERS & SEARCH
+    const searchTerm = document.getElementById("productSearch")?.value.toLowerCase() || "";
+    const statusFilter = document.getElementById("productStatusFilter")?.value || "all";
+    const sortOrder = document.getElementById("productSortOrder")?.value || "newest";
+
+    let filtered = products.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(searchTerm) || p.brand?.toLowerCase().includes(searchTerm);
+        const matchesStatus = statusFilter === "all" || p.status === statusFilter;
+        return matchesSearch && matchesStatus;
+    });
+
+    // SORTING
+    filtered.sort((a, b) => {
+        if (sortOrder === "newest") return new Date(b.dateAdded) - new Date(a.dateAdded);
+        if (sortOrder === "oldest") return new Date(a.dateAdded) - new Date(b.dateAdded);
+        if (sortOrder === "stock-low") return a.stock - b.stock;
+        if (sortOrder === "stock-high") return b.stock - a.stock;
+        return 0;
+    });
+
+    if (!filtered.length) {
+        container.innerHTML = `<div class="col-12 text-center py-5"><h5>No Products Found</h5></div>`;
+        paginationContainer.innerHTML = "";
         return;
     }
 
-    let tableHTML = `
-        <table class="table table-hover align-middle">
-        <thead>
-            <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Revenue</th>
-                <th class="text-end">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        ${paginatedProducts.map(p => {
+    //  PAGINATION
+    const totalPages = Math.ceil(filtered.length / productsPerPage);
+    const start = (productsCurrentPage - 1) * productsPerPage;
+    const paginated = filtered.slice(start, start + productsPerPage);
+
+    container.innerHTML = paginated.map(p => {
         const revenue = getRevenueForProduct(p.id, orders);
+        const isLowStock = p.stock < 5;
+        // Badge Logic
+        let statusClass;
+        // = p.status === 'approved' ? 'status-approved' : 'status-pending';
+        if (p.status === 'approved') statusClass = 'status-approved';
+        else if (p.status === 'pending') statusClass = 'status-pending';
+        else if (p.status === 'rejected') statusClass = 'status-rejected';
+
+
         return `
-            <tr>
-                <td>${p.image ? `<img src="${p.image}" alt="${p.name}" width="50" class="rounded">` : `<div class="bg-secondary rounded text-light d-flex justify-content-center align-items-center" style="width:50px;height:70px">No</div>`}</td>
-                <td>${p.name}</td>
-                <td>${formatPrice(p.price)}</td>
-                <td>${p.stock} ${p.stock < 5 ? '<span class="badge bg-warning ms-2">Low Stock</span>' : ''}</td>
-                <td>${formatPrice(revenue)}</td>
-                <td class="text-end">
-                    <button class="btn btn-sm btn-outline-primary me-2 edit-btn" data-id="${p.id}">Edit</button>
-                    <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${p.id}">Delete</button>
-                </td>
-            </tr>
-            `;
-    }).join("")}
-        </tbody>
-        </table>
-    `;
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="card product-card border-0 h-100 shadow-sm">
+                    <div class="product-img-container">
+                        <img src="${p.image || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${p.name}">
+                        <span class="status-badge ${statusClass}">${p.status}</span>
+                        ${isLowStock ? '<span class="stock-badge badge-low">Low Stock</span>' : '<span class="stock-badge badge-instock">In Stock</span>'}
+                        <div class="product-price-tag">${formatPrice(p.price)}</div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-1 text-truncate">${p.name}</h5>
+                        <p class="text-muted small mb-3">${p.brand || 'No Brand'}</p>
+                        <div class="row g-2 mb-4 bg-light rounded-3 py-2">
+                            <div class="col-6 text-center border-end">
+                                <span class="d-block fw-bold">${p.stock}</span>
+                                <small class="text-muted" style="font-size: 0.65rem;">Units Left</small>
+                            </div>
+                            <div class="col-6 text-center">
+                                <span class="d-block fw-bold text-success">${formatPrice(revenue)}</span>
+                                <small class="text-muted" style="font-size: 0.65rem;">Earnings</small>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-action btn-view view-product-btn" data-id="${p.id}"><i class="bi bi-eye"></i></button>
+                            <button class="btn btn-action btn-edit flex-grow-1 edit-btn" data-id="${p.id}">Edit</button>
+                            <button class="btn btn-action btn-delete delete-btn" data-id="${p.id}"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+    }).join("");
 
-    // Pagination controls
-    if (totalPages > 1) {
-        tableHTML += `<nav class="px-3" ><ul class="pagination">`;
-        for (let i = 1; i <= totalPages; i++) {
-            tableHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>`;
-        }
-        tableHTML += `</ul></nav>`;
-    }
-
-    document.getElementById("productsTable").innerHTML = tableHTML;
-
-    // Attach pagination and action events
-    document.querySelectorAll(".pagination .page-link").forEach(link => {
-        link.addEventListener("click", function (e) {
-            e.preventDefault();
-            currentPage = +this.textContent;
-            renderProductsTable(products, orders);
-        });
+    renderPagination(totalPages, productsCurrentPage, paginationContainer, (newPage) => {
+        productsCurrentPage = newPage;
+        renderProductsTable(getProducts(), getOrders());
     });
 
     attachActionEvents();
 }
-
-// وظيفة منفصلة لحساب الريڤينيو لكل منتج
 function getRevenueForProduct(productId, orders) {
     return orders
         .flatMap(o => o.items)
@@ -280,110 +371,122 @@ function getRevenueForProduct(productId, orders) {
 
 
 /* ===========================
-   Orders TABLE
+   Orders TABLE with Pagination
 =========================== */
-
-
 function renderOrdersTable(orders) {
+    const container = document.getElementById("ordersCardsContainer");
+    const paginationContainer = document.getElementById("ordersPagination");
+
     if (!orders.length) {
-        document.getElementById("ordersTable").innerHTML = `
-        <div class="text-center py-5">
-            <div class="mb-3">
-                <i class="bi bi-bag-x" style="font-size:40px;color:#9ca3af;"></i>
-            </div>
+        container.innerHTML = `
+        <div class="col-12 text-center py-5">
+            <div class="mb-3"><i class="bi bi-bag-x" style="font-size:40px;color:#9ca3af;"></i></div>
             <h5 class="mb-2">No Orders Yet</h5>
-            <p class="text-muted">
-                Orders will appear here once customers purchase your products.
-            </p>
-            <button class="btn btn-outline-primary btn-sm" id="generateTestOrderBtn">
-                Generate Test Order
-            </button>
-        </div>
-    `;
-
-        document.getElementById("generateTestOrderBtn")
-            .addEventListener("click", generateTestOrder);
-
+            <p class="text-muted">Orders will appear here once customers purchase your products.</p>
+        </div>`;
+        paginationContainer.innerHTML = "";
         return;
     }
 
-    document.getElementById("ordersTable").innerHTML = `
-        <table class="table table-hover align-middle">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Date</th>
-                    <th>Total (Your Part)</th>
-                    <th>Status</th>
-                    <th>Update</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${orders.map(order => {
+    // Pagination
+    const totalPages = Math.ceil(orders.length / ordersPerPage);
+    if (ordersCurrentPage > totalPages) ordersCurrentPage = totalPages;
+    const start = (ordersCurrentPage - 1) * ordersPerPage;
+    const paginatedOrders = orders.slice(start, start + ordersPerPage);
 
+    container.innerHTML = paginatedOrders.map(order => {
         const sellerTotal = order.items
             .filter(i => +i.sellerId === CURRENT_SELLER_ID)
             .reduce((sum, i) => sum + Number(i.total || 0), 0);
 
+        const date = new Date(order.orderDate);
+
         return `
-                        <tr>
-                            <td>
-    <button class="btn btn-link view-order"
-        data-id="${order.id}">
-        #${order.id}
-    </button>
-</td>
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="order-card p-4 h-100 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="order-id-badge">#${order.id}</span>
+                    <span class="badge rounded-pill px-3 py-2 bg-soft-${getStatusColor(order.status)} text-capitalize">
+                        ${order.status}
+                    </span>
+                </div>
 
-                            <td>${new Date(order.orderDate).toLocaleDateString()}</td>
-                            <td>${formatPrice(sellerTotal)}</td>
-                            <td>
-                                <span class="badge bg-${getStatusColor(order.status)}">
-                                    ${order.status}
-                                </span>
-                            </td>
-                            <td>
-                                <select class="form-select form-select-sm status-select"
-                                    data-id="${order.id}">
-                                    ${renderStatusOptions(order.status)}
-                                </select>
-                            </td>
-                        </tr>
-                    `;
+                <div class="row g-3 mb-4">
+                    <div class="col-6">
+                        <div class="label">Date</div>
+                        <div class="fw-bold text-dark small">${date.toLocaleDateString()}</div>
+                        <div class="text-muted" style="font-size: 11px;">${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                    </div>
+                    <div class="col-6 text-end">
+                        <div class="label">Your Earnings</div>
+                        <div class="fw-bold text-primary fs-5">${formatPrice(sellerTotal)}</div>
+                    </div>
+                </div>
 
-    }).join("")}
-            </tbody>
-        </table>
-    `;
+                <div class="mt-auto pt-3 border-top">
+                    <button class="btn btn-light w-100 rounded-3 view-order" data-id="${order.id}">
+                        <i class="bi bi-eye-fill me-2"></i> View Order Details
+                    </button>
+                </div>
+            </div>
+        </div>
+        `;
+    }).join("");
 
-    attachStatusEvents();
+    renderPagination(totalPages, ordersCurrentPage, paginationContainer, (newPage) => {
+        ordersCurrentPage = newPage;
+        // renderOrdersTable(getOrders());
+        applyOrderFilters();
+    });
+    // Render Pagination
+    // renderPagination(totalPages, paginationContainer);
     attachViewOrderEvents();
-
 }
 
 
-function renderStatusOptions(currentStatus) {
+function applyOrderFilters() {
+    let filteredOrders = getOrders();
 
-    const statuses = ["pending", "processing", "shipped", "delivered", "cancelled"];
-
-    return statuses.map(status => `
-        <option value="${status}" ${status === currentStatus ? "selected" : ""}>
-            ${status}
-        </option>
-    `).join("");
-}
-
-function getStatusColor(status) {
-
-    switch (status) {
-        case "pending": return "secondary";
-        case "processing": return "warning";
-        case "shipped": return "info";
-        case "delivered": return "success";
-        case "cancelled": return "danger";
-        default: return "secondary";
+    // 1. Filter by Status
+    if (currentStatusFilter !== "all") {
+        filteredOrders = filteredOrders.filter(o => o.status.toLowerCase() === currentStatusFilter);
     }
-}
 
+    // 2. Sort by Date
+    filteredOrders.sort((a, b) => {
+        const dateA = new Date(a.orderDate);
+        const dateB = new Date(b.orderDate);
+        return currentSortOrder === "newest" ? dateB - dateA : dateA - dateB;
+    });
+
+    renderOrdersTable(filteredOrders);
+}
+/* ===========================
+   GENERIC PAGINATION RENDERER
+=========================== */
+function renderPagination(totalPages, current, container, onPageChange) {
+    if (totalPages <= 1) {
+        container.innerHTML = "";
+        return;
+    }
+
+    let html = "";
+    for (let i = 1; i <= totalPages; i++) {
+        html += `
+            <button class="page-btn ${i === current ? 'active-page' : ''}" data-page="${i}">
+                ${i}
+            </button>`;
+    }
+    container.innerHTML = html;
+
+    container.querySelectorAll(".page-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const newPage = parseInt(this.dataset.page);
+            onPageChange(newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+}
 /* ===========================
    CHART
 =========================== */
@@ -499,7 +602,7 @@ function renderTopProductWidget(products, orders) {
         </p>
 
         <div class="mt-auto text-center">
-            <span class="badge bg-success px-3 py-2">
+            <span class="badge bg-soft-success px-3 py-2">
                 Best Seller
             </span>
         </div>
@@ -515,7 +618,8 @@ function renderAll() {
 
     renderStats(products, orders);
     renderProductsTable(products, orders);
-    renderOrdersTable(orders);
+    // renderOrdersTable(orders);
+    applyOrderFilters();
     initCharts(orders);
 }
 
@@ -524,126 +628,260 @@ let editingProductId = null;
 
 let imageFile = null;
 
+/* ===========================
+   PRODUCT ACTIONS (Fixed)
+=========================== */
+
 let mainImageBase64 = null;
 let galleryImagesBase64 = [];
 
-
-document.getElementById("productImage").addEventListener("change", function () {
-    const file = this.files[0];
-    if (!file) return;
-
+// Helper to convert File to Base64 (Promise-based to prevent logic errors)
+const toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => {
-        mainImageBase64 = reader.result;
-    };
     reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
 });
 
-document.getElementById("productGallery").addEventListener("change", function () {
+document.getElementById("productImage").addEventListener("change", async function () {
+    if (this.files[0]) mainImageBase64 = await toBase64(this.files[0]);
+});
 
+document.getElementById("productGallery").addEventListener("change", async function () {
     galleryImagesBase64 = [];
-
     const files = Array.from(this.files);
-
-    files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            galleryImagesBase64.push(reader.result);
-        };
-        reader.readAsDataURL(file);
-    });
+    for (const file of files) {
+        const base64 = await toBase64(file);
+        galleryImagesBase64.push(base64);
+    }
 });
 
+// function setupAddProduct() {
+//     const form = document.getElementById("addProductForm");
+//     const modalElement = document.getElementById("addProductModal");
+
+//     // Listen for the modal opening
+//     modalElement.addEventListener('show.bs.modal', function (event) {
+//         // event.relatedTarget is the button that clicked to open the modal
+//         const button = event.relatedTarget;
+
+//         if (button && !button.classList.contains('edit-btn')) {
+//             resetProductForm();
+//         }
+//     });
+
+//     resetProductForm();
+//     form.addEventListener("submit", function (e) {
+//         e.preventDefault();
+
+//         const name = document.getElementById("productName").value.trim();
+//         const price = parseFloat(document.getElementById("productPrice").value);
+//         const stock = parseInt(document.getElementById("productStock").value);
+//         const description = document.getElementById("productDescription").value.trim();
+//         const category = document.getElementById("productCategory").value;
+//         const brand = document.getElementById("productBrand").value.trim(); // FIXED: Defined brand
+//         const discount = parseFloat(document.getElementById("productDiscount").value) || 0;
+
+//         // Validation
+//         if (!name || name.length < 3) return alert("Valid name required");
+//         if (isNaN(price) || price <= 0) return alert("Price must be > 0");
+//         if (isNaN(stock) || stock < 0) return alert("Stock cannot be negative");
+//         if (!category) return alert("Select a category");
+//         if (!editingProductId && !mainImageBase64) return alert("Upload a main image");
+
+//         const finalPrice = discount > 0 ? price - (price * discount / 100) : price;
+//         let allProducts = JSON.parse(localStorage.getItem("products")) || [];
+
+//         if (editingProductId) {
+//             const index = allProducts.findIndex(p => String(p.id) === String(editingProductId));
+//             if (index !== -1) {
+//                 allProducts[index] = {
+//                     ...allProducts[index],
+//                     name,
+//                     description,
+//                     price,
+//                     discount,
+//                     finalPrice,
+//                     stock,
+//                     category,
+//                     brand,
+//                     image: mainImageBase64 || allProducts[index].image,
+//                     detailImages: galleryImagesBase64.length > 0 ? galleryImagesBase64 : allProducts[index].detailImages
+//                 };
+//                 showToast("Product updated successfully ✏");
+//             }
+//         } else {
+//             const newProduct = {
+//                 id: String(Date.now()),
+//                 name,
+//                 description,
+//                 price,
+//                 discount,
+//                 finalPrice,
+//                 image: mainImageBase64 || "",
+//                 detailImages: galleryImagesBase64,
+//                 category,
+//                 brand, // FIXED: Now defined
+//                 sellerId: String(CURRENT_SELLER_ID),
+//                 sellerName: currentUser.name || "Seller",
+//                 stock,
+//                 rating: 0,
+//                 reviewCount: 0,
+//                 status: "approved",
+//                 dateAdded: new Date().toISOString().split("T")[0],
+//                 featured: false
+//             };
+//             allProducts.push(newProduct);
+//             showToast("Product added successfully 🎉");
+//         }
+
+//         localStorage.setItem("products", JSON.stringify(allProducts));
+
+//         // Reset state
+//         editingProductId = null;
+//         mainImageBase64 = null;
+//         galleryImagesBase64 = [];
+//         form.reset();
+//         document.querySelector("#addProductModal .modal-title").textContent = "Add New Product";
+
+//         bootstrap.Modal.getInstance(document.getElementById("addProductModal")).hide();
+//         renderAll();
+//     });
+// }
 
 function setupAddProduct() {
-
     const form = document.getElementById("addProductForm");
+    const modalElement = document.getElementById("addProductModal");
+    const imageInput = document.getElementById("productImage");
+    const imageFeedback = document.getElementById("imageFeedback");
+
+    // Clear validation styles when modal opens
+    modalElement.addEventListener('show.bs.modal', function (event) {
+        form.classList.remove('was-validated');
+        imageFeedback.classList.add('d-none');
+        const button = event.relatedTarget;
+        if (button && !button.classList.contains('edit-btn')) {
+            resetProductForm();
+        }
+    });
 
     form.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const name = document.getElementById("productName").value;
+        // Custom Check for Image (since HTML5 'required' on file inputs is tricky for edits)
+        const isImageValid = editingProductId || (mainImageBase64);
+        if (!isImageValid) {
+            imageFeedback.classList.remove('d-none');
+        } else {
+            imageFeedback.classList.add('d-none');
+        }
+
+        // Check Bootstrap Native Validation
+        if (!form.checkValidity() || !isImageValid) {
+            e.stopPropagation();
+            form.classList.add('was-validated');
+            return;
+        }
+
+        // Logic to extract data
+        const name = document.getElementById("productName").value.trim();
         const price = parseFloat(document.getElementById("productPrice").value);
         const stock = parseInt(document.getElementById("productStock").value);
-
-        const description = document.getElementById("productDescription").value;
-        const discount = parseFloat(document.getElementById("productDiscount").value) || 0;
+        const description = document.getElementById("productDescription").value.trim();
         const category = document.getElementById("productCategory").value;
-        const brand = document.getElementById("productBrand").value;
+        const brand = document.getElementById("productBrand").value.trim();
+        const discount = parseFloat(document.getElementById("productDiscount").value) || 0;
 
-        const finalPrice = discount > 0
-            ? price - (price * discount / 100)
-            : null;
-
+        const finalPrice = discount > 0 ? price - (price * discount / 100) : price;
         let allProducts = JSON.parse(localStorage.getItem("products")) || [];
 
         if (editingProductId) {
-            // UPDATE
-            const index = allProducts.findIndex(p => +p.id === +editingProductId);
-
-            allProducts[index].name = name;
-            allProducts[index].price = price;
-            allProducts[index].stock = stock;
-            allProducts[index].image = imageFile || allProducts[index].image;
-
-
-            showToast("Product updated successfully ✏");
+            const index = allProducts.findIndex(p => String(p.id) === String(editingProductId));
+            if (index !== -1) {
+                allProducts[index] = {
+                    ...allProducts[index],
+                    name,
+                    description,
+                    price,
+                    discount,
+                    finalPrice,
+                    stock,
+                    category,
+                    brand,
+                    image: mainImageBase64 || allProducts[index].image,
+                    detailImages: galleryImagesBase64.length > 0 ? galleryImagesBase64 : allProducts[index].detailImages
+                };
+                showToast("Product updated successfully ✏");
+            }
         } else {
-            // CREATE
             const newProduct = {
-                id: Date.now(),
+                id: String(Date.now()),
                 name,
                 description,
                 price,
                 discount,
                 finalPrice,
                 image: mainImageBase64 || "",
-                detailImages: galleryImagesBase64 || [],
+                detailImages: galleryImagesBase64,
                 category,
                 brand,
-                sellerId: CURRENT_SELLER_ID,
-                sellerName: "Seller",
+                sellerId: String(CURRENT_SELLER_ID),
+                sellerName: currentUser.name || "Seller",
                 stock,
-                rating: 0,
-                reviewCount: 0,
-                status: "approved",
+                rating: 0, // Default for new products
+                reviewCount: 0, // Default
+                status: "pending",
                 dateAdded: new Date().toISOString().split("T")[0],
-                featured: false
+                featured: false // As requested: default false
             };
             allProducts.push(newProduct);
-            showToast("Product added successfully 🎉");
+            showToast("Product added successfully");
         }
 
         localStorage.setItem("products", JSON.stringify(allProducts));
 
-        editingProductId = null;
-        form.reset();
-
-        mainImageBase64 = null;
-        galleryImagesBase64 = [];
-
-
-        const modal = bootstrap.Modal.getInstance(document.getElementById("addProductModal"));
-        modal.hide();
-
+        // Clean up
+        bootstrap.Modal.getInstance(modalElement).hide();
+        resetProductForm();
         renderAll();
     });
 }
 
-
 function editProduct(id) {
-
     const allProducts = JSON.parse(localStorage.getItem("products")) || [];
-    const product = allProducts.find(p => +p.id === +id);
+    const product = allProducts.find(p => String(p.id) === String(id));
 
-    editingProductId = +id;
+    if (!product) return;
+
+    editingProductId = id;
 
     document.getElementById("productName").value = product.name;
     document.getElementById("productPrice").value = product.price;
     document.getElementById("productStock").value = product.stock;
+    document.getElementById("productDescription").value = product.description || "";
+    document.getElementById("productDiscount").value = product.discount || 0; // Fixed key name
+    document.getElementById("productCategory").value = product.category || "";
+    document.getElementById("productBrand").value = product.brand || "";
+
+    document.querySelector("#addProductModal .modal-title").textContent = "Edit Product";
 
     const modal = new bootstrap.Modal(document.getElementById("addProductModal"));
     modal.show();
+}
+
+function resetProductForm() {
+    const form = document.getElementById("addProductForm");
+    form.reset();
+
+    editingProductId = null;
+    mainImageBase64 = null;
+    galleryImagesBase64 = [];
+
+    // Clear file inputs manually as form.reset() sometimes misses data variables
+    document.getElementById("productImage").value = "";
+    document.getElementById("productGallery").value = "";
+
+    document.querySelector("#addProductModal .modal-title").textContent = "Add New Product";
 }
 
 
@@ -715,9 +953,15 @@ document.getElementById("productSearch").addEventListener("input", function () {
 
 
 let productToDelete = null;
-// Attach edit/delete events to the buttons after rendering the table (needed for dynamic content) 
-//when  type="module" the event listeners are not working because the script is deferred and runs after the DOM is loaded, so we need to attach the events after rendering the table.
+
 function attachActionEvents() {
+
+    document.querySelectorAll(".view-product-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const id = this.dataset.id;
+            navigateToProductDetails(id);
+        });
+    });
 
     document.querySelectorAll(".edit-btn").forEach(btn => {
         btn.addEventListener("click", function () {
@@ -766,39 +1010,92 @@ function attachStatusEvents() {
 
 
 function attachViewOrderEvents() {
-
     document.querySelectorAll(".view-order").forEach(btn => {
-
         btn.addEventListener("click", function () {
-
             const orderId = this.dataset.id;
             const allOrders = JSON.parse(localStorage.getItem("orders")) || [];
+            const allProducts = JSON.parse(localStorage.getItem("products")) || [];
             const order = allOrders.find(o => +o.id === +orderId);
 
             if (!order) return;
 
-            const sellerItems = order.items
-                .filter(i => +i.sellerId === CURRENT_SELLER_ID);
+            // Filter items belonging to this seller
+            const sellerItems = order.items.filter(i => +i.sellerId === CURRENT_SELLER_ID);
 
             document.getElementById("orderDetailsBody").innerHTML = `
-                <p><strong>Date:</strong> ${new Date(order.orderDate).toLocaleString()}</p>
-                <p><strong>Status:</strong> ${order.status}</p>
-                <hr>
-                ${sellerItems.map(item => `
-                    <div class="mb-2">
-                        <strong>${item.productName}</strong><br>
-                        Quantity: ${item.quantity}<br>
-                        Total: ${formatPrice(item.total)}
+                <div class="d-flex justify-content-between align-items-center mb-4 p-3 bg-light rounded-3">
+                    <div>
+                        <small class="text-muted d-block">Order Date</small>
+                        <span class="fw-bold">${new Date(order.orderDate).toLocaleDateString()} ${new Date(order.orderDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
-                `).join("")}
+                    <div class="text-end">
+                        <small class="text-muted d-block">Status</small>
+                        <span class="badge bg-soft-${getStatusColor(order.status)} text-capitalize p-2 px-3">${order.status}</span>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold mb-3">Products in this Order</h6>
+                <div class="order-items-list">
+                    ${sellerItems.map(item => {
+                // Find the actual product to get the image
+                const productData = allProducts.find(p => +p.id === +item.productId);
+                const imgUrl = productData?.image || 'https://via.placeholder.com/60';
+
+                return `
+                            <div class="d-flex align-items-center mb-3 p-2 border rounded-3">
+                                <img src="${imgUrl}" class="rounded-2 me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0 fw-bold small">${item.productName}</h6>
+                                    <small class="text-muted">Qty: ${item.quantity} × ${formatPrice(item.price)}</small>
+                                </div>
+                                <div class="text-end">
+                                    <span class="fw-bold text-primary">${formatPrice(item.total)}</span>
+                                </div>
+                            </div>
+                        `;
+            }).join("")}
+                </div>
+
+                <div class="mt-4 pt-3 border-top">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Subtotal for your items:</span>
+                        <span class="fw-bold">${formatPrice(sellerItems.reduce((sum, i) => sum + i.total, 0))}</span>
+                    </div>
+                    <div class="p-3 rounded-3 bg-soft-primary mt-3">
+                        <small class="d-block text-muted">Shipping Address</small>
+                        <p class="mb-0 small fw-medium text-dark"><i class="bi bi-geo-alt-fill me-1"></i> ${order.address || 'No address provided'}</p>
+                    </div>
+                </div>
             `;
 
-            const modal = new bootstrap.Modal(
-                document.getElementById("orderDetailsModal")
-            );
-
+            const modal = new bootstrap.Modal(document.getElementById("orderDetailsModal"));
             modal.show();
         });
-
     });
 }
+
+function getStatusColor(status) {
+    switch (status?.toLowerCase()) {
+        case 'pending':
+            return 'warning';
+        case 'shipped':
+        case 'delivered':
+            return 'success';
+        case 'cancelled':
+        case 'rejected':
+            return 'danger';
+        case 'processing':
+            return 'info';
+        default:
+            return 'primary';
+    }
+}
+// Update Search to reset page to 1
+document.getElementById("productSearch").addEventListener("input", function () {
+    const query = this.value.toLowerCase();
+    const allProducts = getProducts();
+    const filtered = allProducts.filter(p => p.name.toLowerCase().includes(query));
+    productsCurrentPage = 1; // Reset to first page on search
+    renderProductsTable(filtered, getOrders());
+});
+

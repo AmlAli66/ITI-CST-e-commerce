@@ -43,10 +43,15 @@ function viewAllProducts(productsArray){
         <img src="${product.image}" alt="${product.name}"class="catalogproductImage">
             <div class="catalogProductDetails">
                 <h6>${product.name}</h6>
-                    <div>
-                    Price : ${product.price}$
-                    </div>
-                    <div>
+                <div>
+                ${product.discount > 0 
+                  ? `Price : <span style="text-decoration: line-through; color: gray;">$${product.price}</span> 
+                     <span style="color: green; font-weight: bold;">$${(product.price * (1 - product.discount / 100)).toFixed(0)}</span>
+                     <span style="background: red; color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem;">${product.discount}% </span>`
+                  : `Price : $${product.price}`
+                }
+                </div>   
+                <div>
                     <div class="catalogProductButtons">
                     <button class="catalogAddToCard" onclick=" event.stopPropagation(); navAddToCart('${product.id}')"  ${(isAdmin||isOwnProduct )? 'style="display:none"' : ''}>
                     Add To Cart
@@ -308,6 +313,16 @@ function catalogBrandCreation(){
         //----
         // Rebuilding the Pagination with the result of sorting 
         creatingCatalogPagination();
+        // Updating url to reflect the current category filter 
+const url = new URL(window.location);
+
+if(checkedCategories.length > 0){
+    url.searchParams.set('category', checkedCategories.join(','));  // e.g., "Electronics,Clothing"
+} else {
+    url.searchParams.delete('category');
+}
+window.history.replaceState({}, '', url);
+        //--------
     }
 
 
@@ -382,16 +397,27 @@ function applySorting(products, sortType){
 }
 
 ////------------ trying the linking of home  category Handles the navigation from home by Category 
-const urlparams=  new URLSearchParams(window.location.search);
+//const urlparams=  new URLSearchParams(window.location.search);
+//const categoryParam = urlparams.get("category");
+//if(categoryParam){
+//    const checkbox=document.querySelector(`.catalogCheckBoxContainer input[value="${categoryParam}"]`)
+//    if(checkbox){
+//        checkbox.checked=true;
+//        ApplyAllFilters();
+//    }
+//}
+const urlparams = new URLSearchParams(window.location.search);
 const categoryParam = urlparams.get("category");
 if(categoryParam){
-    const checkbox=document.querySelector(`.catalogCheckBoxContainer input[value="${categoryParam}"]`)
-    if(checkbox){
-        checkbox.checked=true;
-        ApplyAllFilters();
-    }
+    const categories = categoryParam.split(',');  // Split "Electronics,Clothing" into array
+    categories.forEach(cat => {
+        const checkbox = document.querySelector(`.catalogCheckBoxContainer input[value="${cat}"]`);
+        if(checkbox){
+            checkbox.checked = true;
+        }
+    });
+    ApplyAllFilters();
 }
-
 //-------------------------------
 
 //--------- Clear All Filters 
@@ -400,6 +426,23 @@ ClearFiltersBtn.addEventListener('click',ClearAllFilters)
 function ClearAllFilters(){
     const allCheckedFilters = document.querySelectorAll("input[type='checkbox']:checked")
     allCheckedFilters.forEach(cb=>cb.checked=false);
+    // reset the price sliders 
+    const allProducts = getAllProducts();
+    let highestPrice = 0;
+    for(let i = 0; i < allProducts.length; i++){
+        if(allProducts[i].price > highestPrice){
+            highestPrice = allProducts[i].price;
+        }
+    }
+    minSlider.value = 0;
+    maxSlider.value = highestPrice;
+    minDisplay.innerText = 0;
+    maxDisplay.innerText = highestPrice;
+
+    //--clear url params 
+    const url = new URL(window.location);
+    url.searchParams.delete('category');
+    window.history.replaceState({}, '', url);
     ApplyAllFilters();
 }
 
