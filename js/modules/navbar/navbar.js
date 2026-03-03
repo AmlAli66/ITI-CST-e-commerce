@@ -55,7 +55,7 @@ function updateNavbar() {
     if(!user){
         navLogout.style.display="none";
     }
-    if(user.role=="admin"){
+    if(user && user.role=="admin"){
         navCartIcon.style.display="none";
     }
 }
