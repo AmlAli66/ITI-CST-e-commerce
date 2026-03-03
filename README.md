@@ -3,6 +3,20 @@
 > A full-featured, multi-actor e-commerce web application built with vanilla HTML, CSS, JavaScript, and Bootstrap. Developed as a team project for the ITI CST program.
 
 ---
+## 🧑‍🤝‍🧑 Team 5
+
+Developed by a 5-person team for the **ITI CST Program** (February–March 2026).
+
+| Name         | Role        | Contribution                                             |
+|--------------|-------------|----------------------------------------------------------|
+| Ahmed Khalil | Team Leader | Homepage, Catalog, Profile, Order Details , Navbar/Footer|
+| Aml Ali      | Developer   | Seller Dashboard, Admin Panel                            |
+| Ahmed Dabish | Developer   | Product Details, Cart, Wishlist, Reviews                 |
+| Menna Lashen | Developer   | Customer Service, Contacts, Checkout                     |
+| Mazen Gamal  | Developer   | Login & Register                                         |
+
+
+-----
 
 ## 📋 Table of Contents
 
@@ -484,19 +498,6 @@ The catalog page syncs filter state (category, page number) with URL query param
 | **Seller**   | seller@example.com   | 123456   |
 
 ---
-
-## 🧑‍🤝‍🧑 Team
-
-Developed by a 5-person team for the **ITI CST Program** (February–March 2026).
-
-| Name         | Role        | Contribution                                             |
-|--------------|-------------|----------------------------------------------------------|
-| Ahmed Khalil | Team Leader | Homepage, Catalog, Profile, Order Details , Navbar/Footer|
-| Aml Ali      | Developer   | Seller Dashboard, Admin Panel                            |
-| Ahmed Dabish | Developer   | Product Details, Cart, Wishlist, Reviews                 |
-| Menna Lashen | Developer   | Customer Service, Contacts, Checkout                     |
-| Mazen Gamal  | Developer   | Login & Register                                         |
-
 
 ---
 
