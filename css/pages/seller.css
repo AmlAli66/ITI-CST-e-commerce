@@ -640,6 +640,40 @@ body {
     color: #475569;
 }
 
+
+/* Modern Validation UI */
+.was-validated .form-control:invalid,
+.form-control.is-invalid {
+    background-color: #fff8f8 !important;
+    border: 1px solid #ffcfcf !important;
+}
+
+.was-validated .form-control:valid,
+.form-control.is-valid {
+    background-color: #f8fff9 !important;
+    border: 1px solid #d1e7dd !important;
+}
+
+.invalid-feedback {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* Modal UI Tweaks */
+#addProductModal .input-group-text {
+    background-color: #f1f5f9;
+    color: #64748b;
+    font-weight: bold;
+}
+
+#addProductModal .form-control:focus,
+#addProductModal .form-select:focus {
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+    border: 1px solid var(--accent) !important;
+}
+
 /* Order Card Styling */
 .order-card {
     background: #ffffff;
@@ -726,4 +760,33 @@ body {
     .filter-group select {
         width: auto;
     }
+}
+
+
+/* Product Status Badges */
+.status-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    z-index: 2;
+}
+
+.status-approved {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.status-pending {
+    background: #fef9c3;
+    color: #a16207;
+}
+
+.status-rejected {
+    background-color: #fee2e2;
+    color: #dc2626;
 }

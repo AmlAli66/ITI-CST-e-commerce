@@ -74,6 +74,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         applyOrderFilters();
     });
 
+
+    document.getElementById("productSearch").addEventListener("input", () => {
+        productsCurrentPage = 1;
+        renderProductsTable(getProducts(), getOrders());
+    });
+
+    document.getElementById("productStatusFilter").addEventListener("change", () => {
+        productsCurrentPage = 1;
+        renderProductsTable(getProducts(), getOrders());
+    });
+
+    document.getElementById("productSortOrder").addEventListener("change", () => {
+        productsCurrentPage = 1;
+        renderProductsTable(getProducts(), getOrders());
+    });
+
 });
 
 
@@ -264,43 +280,72 @@ function renderProductsTable(products, orders) {
     const container = document.getElementById("productsTable");
     const paginationContainer = document.getElementById("productsPagination");
 
-    if (!products.length) {
+    // APPLY FILTERS & SEARCH
+    const searchTerm = document.getElementById("productSearch")?.value.toLowerCase() || "";
+    const statusFilter = document.getElementById("productStatusFilter")?.value || "all";
+    const sortOrder = document.getElementById("productSortOrder")?.value || "newest";
+
+    let filtered = products.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(searchTerm) || p.brand?.toLowerCase().includes(searchTerm);
+        const matchesStatus = statusFilter === "all" || p.status === statusFilter;
+        return matchesSearch && matchesStatus;
+    });
+
+    // SORTING
+    filtered.sort((a, b) => {
+        if (sortOrder === "newest") return new Date(b.dateAdded) - new Date(a.dateAdded);
+        if (sortOrder === "oldest") return new Date(a.dateAdded) - new Date(b.dateAdded);
+        if (sortOrder === "stock-low") return a.stock - b.stock;
+        if (sortOrder === "stock-high") return b.stock - a.stock;
+        return 0;
+    });
+
+    if (!filtered.length) {
         container.innerHTML = `<div class="col-12 text-center py-5"><h5>No Products Found</h5></div>`;
         paginationContainer.innerHTML = "";
         return;
     }
 
-    // Pagination Logic
-    const totalPages = Math.ceil(products.length / productsPerPage);
-    if (productsCurrentPage > totalPages) productsCurrentPage = totalPages;
+    //  PAGINATION
+    const totalPages = Math.ceil(filtered.length / productsPerPage);
     const start = (productsCurrentPage - 1) * productsPerPage;
-    const paginatedProducts = products.slice(start, start + productsPerPage);
+    const paginated = filtered.slice(start, start + productsPerPage);
 
-    container.innerHTML = paginatedProducts.map(p => {
+    container.innerHTML = paginated.map(p => {
         const revenue = getRevenueForProduct(p.id, orders);
         const isLowStock = p.stock < 5;
+        // Badge Logic
+        let statusClass;
+        // = p.status === 'approved' ? 'status-approved' : 'status-pending';
+        if (p.status === 'approved') statusClass = 'status-approved';
+        else if (p.status === 'pending') statusClass = 'status-pending';
+        else if (p.status === 'rejected') statusClass = 'status-rejected';
+
 
         return `
             <div class="col-12 col-md-6 col-xl-4">
-                <div class="card product-card border-0 h-100">
+                <div class="card product-card border-0 h-100 shadow-sm">
                     <div class="product-img-container">
                         <img src="${p.image || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${p.name}">
+                        <span class="status-badge ${statusClass}">${p.status}</span>
                         ${isLowStock ? '<span class="stock-badge badge-low">Low Stock</span>' : '<span class="stock-badge badge-instock">In Stock</span>'}
                         <div class="product-price-tag">${formatPrice(p.price)}</div>
                     </div>
                     <div class="card-body p-4">
                         <h5 class="card-title fw-bold mb-1 text-truncate">${p.name}</h5>
-                        <div class="row g-2 mb-4">
+                        <p class="text-muted small mb-3">${p.brand || 'No Brand'}</p>
+                        <div class="row g-2 mb-4 bg-light rounded-3 py-2">
                             <div class="col-6 text-center border-end">
                                 <span class="d-block fw-bold">${p.stock}</span>
-                                <small class="text-muted">Units Left</small>
+                                <small class="text-muted" style="font-size: 0.65rem;">Units Left</small>
                             </div>
                             <div class="col-6 text-center">
                                 <span class="d-block fw-bold text-success">${formatPrice(revenue)}</span>
-                                <small class="text-muted">Earnings</small>
+                                <small class="text-muted" style="font-size: 0.65rem;">Earnings</small>
                             </div>
                         </div>
                         <div class="d-flex gap-2">
+                            <button class="btn btn-action btn-view view-product-btn" data-id="${p.id}"><i class="bi bi-eye"></i></button>
                             <button class="btn btn-action btn-edit flex-grow-1 edit-btn" data-id="${p.id}">Edit</button>
                             <button class="btn btn-action btn-delete delete-btn" data-id="${p.id}"><i class="bi bi-trash"></i></button>
                         </div>
@@ -309,7 +354,6 @@ function renderProductsTable(products, orders) {
             </div>`;
     }).join("");
 
-    // Render Products Pagination
     renderPagination(totalPages, productsCurrentPage, paginationContainer, (newPage) => {
         productsCurrentPage = newPage;
         renderProductsTable(getProducts(), getOrders());
@@ -317,7 +361,6 @@ function renderProductsTable(products, orders) {
 
     attachActionEvents();
 }
-
 function getRevenueForProduct(productId, orders) {
     return orders
         .flatMap(o => o.items)
@@ -613,38 +656,141 @@ document.getElementById("productGallery").addEventListener("change", async funct
     }
 });
 
+// function setupAddProduct() {
+//     const form = document.getElementById("addProductForm");
+//     const modalElement = document.getElementById("addProductModal");
+
+//     // Listen for the modal opening
+//     modalElement.addEventListener('show.bs.modal', function (event) {
+//         // event.relatedTarget is the button that clicked to open the modal
+//         const button = event.relatedTarget;
+
+//         if (button && !button.classList.contains('edit-btn')) {
+//             resetProductForm();
+//         }
+//     });
+
+//     resetProductForm();
+//     form.addEventListener("submit", function (e) {
+//         e.preventDefault();
+
+//         const name = document.getElementById("productName").value.trim();
+//         const price = parseFloat(document.getElementById("productPrice").value);
+//         const stock = parseInt(document.getElementById("productStock").value);
+//         const description = document.getElementById("productDescription").value.trim();
+//         const category = document.getElementById("productCategory").value;
+//         const brand = document.getElementById("productBrand").value.trim(); // FIXED: Defined brand
+//         const discount = parseFloat(document.getElementById("productDiscount").value) || 0;
+
+//         // Validation
+//         if (!name || name.length < 3) return alert("Valid name required");
+//         if (isNaN(price) || price <= 0) return alert("Price must be > 0");
+//         if (isNaN(stock) || stock < 0) return alert("Stock cannot be negative");
+//         if (!category) return alert("Select a category");
+//         if (!editingProductId && !mainImageBase64) return alert("Upload a main image");
+
+//         const finalPrice = discount > 0 ? price - (price * discount / 100) : price;
+//         let allProducts = JSON.parse(localStorage.getItem("products")) || [];
+
+//         if (editingProductId) {
+//             const index = allProducts.findIndex(p => String(p.id) === String(editingProductId));
+//             if (index !== -1) {
+//                 allProducts[index] = {
+//                     ...allProducts[index],
+//                     name,
+//                     description,
+//                     price,
+//                     discount,
+//                     finalPrice,
+//                     stock,
+//                     category,
+//                     brand,
+//                     image: mainImageBase64 || allProducts[index].image,
+//                     detailImages: galleryImagesBase64.length > 0 ? galleryImagesBase64 : allProducts[index].detailImages
+//                 };
+//                 showToast("Product updated successfully ✏");
+//             }
+//         } else {
+//             const newProduct = {
+//                 id: String(Date.now()),
+//                 name,
+//                 description,
+//                 price,
+//                 discount,
+//                 finalPrice,
+//                 image: mainImageBase64 || "",
+//                 detailImages: galleryImagesBase64,
+//                 category,
+//                 brand, // FIXED: Now defined
+//                 sellerId: String(CURRENT_SELLER_ID),
+//                 sellerName: currentUser.name || "Seller",
+//                 stock,
+//                 rating: 0,
+//                 reviewCount: 0,
+//                 status: "approved",
+//                 dateAdded: new Date().toISOString().split("T")[0],
+//                 featured: false
+//             };
+//             allProducts.push(newProduct);
+//             showToast("Product added successfully 🎉");
+//         }
+
+//         localStorage.setItem("products", JSON.stringify(allProducts));
+
+//         // Reset state
+//         editingProductId = null;
+//         mainImageBase64 = null;
+//         galleryImagesBase64 = [];
+//         form.reset();
+//         document.querySelector("#addProductModal .modal-title").textContent = "Add New Product";
+
+//         bootstrap.Modal.getInstance(document.getElementById("addProductModal")).hide();
+//         renderAll();
+//     });
+// }
+
 function setupAddProduct() {
     const form = document.getElementById("addProductForm");
     const modalElement = document.getElementById("addProductModal");
+    const imageInput = document.getElementById("productImage");
+    const imageFeedback = document.getElementById("imageFeedback");
 
-    // Listen for the modal opening
+    // Clear validation styles when modal opens
     modalElement.addEventListener('show.bs.modal', function (event) {
-        // event.relatedTarget is the button that clicked to open the modal
+        form.classList.remove('was-validated');
+        imageFeedback.classList.add('d-none');
         const button = event.relatedTarget;
-
         if (button && !button.classList.contains('edit-btn')) {
             resetProductForm();
         }
     });
 
-    resetProductForm();
     form.addEventListener("submit", function (e) {
         e.preventDefault();
 
+        // Custom Check for Image (since HTML5 'required' on file inputs is tricky for edits)
+        const isImageValid = editingProductId || (mainImageBase64);
+        if (!isImageValid) {
+            imageFeedback.classList.remove('d-none');
+        } else {
+            imageFeedback.classList.add('d-none');
+        }
+
+        // Check Bootstrap Native Validation
+        if (!form.checkValidity() || !isImageValid) {
+            e.stopPropagation();
+            form.classList.add('was-validated');
+            return;
+        }
+
+        // Logic to extract data
         const name = document.getElementById("productName").value.trim();
         const price = parseFloat(document.getElementById("productPrice").value);
         const stock = parseInt(document.getElementById("productStock").value);
         const description = document.getElementById("productDescription").value.trim();
         const category = document.getElementById("productCategory").value;
-        const brand = document.getElementById("productBrand").value.trim(); // FIXED: Defined brand
+        const brand = document.getElementById("productBrand").value.trim();
         const discount = parseFloat(document.getElementById("productDiscount").value) || 0;
-
-        // Validation
-        if (!name || name.length < 3) return alert("Valid name required");
-        if (isNaN(price) || price <= 0) return alert("Price must be > 0");
-        if (isNaN(stock) || stock < 0) return alert("Stock cannot be negative");
-        if (!category) return alert("Select a category");
-        if (!editingProductId && !mainImageBase64) return alert("Upload a main image");
 
         const finalPrice = discount > 0 ? price - (price * discount / 100) : price;
         let allProducts = JSON.parse(localStorage.getItem("products")) || [];
@@ -678,30 +824,25 @@ function setupAddProduct() {
                 image: mainImageBase64 || "",
                 detailImages: galleryImagesBase64,
                 category,
-                brand, // FIXED: Now defined
+                brand,
                 sellerId: String(CURRENT_SELLER_ID),
                 sellerName: currentUser.name || "Seller",
                 stock,
-                rating: 0,
-                reviewCount: 0,
-                status: "approved",
+                rating: 0, // Default for new products
+                reviewCount: 0, // Default
+                status: "pending",
                 dateAdded: new Date().toISOString().split("T")[0],
-                featured: false
+                featured: false // As requested: default false
             };
             allProducts.push(newProduct);
-            showToast("Product added successfully 🎉");
+            showToast("Product added successfully");
         }
 
         localStorage.setItem("products", JSON.stringify(allProducts));
 
-        // Reset state
-        editingProductId = null;
-        mainImageBase64 = null;
-        galleryImagesBase64 = [];
-        form.reset();
-        document.querySelector("#addProductModal .modal-title").textContent = "Add New Product";
-
-        bootstrap.Modal.getInstance(document.getElementById("addProductModal")).hide();
+        // Clean up
+        bootstrap.Modal.getInstance(modalElement).hide();
+        resetProductForm();
         renderAll();
     });
 }
