@@ -28,10 +28,10 @@ loadPartial("#navbar-container", "/partials/navbar.html", () => {
 });
 
 // Load footer normally
-loadPartial("#footer-container", "../../partials/footer.html");
+loadPartial("#footer-container", "/partials/footer.html");
 
 // Load footer normally
-loadPartial("#back-btn-container", "../../partials/back.btn.html");
+loadPartial("#back-btn-container", "/partials/back.btn.html");
 
 
 
