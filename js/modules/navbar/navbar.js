@@ -55,7 +55,7 @@ function updateNavbar() {
     if(!user){
         navLogout.style.display="none";
     }
-    if(user.role=="admin"){
+    if(user && user.role=="admin"){
         navCartIcon.style.display="none";
     }
 }
@@ -156,6 +156,7 @@ function cartNotification() {
 
     // 4. Count this user's items
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+     if (!currentUser) return; 
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const userCartItems = cart.filter(item => item.userId === currentUser.id);
     const totalQuantity = userCartItems.reduce((sum, item) => sum + item.quantity, 0);
